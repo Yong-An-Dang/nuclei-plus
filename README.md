@@ -1,8 +1,5 @@
-[//]: # (![nuclei-plus-icon]&#40;doc/images/icon.png&#41;)
-
 <div align=center style="margin-top: 10px;">
 
-[comment]: <> (    <img src="doc/images/icon.png" alt="nuclei-plus-icon">)
 ![nuclei-plus-icon](doc/images/icon.png)
 <h1>nuclei-plus</h1>
 </div>
@@ -33,15 +30,17 @@ mvn clean package -DskipTests
 java -jar nuclei-x.x.x.jar
 ```
 
+#### 使用
+##### Fofa获取目标
+![PoC模板管理](doc/images/usage/img.png)
+
+
 #### 截图
 
 ##### PoC模板管理
 
 ![PoC模板管理](doc/images/img_1.png)
 
-##### Fofa获取目标
-
-![Fofa获取目标](doc/images/img.png)
 
 ##### 运行终端
 
