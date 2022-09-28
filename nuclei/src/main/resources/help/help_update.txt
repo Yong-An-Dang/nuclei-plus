@@ -1,0 +1,5 @@
+UPDATE:
+   -update                        update nuclei engine to the latest released version
+   -ut, -update-templates         update nuclei-templates to latest released version
+   -ud, -update-directory string  overwrite the default directory to install nuclei-templates
+   -duc, -disable-update-check    disable automatic nuclei/templates update check

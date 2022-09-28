@@ -1,0 +1,26 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="kotlin_file">
+        <path id="Fill 1" fill-rule="evenodd" clip-rule="evenodd" d="M7 1L3 5H7V1Z" fill="#9AA7B0" fill-opacity="0.8"/>
+        <path id="Combined Shape" fill-rule="evenodd" clip-rule="evenodd" d="M8 6V1H13V8H8V15H3V6H8Z" fill="#9AA7B0"
+              fill-opacity="0.8"/>
+        <g id="&#226;&#140;&#152;/modifier/kotlin">
+            <g id="&#226;&#140;&#152;/modifier/kotlin_2">
+                <path id="Combined Shape_2" d="M9 16L12.5117 12.4883L16 16H9Z" fill="#0EAEFF"/>
+                <path id="Shape" d="M9 9H12.5117L9 12.7917V9Z" fill="#0EAEFF"/>
+                <path id="Shape_2" d="M12.5117 9L9 12.6983V16L12.5117 12.4883L16 9H12.5117Z"
+                      fill="url(#paint0_linear)"/>
+            </g>
+        </g>
+    </g>
+    <defs>
+        <linearGradient id="paint0_linear" x1="11.0784" y1="18.6927" x2="17.5923" y2="12.1788"
+                        gradientUnits="userSpaceOnUse">
+            <stop offset="0.1075" stop-color="#C757BC"/>
+            <stop offset="0.2138" stop-color="#D0609A"/>
+            <stop offset="0.4254" stop-color="#E1725C"/>
+            <stop offset="0.6048" stop-color="#EE7E2F"/>
+            <stop offset="0.743" stop-color="#F58613"/>
+            <stop offset="0.8232" stop-color="#F88909"/>
+        </linearGradient>
+    </defs>
+</svg>
