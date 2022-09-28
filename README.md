@@ -27,6 +27,12 @@ Nuclei 提供对各种协议的扫描，包括 TCP、DNS、HTTP、SSL、File、W
 mvn clean package -DskipTests
 ```
 
+#### 运行
+```shell
+# jdk11+
+java -jar nuclei-x.x.x.jar
+```
+
 #### 截图
 
 ##### PoC模板管理
