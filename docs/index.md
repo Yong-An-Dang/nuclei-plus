@@ -9,58 +9,52 @@ Nuclei 用于基于模板跨目标发送请求，从而实现零误报并提供�
 !!! note
 
     `nuclei-plus` 基于 nuclei 的概念验证框架GUI
-    
-    **注意：以下文档尚未更新**
 
 
 
 ## :material-security: 安全通告
 
-See [the security file](https://github.com/G3G4X5X6/ultimate-cube/security/policy)!
+See [the security file](https://github.com/Yong-An-Dang/nuclei-plus/security/policy)!
 
 ## :material-checkbox-multiple-marked: 功能特点
 
-- [x] 支持多操作系统平台，兼容性测试：`Windows` > `Linux` > `MacOS`
-- [x] 支持会话管理
-- [x] 支持本地终端(cmd, bash)
-- [x] 支持 `SSH`、 `Sftp`，及` 内置代码编辑器`，支持代码高亮、折叠等功能
-- [x] 支持  `COM`  口调试（自动检测存在的 `COM` 接口）
-- [x] 支持 `Telnet`
-- [x] 支持 `RDP` 远程桌面（基于`FreeRDP` 实现） 
-- [x] 支持 `VNC`，基于`TightVNC Viewer` 实现
-- [x] 支持 `集成外部工具`，实现快速启动
-- [x] 内置 `简易编辑器` ，可编辑本地、远程文本文件
-- [x] <del>内置 `Nuclei` GUI，POC概念验证框架（已独立项目）</del>
-- [x] 支持60多种主题皮肤切换
-- [ ] 支持插件系统
+- [ ] 支持项目管理
+- [ ] 支持配置管理
+- [ ] 支持模板管理
+- [ ] 支持模板编辑
+- [ ] 支持多种网络空间引擎接口搜索
 
 ## :fontawesome-brands-guilded: 项目构建
 
 - 开发JDK版本要求：JDK 11+
 
-- 安装依赖库到本地仓库 
+- 编译
 
-  ```shel
-  # tightvnc-jviewer.jar, jediterm-pty-2.66.jar, terminal-2.66.jar, jediterm-typeahead-2.66.jar
-  mvn install:install-file -Dfile=libs/tightvnc-jviewer.jar -DgroupId=com.g3g4x5x6  -DartifactId=tightvnc-jviewer -Dversion=2.8.3 -Dpackaging=jar
-  mvn install:install-file -Dfile=libs/jediterm-typeahead-2.66.jar -DgroupId=com.g3g4x5x6  -DartifactId=jediterm-typeahead -Dversion=2.66 -Dpackaging=jar
-  mvn install:install-file -Dfile=libs/terminal-2.66.jar -DgroupId=com.g3g4x5x6  -DartifactId=terminal -Dversion=2.66 -Dpackaging=jar
-  mvn install:install-file -Dfile=libs/jediterm-pty-2.66.jar -DgroupId=com.g3g4x5x6  -DartifactId=jediterm-pty -Dversion=2.66 -Dpackaging=jar
+  ```bash
+  mvn clean package -DskipTests
+  ```
+  
+- 运行
+
+  ```shell
+  # jdk11+
+  java -jar nuclei-x.x.x.jar
   ```
 
-  
 
 ## :material-download: 下载安装
 
+> 暂无发布版本
+
 1. 跨平台运行文件： `jar`
 1. Windows平台安装包：`exe`
-1. 其他平台暂无安装包，请使用 `jar` 包，[去下载](https://github.com/G3G4X5X6/ultimate-cube/releases)
+1. 其他平台暂无安装包，请使用 `jar` 包，[去下载](https://github.com/Yong-An-Dang/nuclei-plus)
 
 
 
 ## :material-file-document-multiple: 使用指南
 
-[ultimate-cube 使用指南](guide/index.md)
+[nuclei-plus 使用指南](guide/index.md)
 
 
 
@@ -82,7 +76,7 @@ See [the security file](https://github.com/G3G4X5X6/ultimate-cube/security/polic
 
 ## :people_holding_hands: 贡献者
 
-See [contributors](https://github.com/G3G4X5X6/ultimate-cube/graphs/contributors)!
+See [contributors](https://github.com/Yong-An-Dang/nuclei-plus/graphs/contributors)!
 
 PRs accepted.
 
@@ -96,13 +90,13 @@ MIT © 2022 勾三股四弦五小六
 
 ## :star_struck: 集星趋势 (Stared)
 
-![Stargazers over time](https://starchart.cc/G3G4X5X6/ultimateshell.svg)
+[![Stargazers over time](https://starchart.cc/Yong-An-Dang/nuclei-plus.svg)](https://starchart.cc/Yong-An-Dang/nuclei-plus) 
 
 
 
 ## :technologist: 技术支持（社区支持）
 
-Having trouble with Pages? Check out our [wiki](https://github.com/G3G4X5X6/ultimateshell/wiki) or [Discussions for support](https://github.com/G3G4X5X6/ultimateshell/discussions) and we’ll help you sort it out.
+Having trouble with Pages? Check out our [wiki](https://github.com/Yong-An-Dang/nuclei-plus/wiki) or [Discussions for support](https://github.com/Yong-An-Dang/nuclei-plus/discussions) and we’ll help you sort it out.
 
 
 
