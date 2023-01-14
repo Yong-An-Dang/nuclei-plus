@@ -1,0 +1,23 @@
+name: ci 
+on:
+  push:
+    branches:
+      - master 
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10"]
+        # python-version: ["3.8", "3.9"]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - run: pip install mkdocs-material
+      - run: pip install 'mkdocs-blog @ git+https://github.com/andyoakley/mkdocs-blog@ac1ac264dd693b9213cc87c211db31e21dd8ca0a'
+      - run: pip install mkdocs-minify-plugin
+      - run: mkdocs gh-deploy --force
