@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-    <defs>
-        <style>.icon-file{fill-rule:evenodd;}</style>
-    </defs>
-    <g>
-        <path class="icon-file" d="M8,1V6H3v9H13V1ZM7,1,3,5H7Z"/>
-    </g>
-</svg>
