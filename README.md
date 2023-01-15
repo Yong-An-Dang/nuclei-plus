@@ -4,44 +4,32 @@
 <h1>nuclei-plus</h1>
 </div>
 
-#### 简介
+Nuclei is used to send requests across targets based on a template, leading to zero false positives and providing fast scanning on a large number of hosts. Nuclei offers scanning for a variety of protocols, including TCP, DNS, HTTP, SSL, File, Whois, Websocket, Headless etc. With powerful and flexible templating, Nuclei can be used to model all kinds of security checks.
 
-Nuclei 用于基于模板跨目标发送请求，从而实现零误报并提供对大量主机的快速扫描。
-Nuclei 提供对各种协议的扫描，包括 TCP、DNS、HTTP、SSL、File、Whois、Websocket、Headless 等。凭借强大而灵活的模板，Nuclei 可用于对各种安全检查进行建模。
+#### Intro
+> [简体中文](README_zh.md)
 
-#### 计划
-- [x] 支持系统托盘
-- [x] 支持输出自定义配置
-- [x] 支持代理配置
-- [x] 支持全局参数执行操作
-- [x] 支持全局 `PoC` 配置
-- [x] 修改工作空间  
-- [ ] 支持 `interactsh` 配置进行带外数据探测
-- [ ] 支持项目管理，参考 `burpsuite`
+Functional enhancement based on nuclei
 
-#### 编译
+#### Todo
+- [x] Support system tray
+- [ ] Support project management
+- [ ] Support configuration management
+- [ ] Support template management
+- [ ] Support template editing
+- [ ] Support internationalization, default `zh`
+- [ ] Support multiple network space engine interface search
+
+#### Build
 ```shell
 mvn clean package -DskipTests
 ```
 
-#### 运行
+#### Run
 ```shell
 # jdk11+
 java -jar nuclei-x.x.x.jar
 ```
 
-#### 使用
-##### Fofa获取目标
-![PoC模板管理](doc/images/usage/img.png)
-
-
-#### 截图
-
-##### PoC模板管理
-
-![PoC模板管理](doc/images/img_1.png)
-
-
-##### 运行终端
-
-![运行终端](doc/images/img_2.png)
+#### Usage
+See [doc](https://yong-an-dang.github.io/nuclei-plus/)
