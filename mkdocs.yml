@@ -158,6 +158,7 @@ markdown_extensions:
 nav:
   - 主页: 
     - index.md
+    - 项目背景: background.md
   - 指南:
     - guide/index.md
     - 安装: guide/install.md
