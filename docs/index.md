@@ -22,6 +22,7 @@ See [the security file](https://github.com/Yong-An-Dang/nuclei-plus/security/pol
 - [ ] 支持配置管理
 - [ ] 支持模板管理
 - [ ] 支持模板编辑
+- [ ] 支持国际化，默认 `zh`
 - [ ] 支持多种网络空间引擎接口搜索
 
 ## :fontawesome-brands-guilded: 项目构建
@@ -62,7 +63,7 @@ See [the security file](https://github.com/Yong-An-Dang/nuclei-plus/security/pol
 
 - JediTerm: [https://github.com/JetBrains/jediterm](https://github.com/JetBrains/jediterm)
 - FlatLaf: [https://github.com/JFormDesigner/FlatLaf](https://github.com/JFormDesigner/FlatLaf)
-- Apache MINA SSHD: [https://github.com/apache/mina-sshd](https://github.com/apache/mina-sshd)
+- nuclei: [https://github.com/projectdiscovery/nuclei](https://github.com/projectdiscovery/nuclei)
 - RSyntaxTextArea: [https://github.com/bobbylight/RSyntaxTextArea](https://github.com/bobbylight/RSyntaxTextArea)
 - More...
 
@@ -90,7 +91,7 @@ MIT © 2022 勾三股四弦五小六
 
 ## :star_struck: 集星趋势 (Stared)
 
-[![Stargazers over time](https://starchart.cc/Yong-An-Dang/nuclei-plus.svg)](https://starchart.cc/Yong-An-Dang/nuclei-plus) 
+![Stargazers over time](https://starchart.cc/Yong-An-Dang/nuclei-plus.svg)
 
 
 
