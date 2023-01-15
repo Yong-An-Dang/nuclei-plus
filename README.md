@@ -5,10 +5,9 @@
 </div>
 
 Nuclei is used to send requests across targets based on a template, leading to zero false positives and providing fast scanning on a large number of hosts. Nuclei offers scanning for a variety of protocols, including TCP, DNS, HTTP, SSL, File, Whois, Websocket, Headless etc. With powerful and flexible templating, Nuclei can be used to model all kinds of security checks.
+> <small>[简体中文](README_zh.md)</small>
 
 #### Intro
-> [简体中文](README_zh.md)
-
 Functional enhancement based on nuclei
 
 #### Todo
