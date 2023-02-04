@@ -19,8 +19,8 @@ import static com.formdev.flatlaf.FlatClientProperties.*;
 public class SettingsPanel extends JPanel {
     public static JTabbedPane tabbedPane;
 
-    public ConfigPanel configPanel = new ConfigPanel();
-    public ConfigPanel activeConfigPanel = configPanel;
+    public ConfigAllPanel configAllPanel = new ConfigAllPanel();
+    public ConfigAllPanel activeConfigAllPanel = configAllPanel;
 
     public SettingsPanel() {
         this.setLayout(new BorderLayout());
@@ -35,7 +35,7 @@ public class SettingsPanel extends JPanel {
         customComponents();
 
         // add Tab
-        tabbedPane.addTab("Default", new FlatSVGIcon("icons/output.svg"), configPanel);
+        tabbedPane.addTab("Default", new FlatSVGIcon("icons/output.svg"), configAllPanel);
 
         this.add(tabbedPane, BorderLayout.CENTER);
     }
@@ -62,13 +62,13 @@ public class SettingsPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 log.debug("Add ConfigPanel");
-                ConfigPanel tmpConfigPanel = new ConfigPanel();
+                ConfigAllPanel tmpConfigAllPanel = new ConfigAllPanel();
                 String configName = DialogUtil.input(SettingsPanel.this, "请输入配置名称");
                 if (configName.strip().equals("")) {
                     DialogUtil.warn("配置名称不能为空");
                 } else {
-                    tmpConfigPanel.setTitle(configName);
-                    tabbedPane.addTab(tmpConfigPanel.getTitle(), tmpConfigPanel.getIcon(), tmpConfigPanel);
+                    tmpConfigAllPanel.setTitle(configName);
+                    tabbedPane.addTab(tmpConfigAllPanel.getTitle(), tmpConfigAllPanel.getIcon(), tmpConfigAllPanel);
                     tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
                 }
             }
@@ -81,7 +81,7 @@ public class SettingsPanel extends JPanel {
         trailMenuBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                log.debug(String.valueOf(configPanel.getNucleiConfig()));
+                log.debug(String.valueOf(configAllPanel.getNucleiConfig()));
             }
         });
 
@@ -91,8 +91,8 @@ public class SettingsPanel extends JPanel {
         tabbedPane.putClientProperty(TABBED_PANE_TRAILING_COMPONENT, trailing);
     }
 
-    public void setActiveConfigPanel(ConfigPanel activeConfigPanel) {
-        this.activeConfigPanel = activeConfigPanel;
+    public void setActiveConfigPanel(ConfigAllPanel activeConfigAllPanel) {
+        this.activeConfigAllPanel = activeConfigAllPanel;
     }
 
 }

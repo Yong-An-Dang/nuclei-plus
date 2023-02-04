@@ -23,30 +23,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 
 @Slf4j
-public class SettingFiltering extends JPanel implements SearchListener {
+public class ConfigTemplatePanel extends JPanel implements SearchListener {
+    private final JButton templateBtn = new JButton("Templates");
     private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
     private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
     private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
     private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    private static RSyntaxTextArea textArea;
+    private final RSyntaxTextArea textArea;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
 
-    public SettingFiltering() {
+    public ConfigTemplatePanel() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        toolBar.add(lineWrapBtn);
-        toolBar.add(searchBtn);
-        toolBar.add(replaceBtn);
+        toolBar.add(templateBtn);
         toolBar.addSeparator();
         toolBar.add(clearBtn);
+        toolBar.add(searchBtn);
+        toolBar.add(replaceBtn);
+        toolBar.add(lineWrapBtn);
 
         initToolBarAction();
 
@@ -119,10 +124,9 @@ public class SettingFiltering extends JPanel implements SearchListener {
     }
 
     private void initToolBarAction() {
+        templateBtn.setSelected(true);
 
-        lineWrapBtn.addChangeListener(e -> {
-            textArea.setLineWrap(lineWrapBtn.isSelected());
-        });
+        lineWrapBtn.addChangeListener(e -> textArea.setLineWrap(lineWrapBtn.isSelected()));
 
         clearBtn.setToolTipText("清除当前模板");
         clearBtn.addActionListener(new AbstractAction() {
@@ -143,6 +147,10 @@ public class SettingFiltering extends JPanel implements SearchListener {
 
     public RSyntaxTextArea getTextArea() {
         return textArea;
+    }
+
+    public List<String> getTemplates(){
+        return Arrays.asList(textArea.getText().split("\n"));
     }
 
     @Override
@@ -215,7 +223,7 @@ public class SettingFiltering extends JPanel implements SearchListener {
         }
     };
 
-    public static void addTemplates(String templatePath){
+    public void addTemplates(String templatePath) {
         textArea.append(templatePath + "\n");
     }
 

@@ -2,9 +2,7 @@ package com.g3g4x5x6.nuclei.ultils;
 
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
-import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
-import com.g3g4x5x6.nuclei.panel.setting.ConfigPanel;
-import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
+import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.panel.tab.SettingsPanel;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +23,6 @@ import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,7 +88,7 @@ public class CommonUtil {
     }
 
     public static Map<String, Object> getNucleiConfigObject() {
-        return NucleiApp.nuclei.settingsPanel.configPanel.getNucleiConfig();
+        return NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.getNucleiConfig();
     }
 
     public static String[] getTargets() {
@@ -111,11 +108,11 @@ public class CommonUtil {
         return new File(savePath).getCanonicalPath();
     }
 
-    public static LinkedHashMap<String, ConfigPanel> getConfigPanels() {
-        LinkedHashMap<String, ConfigPanel> configPanels = new LinkedHashMap<>();
+    public static LinkedHashMap<String, ConfigAllPanel> getConfigPanels() {
+        LinkedHashMap<String, ConfigAllPanel> configPanels = new LinkedHashMap<>();
         int count = SettingsPanel.tabbedPane.getTabCount();
         for (int i = 0; i < count; i++) {
-            configPanels.put(SettingsPanel.tabbedPane.getTitleAt(i), (ConfigPanel) SettingsPanel.tabbedPane.getComponentAt(i));
+            configPanels.put(SettingsPanel.tabbedPane.getTitleAt(i), (ConfigAllPanel) SettingsPanel.tabbedPane.getComponentAt(i));
         }
         return configPanels;
     }
@@ -123,7 +120,7 @@ public class CommonUtil {
     public static JPopupMenu getConfigPopupMenu() {
         JPopupMenu popupMenu = new JPopupMenu();
 
-        LinkedHashMap<String, ConfigPanel> configPanels = getConfigPanels();
+        LinkedHashMap<String, ConfigAllPanel> configPanels = getConfigPanels();
         for (String configName : configPanels.keySet()) {
             JMenuItem tempItem = new JMenuItem(configName);
             tempItem.addActionListener(new AbstractAction() {

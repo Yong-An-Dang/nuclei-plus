@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel.setting.target;
+package com.g3g4x5x6.nuclei.panel.thirdparty;
 
 import com.alibaba.fastjson.JSONArray;
 import lombok.extern.slf4j.Slf4j;

@@ -7,19 +7,13 @@ import com.formdev.flatlaf.extras.components.FlatTriStateCheckBox;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
-import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
-import com.g3g4x5x6.nuclei.model.SelectedTagsConfig;
-import com.g3g4x5x6.nuclei.model.SelectedTemplatesConfig;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
-import com.g3g4x5x6.nuclei.panel.setting.template.GlobalTemplatePanel;
-import com.g3g4x5x6.nuclei.panel.setting.template.GlobalWorkflowPanel;
 import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -35,9 +29,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
 
 @Slf4j
 public class TemplatesPanel extends JPanel {
@@ -135,9 +127,9 @@ public class TemplatesPanel extends JPanel {
                     int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
                     String savePath = templates.get(num).get("path");
                     if (savePath.contains("workflow")) {
-                        NucleiApp.nuclei.settingsPanel.activeConfigPanel.addWorkflows(savePath);
+                        NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addWorkflows(savePath);
                     } else {
-                        NucleiApp.nuclei.settingsPanel.activeConfigPanel.addTemplates(savePath);
+                        NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addTemplates(savePath);
                     }
                 }
             }
