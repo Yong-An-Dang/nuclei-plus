@@ -2,174 +2,97 @@ package com.g3g4x5x6.nuclei.panel.tab;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.panel.setting.*;
+import com.g3g4x5x6.nuclei.ultils.DialogUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.function.BiConsumer;
 
+import static com.formdev.flatlaf.FlatClientProperties.*;
+
+
+@Slf4j
 public class SettingsPanel extends JPanel {
-    // TODO 搞个全局配置对象
-
-    private final JButton newBtn = new JButton(new FlatSVGIcon("icons/addFile.svg"));
-    private final JButton openBtn = new JButton(new FlatSVGIcon("icons/menu-open.svg"));
-    private final JButton saveBtn = new JButton(new FlatSVGIcon("icons/menu-saveall.svg"));
-    private final JButton terminalBtn = new JButton(new FlatSVGIcon("icons/changeView.svg"));
-
     public static JTabbedPane tabbedPane;
-    SettingTarget targetSetting = new SettingTarget();
-    SettingTemplate templateSetting = new SettingTemplate();
-    SettingFiltering filteringSetting = new SettingFiltering();
-    SettingOutput outputSetting = new SettingOutput();
-    SettingConfiguration configurationSetting = new SettingConfiguration();
-    SettingInteractsh interactshSetting = new SettingInteractsh();
-    SettingRateLimit rateLimitSetting = new SettingRateLimit();
-    SettingOptimization optimizationSetting = new SettingOptimization();
-    SettingHeadless headlessSetting = new SettingHeadless();
-    SettingDebug debugSetting = new SettingDebug();
-    SettingUpdate updateSetting = new SettingUpdate();
-    SettingStatistics statisticsSetting = new SettingStatistics();
+
+    public ConfigPanel configPanel = new ConfigPanel();
+    public ConfigPanel activeConfigPanel = configPanel;
 
     public SettingsPanel() {
         this.setLayout(new BorderLayout());
 
-        initToolBar();
-
         initTabbedPane();
     }
 
-    private void initToolBar(){
-        JToolBar toolBar = new JToolBar(SwingConstants.HORIZONTAL);
-        toolBar.setFloatable(false);
-
-        newBtn.setToolTipText("新建全局配置");
-        newBtn.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //
-            }
-        });
-
-        toolBar.add(newBtn);
-        toolBar.add(openBtn);
-        toolBar.add(saveBtn);
-        toolBar.addSeparator();
-        toolBar.add(terminalBtn);
-        this.add(toolBar, BorderLayout.NORTH);
-    }
-
-    private void initTabbedPane(){
+    private void initTabbedPane() {
         tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
+        initClosableTabs();
+        customComponents();
+
         // add Tab
-//        tabbedPane.addTab("Target", new FlatSVGIcon("icons/Target.svg"), targetSetting);
-        tabbedPane.addTab("Templates", new FlatSVGIcon("icons/template.svg"), templateSetting);
-        tabbedPane.addTab("Filtering", new FlatSVGIcon("icons/shortcutFilter.svg"), filteringSetting);
-        tabbedPane.addTab("Output", new FlatSVGIcon("icons/output.svg"), outputSetting);
-        tabbedPane.addTab("Configurations", new FlatSVGIcon("icons/pinTab.svg"), configurationSetting);
-        tabbedPane.addTab("Interactsh", new FlatSVGIcon("icons/pinTab.svg"), interactshSetting);
-        tabbedPane.addTab("RateLimit", new FlatSVGIcon("icons/overhead.svg"), rateLimitSetting);
-        tabbedPane.addTab("Optimizations", new FlatSVGIcon("icons/pinTab.svg"), optimizationSetting);
-        tabbedPane.addTab("Headless", new FlatSVGIcon("icons/Header_level_down.svg"), headlessSetting);
-        tabbedPane.addTab("Debug", new FlatSVGIcon("icons/cwmInvite.svg"), debugSetting);
-        tabbedPane.addTab("Update", new FlatSVGIcon("icons/updateRunningApplication.svg"), updateSetting);
-        tabbedPane.addTab("Statistics", new FlatSVGIcon("icons/pinTab.svg"), statisticsSetting);
+        tabbedPane.addTab("Default", new FlatSVGIcon("icons/output.svg"), configPanel);
 
         this.add(tabbedPane, BorderLayout.CENTER);
     }
 
-    public SettingTarget getTargetSetting() {
-        return targetSetting;
+    private void initClosableTabs() {
+        tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSABLE, true);
+        tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_TOOLTIPTEXT, "Close");
+        tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_CALLBACK,
+                (BiConsumer<JTabbedPane, Integer>) (tabPane, tabIndex) -> {
+                    if (tabIndex >= 1) {
+                        tabbedPane.removeTabAt(tabIndex);
+                    }
+                });
     }
 
-    public void setTargetSetting(SettingTarget targetSetting) {
-        this.targetSetting = targetSetting;
+    private void customComponents() {
+        JToolBar trailing;
+        trailing = new JToolBar();
+        trailing.setFloatable(false);
+        trailing.setBorder(null);
+
+        JButton addBtn = new JButton(new FlatSVGIcon("icons/add.svg"));
+        addBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                log.debug("Add ConfigPanel");
+                ConfigPanel tmpConfigPanel = new ConfigPanel();
+                String configName = DialogUtil.input(SettingsPanel.this, "请输入配置名称");
+                if (configName.strip().equals("")) {
+                    DialogUtil.warn("配置名称不能为空");
+                } else {
+                    tmpConfigPanel.setTitle(configName);
+                    tabbedPane.addTab(tmpConfigPanel.getTitle(), tmpConfigPanel.getIcon(), tmpConfigPanel);
+                    tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+                }
+            }
+        });
+
+        // 选项卡面板后置工具栏
+
+        String iconPath = "icons/windows.svg";
+        JButton trailMenuBtn = new JButton(new FlatSVGIcon(iconPath));
+        trailMenuBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                log.debug(String.valueOf(configPanel.getNucleiConfig()));
+            }
+        });
+
+        trailing.add(addBtn);
+        trailing.add(Box.createGlue());
+        trailing.add(trailMenuBtn);
+        tabbedPane.putClientProperty(TABBED_PANE_TRAILING_COMPONENT, trailing);
     }
 
-    public SettingTemplate getTemplateSetting() {
-        return templateSetting;
+    public void setActiveConfigPanel(ConfigPanel activeConfigPanel) {
+        this.activeConfigPanel = activeConfigPanel;
     }
 
-    public void setTemplateSetting(SettingTemplate templateSetting) {
-        this.templateSetting = templateSetting;
-    }
-
-    public SettingFiltering getFilteringSetting() {
-        return filteringSetting;
-    }
-
-    public void setFilteringSetting(SettingFiltering filteringSetting) {
-        this.filteringSetting = filteringSetting;
-    }
-
-    public SettingOutput getOutputSetting() {
-        return outputSetting;
-    }
-
-    public void setOutputSetting(SettingOutput outputSetting) {
-        this.outputSetting = outputSetting;
-    }
-
-    public SettingConfiguration getConfigurationSetting() {
-        return configurationSetting;
-    }
-
-    public void setConfigurationSetting(SettingConfiguration configurationSetting) {
-        this.configurationSetting = configurationSetting;
-    }
-
-    public SettingInteractsh getInteractshSetting() {
-        return interactshSetting;
-    }
-
-    public void setInteractshSetting(SettingInteractsh interactshSetting) {
-        this.interactshSetting = interactshSetting;
-    }
-
-    public SettingRateLimit getRateLimitSetting() {
-        return rateLimitSetting;
-    }
-
-    public void setRateLimitSetting(SettingRateLimit rateLimitSetting) {
-        this.rateLimitSetting = rateLimitSetting;
-    }
-
-    public SettingOptimization getOptimizationSetting() {
-        return optimizationSetting;
-    }
-
-    public void setOptimizationSetting(SettingOptimization optimizationSetting) {
-        this.optimizationSetting = optimizationSetting;
-    }
-
-    public SettingHeadless getHeadlessSetting() {
-        return headlessSetting;
-    }
-
-    public void setHeadlessSetting(SettingHeadless headlessSetting) {
-        this.headlessSetting = headlessSetting;
-    }
-
-    public SettingDebug getDebugSetting() {
-        return debugSetting;
-    }
-
-    public void setDebugSetting(SettingDebug debugSetting) {
-        this.debugSetting = debugSetting;
-    }
-
-    public SettingUpdate getUpdateSetting() {
-        return updateSetting;
-    }
-
-    public void setUpdateSetting(SettingUpdate updateSetting) {
-        this.updateSetting = updateSetting;
-    }
-
-    public SettingStatistics getStatisticsSetting() {
-        return statisticsSetting;
-    }
-
-    public void setStatisticsSetting(SettingStatistics statisticsSetting) {
-        this.statisticsSetting = statisticsSetting;
-    }
 }

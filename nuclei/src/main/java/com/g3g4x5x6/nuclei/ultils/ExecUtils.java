@@ -5,14 +5,17 @@ import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class ExecUtils {
     public static void runGlobalNucleiConfig(ConsolePanel consolePanel){
-        GlobalConfigModel globalConfigModel = GlobalConfigModel.createGlobalConfigModel();
+        Map<String, Object> config = new HashMap<>(CommonUtil.getNucleiConfigObject());
+        config.put("target", CommonUtil.getTargets());
 
-        String configPath = NucleiConfig.getProperty("nuclei.temp.path") + "/" + UUID.randomUUID() + ".yaml";
-        globalConfigModel.toYaml(globalConfigModel, configPath);
+        // 配置对象
+        String configPath = CommonUtil.getNucleiConfigFile(config);
 
         consolePanel.write("nuclei -config " + configPath + "\r");
         NucleiFrame.frameTabbedPane.setSelectedIndex(3);

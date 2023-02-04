@@ -23,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Slf4j
@@ -33,7 +35,7 @@ public class GlobalWorkflowPanel extends JPanel implements SearchListener {
     private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
     private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    private static RSyntaxTextArea textArea;
+    private RSyntaxTextArea textArea;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
 
@@ -147,6 +149,10 @@ public class GlobalWorkflowPanel extends JPanel implements SearchListener {
         return textArea;
     }
 
+    public List<String> getWorkflows(){
+        return Arrays.asList(textArea.getText().split("\n"));
+    }
+
     @Override
     public String getSelectedText() {
         return textArea.getSelectedText();
@@ -217,7 +223,7 @@ public class GlobalWorkflowPanel extends JPanel implements SearchListener {
         }
     };
 
-    public static void addWorkflows(String workflowPath){
+    public void addWorkflows(String workflowPath){
         textArea.append(workflowPath + "\n");
     }
 

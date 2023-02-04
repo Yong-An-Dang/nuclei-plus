@@ -14,10 +14,12 @@ import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.setting.template.GlobalTemplatePanel;
 import com.g3g4x5x6.nuclei.panel.setting.template.GlobalWorkflowPanel;
 import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
+import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -33,6 +35,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
@@ -58,9 +61,8 @@ public class TemplatesPanel extends JPanel {
     private final JButton refreshBtn = new JButton(new FlatSVGIcon("icons/refresh.svg"));
     private final JTextField searchField = new JTextField();
 
-    private final JScrollPane tableScroll;
     private final JTable templatesTable;
-    private DefaultTableModel tableModel;
+    private final DefaultTableModel tableModel;
     private JPopupMenu tablePopMenu;
     private TableRowSorter<DefaultTableModel> sorter;
     private Clipboard clipboard;
@@ -133,9 +135,9 @@ public class TemplatesPanel extends JPanel {
                     int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
                     String savePath = templates.get(num).get("path");
                     if (savePath.contains("workflow")) {
-                        GlobalWorkflowPanel.addWorkflows(savePath);
+                        NucleiApp.nuclei.settingsPanel.activeConfigPanel.addWorkflows(savePath);
                     } else {
-                        GlobalTemplatePanel.addTemplates(savePath);
+                        NucleiApp.nuclei.settingsPanel.activeConfigPanel.addTemplates(savePath);
                     }
                 }
             }
@@ -146,7 +148,7 @@ public class TemplatesPanel extends JPanel {
         tablePopMenu.add(copyPathAction);
         tablePopMenu.add(deleteTemplateAction);
         tablePopMenu.addSeparator();
-        tablePopMenu.add(generateWithSelectedAction);
+        tablePopMenu.add(generateWithTemplatesAction);
         tablePopMenu.add(generateWithTagsAction);
         JMenu selectedTemplatesMenu = new JMenu("运行选中的模板");
         selectedTemplatesMenu.addMenuListener(new MenuListener() {
@@ -230,8 +232,7 @@ public class TemplatesPanel extends JPanel {
         tableModel.setColumnIdentifiers(columnNames);
         templatesTable.setModel(tableModel);
         refreshDataForTable();
-        tableScroll = new JScrollPane(templatesTable);
-//        tableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        JScrollPane tableScroll = new JScrollPane(templatesTable);
         tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -262,7 +263,7 @@ public class TemplatesPanel extends JPanel {
                 // 创建一个默认的文件选取器
                 JFileChooser fileChooser = new JFileChooser();
                 // 设置默认显示的文件夹为当前文件夹
-                fileChooser.setCurrentDirectory(new File(NucleiConfig.getWorkPath()));
+                fileChooser.setCurrentDirectory(new File(NucleiConfig.getProperty("nuclei.templates.custom.path")));
                 // 设置文件选择的模式（只选文件、只选文件夹、文件和文件均可选）
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 // 设置是否允许多选
@@ -491,28 +492,13 @@ public class TemplatesPanel extends JPanel {
     private void runTemplatesInSelectedConsole(ConsolePanel consolePanel) {
         log.debug("Run command with Selected");
 
-        GlobalConfigModel globalConfigModel = GlobalConfigModel.createGlobalConfigModel();
-
         if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
-            List<String> template = new LinkedList<>();
-            List<String> workflow = new LinkedList<>();
-            // 加载选中模板
-            for (int index : templatesTable.getSelectedRows()) {
-                int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
-                String savePath = templates.get(num).get("path");
-                if (savePath.contains("workflow")) {
-                    workflow.add(savePath);
-                } else {
-                    template.add(savePath);
-                }
-            }
-            globalConfigModel.setTemplates(template);
-            globalConfigModel.setWorkflows(workflow);
+            // 配置对象
+            String configPath = CommonUtil.getNucleiConfigFile(getSelectedTemplateMap());
 
-            String configPath = NucleiConfig.getProperty("nuclei.temp.path") + "/" + UUID.randomUUID() + ".yaml";
-            globalConfigModel.toYaml(globalConfigModel, configPath);
-
-            consolePanel.write("nuclei -config " + configPath + "\r");
+            // 执行命令
+            String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
+            consolePanel.write(command + "\r");
             NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
         } else {
@@ -524,20 +510,7 @@ public class TemplatesPanel extends JPanel {
     private void runTagsInSelectedConsole(ConsolePanel consolePanel) {
         if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
             // 配置对象
-            SelectedTagsConfig selected = new SelectedTagsConfig();
-            selected.setTarget(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().split("\\s+")));
-
-            ArrayList<String> tempTags = new ArrayList<>();
-            for (int index : templatesTable.getSelectedRows()) {
-                int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
-                String tags = templates.get(num).get("tags");
-                tempTags.addAll(Arrays.asList(tags.split(",")));
-            }
-            selected.setTags(tempTags);
-            // 保存配置对象
-            String configPath = NucleiConfig.getWorkPath() + "/temp/nuclei/tags_" + UUID.randomUUID() + ".yaml";
-            Yaml yaml = new Yaml();
-            yaml.dump(selected, new FileWriter(configPath));
+            String configPath = CommonUtil.getNucleiConfigFile(getSelectedTagMap());
             // 执行命令
             String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
             consolePanel.write(command + "\r");
@@ -620,27 +593,15 @@ public class TemplatesPanel extends JPanel {
      * 目标是可以做到多选
      * <html><font style='color:red'></font></html>
      */
-    private AbstractAction generateWithSelectedAction = new AbstractAction("<html>为选中的<font style='color:red'>模板</font>生成执行命令</html>") {
+    private AbstractAction generateWithTemplatesAction = new AbstractAction("<html>为选中的<font style='color:red'>模板</font>生成执行命令</html>") {
         @SneakyThrows
         @Override
         public void actionPerformed(ActionEvent e) {
-            log.debug("Generate command with Selected");
+            log.debug("Generate command with Templates");
 
             if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
-                SelectedTemplatesConfig selected = new SelectedTemplatesConfig();
-
-                ArrayList<String> tempTemplate = new ArrayList<>();
-                for (int index : templatesTable.getSelectedRows()) {
-                    int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
-                    String savePath = templates.get(num).get("path");
-                    tempTemplate.add(savePath);
-                }
-                selected.setTemplates(tempTemplate);
-                selected.setTarget(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().split("\\s+")));
-
-                String configPath = NucleiConfig.getWorkPath() + "/temp/nuclei/templates_" + UUID.randomUUID() + ".yaml";
-                Yaml yaml = new Yaml();
-                yaml.dump(selected, new FileWriter(configPath));
+                // 配置对象
+                String configPath = CommonUtil.getNucleiConfigFile(getSelectedTemplateMap());
                 String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
                 if (clipboard == null)
                     clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
@@ -663,20 +624,7 @@ public class TemplatesPanel extends JPanel {
             log.debug("Generate command with Tags");
             if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
                 // 配置对象
-                SelectedTagsConfig selected = new SelectedTagsConfig();
-                selected.setTarget(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().split("\\s+")));
-
-                ArrayList<String> tempTags = new ArrayList<>();
-                for (int index : templatesTable.getSelectedRows()) {
-                    int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
-                    String tags = templates.get(num).get("tags");
-                    tempTags.addAll(Arrays.asList(tags.split(",")));
-                }
-                selected.setTags(tempTags);
-                // 保存配置对象
-                String configPath = NucleiConfig.getWorkPath() + "/temp/nuclei/tags_" + UUID.randomUUID() + ".yaml";
-                Yaml yaml = new Yaml();
-                yaml.dump(selected, new FileWriter(configPath));
+                String configPath = CommonUtil.getNucleiConfigFile(getSelectedTagMap());
                 // 复制命令到粘贴板
                 String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
                 if (clipboard == null)
@@ -692,4 +640,58 @@ public class TemplatesPanel extends JPanel {
             }
         }
     };
+
+    private Map<String, Object> getSelectedTemplateMap(){
+        ArrayList<String> template = new ArrayList<>();
+        ArrayList<String> workflow = new ArrayList<>();
+        for (int index : templatesTable.getSelectedRows()) {
+            int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
+            String savePath = templates.get(num).get("path");
+            if (savePath.contains("workflow")) {
+                workflow.add(savePath);
+            } else {
+                template.add(savePath);
+            }
+        }
+
+        Map<String, Object> selectedMap = new HashMap<>();
+        selectedMap.put("templates", template);
+        selectedMap.put("workflows", workflow);
+
+        Map<String, Object> configMap = CommonUtil.getNucleiConfigObject();
+        configMap.remove("templates");
+        configMap.remove("workflows");
+
+        Map<String, Object> config= new HashMap<>();
+        config.putAll(selectedMap);
+        config.putAll(configMap);
+
+        config.put("target", CommonUtil.getTargets());
+
+        return config;
+    }
+
+    private Map<String, Object> getSelectedTagMap(){
+        ArrayList<String> tempTags = new ArrayList<>();
+        for (int index : templatesTable.getSelectedRows()) {
+            int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
+            String tags = templates.get(num).get("tags");
+            tempTags.addAll(Arrays.asList(tags.split(",")));
+        }
+
+        Map<String, Object> tagMap = new HashMap<>();
+        tagMap.put("tags", tempTags);
+
+        Map<String, Object> configMap = CommonUtil.getNucleiConfigObject();
+        configMap.remove("templates");
+        configMap.remove("workflows");
+        configMap.remove("tags");
+
+        Map<String, Object> config= new HashMap<>();
+        config.putAll(tagMap);
+        config.putAll(configMap);
+
+        config.put("target", CommonUtil.getTargets());
+        return config;
+    }
 }

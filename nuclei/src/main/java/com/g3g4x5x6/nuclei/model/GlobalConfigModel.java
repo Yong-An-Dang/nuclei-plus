@@ -104,45 +104,46 @@ public class GlobalConfigModel {
 
 
     public static GlobalConfigModel createGlobalConfigModel() {
-        GlobalConfigModel globalConfigModel = new GlobalConfigModel();
-
-        // Target
-        globalConfigModel.setTarget(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().split("\\s+")));
-
-        // Templates
-        globalConfigModel.setTemplates(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTemplateSetting().getTemplateText().strip().split("\\s+")));
-        globalConfigModel.setWorkflows(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTemplateSetting().getWorkflowText().strip().split("\\s+")));
-
-        // Filtering
-
-        // Output
-        globalConfigModel.setOutput(NucleiApp.nuclei.getSettingsPanel().getOutputSetting().getOutputPath());
-        globalConfigModel.setMarkdownExport(NucleiApp.nuclei.getSettingsPanel().getOutputSetting().getMarkdownExportPath());
-        globalConfigModel.setJson(NucleiApp.nuclei.getSettingsPanel().getOutputSetting().isJson());
-        globalConfigModel.setSarifExport(NucleiApp.nuclei.getSettingsPanel().getOutputSetting().getSeFilePath());
-
-        // Configuration
-
-        // Interactsh
-
-        // RateLimit
-
-        // Optimizations
-
-        // Headless
-
-        // Debug
-        // 加载调试配置
-        globalConfigModel.setDebug(NucleiApp.nuclei.getSettingsPanel().getDebugSetting().isDebug());
-        // 加载代理配置
-        globalConfigModel.setProxy(NucleiApp.nuclei.getSettingsPanel().getDebugSetting().getProxy());
+//        GlobalConfigModel globalConfigModel = new GlobalConfigModel();
+//
+//        // Target
+//        globalConfigModel.setTarget(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().split("\\s+")));
+//
+//        // Templates
+//        globalConfigModel.setTemplates(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTemplateSetting().getTemplateText().strip().split("\\s+")));
+//        globalConfigModel.setWorkflows(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTemplateSetting().getWorkflowText().strip().split("\\s+")));
+//
+//        // Filtering
+//
+//        // Output
+//        globalConfigModel.setOutput(NucleiApp.nuclei.getSettingsPanel().getOutputSetting().getOutputPath());
+//        globalConfigModel.setMarkdownExport(NucleiApp.nuclei.getSettingsPanel().getOutputSetting().getMarkdownExportPath());
+//        globalConfigModel.setJson(NucleiApp.nuclei.getSettingsPanel().getOutputSetting().isJson());
+//        globalConfigModel.setSarifExport(NucleiApp.nuclei.getSettingsPanel().getOutputSetting().getSeFilePath());
+//
+//        // Configuration
+//
+//        // Interactsh
+//
+//        // RateLimit
+//
+//        // Optimizations
+//
+//        // Headless
+//
+//        // Debug
+//        // 加载调试配置
+//        globalConfigModel.setDebug(NucleiApp.nuclei.getSettingsPanel().getDebugSetting().isDebug());
+//        // 加载代理配置
+//        globalConfigModel.setProxy(NucleiApp.nuclei.getSettingsPanel().getDebugSetting().getProxy());
 
         // Update
 
         // Statics
 
 
-        return globalConfigModel;
+//        return globalConfigModel;
+        return null;
     }
 
     public void initTypeDescriptions(Yaml yaml) {

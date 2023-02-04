@@ -1,13 +1,37 @@
 package com.g3g4x5x6.nuclei.ultils;
 
+import com.g3g4x5x6.NucleiApp;
+import com.g3g4x5x6.nuclei.NucleiFrame;
+import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.setting.ConfigPanel;
+import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
+import com.g3g4x5x6.nuclei.panel.tab.SettingsPanel;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+@Slf4j
 public class CommonUtil {
     /**
      * 获取 url
@@ -64,5 +88,54 @@ public class CommonUtil {
         }
 
         return null;
+    }
+
+    public static Map<String, Object> getNucleiConfigObject() {
+        return NucleiApp.nuclei.settingsPanel.configPanel.getNucleiConfig();
+    }
+
+    public static String[] getTargets() {
+        return NucleiApp.nuclei.targetPanel.getTargetText().split("\n");
+    }
+
+    @SneakyThrows
+    public static String getNucleiConfigFile(Map<String, Object> config) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String savePath = NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName + "/temp/config_" + format.format(new Date()) + ".yaml";
+        if (!Files.exists(Path.of(savePath)))
+            Files.createDirectories(new File(savePath).getParentFile().toPath());
+
+        Yaml yaml = new Yaml(new SafeConstructor());
+        yaml.dump(config, new FileWriter(savePath));
+        return new File(savePath).getCanonicalPath();
+    }
+
+    public static LinkedHashMap<String, ConfigPanel> getConfigPanels() {
+        LinkedHashMap<String, ConfigPanel> configPanels = new LinkedHashMap<>();
+        int count = SettingsPanel.tabbedPane.getTabCount();
+        for (int i = 0; i < count; i++) {
+            configPanels.put(SettingsPanel.tabbedPane.getTitleAt(i), (ConfigPanel) SettingsPanel.tabbedPane.getComponentAt(i));
+        }
+        return configPanels;
+    }
+
+    public static JPopupMenu getConfigPopupMenu() {
+        JPopupMenu popupMenu = new JPopupMenu();
+
+        LinkedHashMap<String, ConfigPanel> configPanels = getConfigPanels();
+        for (String configName : configPanels.keySet()) {
+            JMenuItem tempItem = new JMenuItem(configName);
+            tempItem.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    log.debug("Active config: " + configName);
+                    NucleiFrame.activeBtn.setText("当前活动配置：" + configName);
+                    NucleiApp.nuclei.settingsPanel.setActiveConfigPanel(configPanels.get(configName));
+                }
+            });
+            popupMenu.add(tempItem);
+        }
+        return popupMenu;
     }
 }

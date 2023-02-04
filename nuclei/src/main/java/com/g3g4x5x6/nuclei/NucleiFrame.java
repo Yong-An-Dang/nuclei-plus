@@ -8,6 +8,7 @@ import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
+import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.ExecUtils;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
@@ -31,6 +32,7 @@ import static com.formdev.flatlaf.FlatClientProperties.*;
 @Slf4j
 public class NucleiFrame extends JFrame {
     public static JTabbedPane frameTabbedPane;
+    public static JButton activeBtn;
 
     public static String reportDir = NucleiConfig.getProperty("nuclei.report.path");
     public static String templatesDir = NucleiConfig.getProperty("nuclei.templates.path");
@@ -49,9 +51,6 @@ public class NucleiFrame extends JFrame {
 
     private JMenuBar menuBar;
     private final JMenu fileMenu = new JMenu("开始");
-    private final JMenu viewMenu = new JMenu("视图");
-    private final JMenu encodeMenu = new JMenu("编码");
-    private final JMenu langMenu = new JMenu("语言");
     private final JMenu settingsMenu = new JMenu("设置");
     private final JMenu macroMenu = new JMenu("宏");
     private final JMenu runMenu = new JMenu("运行");
@@ -85,9 +84,6 @@ public class NucleiFrame extends JFrame {
     private void initMenuBar() {
         menuBar = new JMenuBar();
         menuBar.add(fileMenu);
-        menuBar.add(viewMenu);
-        menuBar.add(encodeMenu);
-        menuBar.add(langMenu);
         menuBar.add(settingsMenu);
         menuBar.add(macroMenu);
         menuBar.add(runMenu);
@@ -319,15 +315,6 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        // new FlatSVGIcon("icons/template.svg")
-        JButton templateBtn = new JButton(new FlatSVGIcon("icons/template.svg"));
-        templateBtn.setToolTipText("查看已配置PoC");
-        templateBtn.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-
         // cwmInvite.svg
         JButton debugBtn = new JButton(new FlatSVGIcon("icons/cwmInvite.svg"));
         debugBtn.setToolTipText("调试及代理配置");
@@ -348,12 +335,23 @@ public class NucleiFrame extends JFrame {
             }
         });
 
+        activeBtn = new JButton(new FlatSVGIcon("icons/active.svg"));
+        activeBtn.setSelected(true);
+        activeBtn.setText("当前活动配置：Default");
+        activeBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JPopupMenu popupMenu = CommonUtil.getConfigPopupMenu();
+                popupMenu.show(NucleiFrame.this, e.getX(), e.getY());
+            }
+        });
+
         toolBar.add(executeBtn);
-        toolBar.addSeparator();
-        toolBar.add(templateBtn);
         toolBar.addSeparator();
         toolBar.add(debugBtn);
         toolBar.add(validBtn);
+        toolBar.addSeparator();
+        toolBar.add(activeBtn);
 
         toolBar.add(Box.createGlue());
         toolBar.add(new JLabel(""));
@@ -398,7 +396,7 @@ public class NucleiFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 log.debug("Add EditPanel");
-                // TODO 添加 Template
+                // 添加 Template
                 EditTemplatePanel editPanel = new EditTemplatePanel();
                 frameTabbedPane.addTab(editPanel.getTitle(), editPanel.getIcon(), editPanel);
                 frameTabbedPane.setSelectedIndex(frameTabbedPane.getTabCount() - 1);
@@ -427,7 +425,7 @@ public class NucleiFrame extends JFrame {
         });
         trailPopupMenu.add(templateItem);
 
-        // TODO 选项卡面板后置工具栏
+        // 选项卡面板后置工具栏
         String iconPath = "icons/windows.svg";
         JButton trailMenuBtn = new JButton(new FlatSVGIcon(iconPath));
         trailMenuBtn.addMouseListener(new MouseAdapter() {

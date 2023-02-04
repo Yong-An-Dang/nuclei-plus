@@ -14,8 +14,8 @@ Functional enhancement based on nuclei
 - [x] Support system tray
 - [ ] Support project management
 - [ ] Support configuration management
-- [ ] Support template management
-- [ ] Support template editing
+- [x] Support template management
+- [x] Support template editing
 - [ ] Support internationalization, default `zh`
 - [ ] Support multiple network space engine interface search
 

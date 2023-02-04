@@ -1,7 +1,8 @@
-package com.g3g4x5x6.nuclei.panel.setting.template;
+package com.g3g4x5x6.nuclei.panel.setting;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
+import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
@@ -22,33 +23,33 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 
 @Slf4j
-public class GlobalTemplatePanel extends JPanel implements SearchListener {
-    private final JButton templateBtn = new JButton("Templates");
-    private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
+public class NucleiConfigPanel extends JPanel implements SearchListener {
+    private final JButton configBtn = new JButton("Configuration");
+    private final JButton refreshBtn = new JButton(new FlatSVGIcon("icons/refresh.svg"));
     private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
     private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
     private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    private RSyntaxTextArea textArea;
+    private static RSyntaxTextArea textArea;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
 
-    public GlobalTemplatePanel() {
+    public NucleiConfigPanel() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        toolBar.add(templateBtn);
+        toolBar.add(configBtn);
         toolBar.addSeparator();
-        toolBar.add(clearBtn);
+        toolBar.add(refreshBtn);
         toolBar.add(searchBtn);
         toolBar.add(replaceBtn);
         toolBar.add(lineWrapBtn);
@@ -59,9 +60,28 @@ public class GlobalTemplatePanel extends JPanel implements SearchListener {
         RTextScrollPane sp = new RTextScrollPane(textArea);
         sp.setBorder(null);
         initSearchDialogs();
+        
+        initConfiguration();
 
         this.add(toolBar, BorderLayout.NORTH);
         this.add(sp, BorderLayout.CENTER);
+    }
+
+    private void initConfiguration() {
+        InputStream configIn = NucleiFrame.class.getClassLoader().getResourceAsStream("nuclei/config.yaml");
+        assert configIn != null;
+        BufferedReader in = new BufferedReader(new InputStreamReader(configIn));
+
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        try {
+            while ((line = in.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        textArea.setText(stringBuilder.toString());
     }
 
     private RSyntaxTextArea createTextArea() {
@@ -72,7 +92,7 @@ public class GlobalTemplatePanel extends JPanel implements SearchListener {
         textArea.setCodeFoldingEnabled(true);
         textArea.setClearWhitespaceLinesEnabled(false);
         textArea.setCodeFoldingEnabled(true);
-        textArea.setSyntaxEditingStyle("text/plain");
+        textArea.setSyntaxEditingStyle("text/yaml");
 
         InputMap im = textArea.getInputMap();
         ActionMap am = textArea.getActionMap();
@@ -124,12 +144,12 @@ public class GlobalTemplatePanel extends JPanel implements SearchListener {
     }
 
     private void initToolBarAction() {
-        templateBtn.setSelected(true);
+        configBtn.setSelected(true);
 
         lineWrapBtn.addChangeListener(e -> textArea.setLineWrap(lineWrapBtn.isSelected()));
 
-        clearBtn.setToolTipText("清除当前模板");
-        clearBtn.addActionListener(new AbstractAction() {
+        refreshBtn.setToolTipText("重置当前配置");
+        refreshBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 textArea.setText("");
@@ -149,8 +169,8 @@ public class GlobalTemplatePanel extends JPanel implements SearchListener {
         return textArea;
     }
 
-    public List<String> getTemplates(){
-        return Arrays.asList(textArea.getText().split("\n"));
+    public String getConfig(){
+        return textArea.getText();
     }
 
     @Override
@@ -223,8 +243,7 @@ public class GlobalTemplatePanel extends JPanel implements SearchListener {
         }
     };
 
-    public void addTemplates(String templatePath) {
+    public static void addTemplates(String templatePath) {
         textArea.append(templatePath + "\n");
     }
-
 }
