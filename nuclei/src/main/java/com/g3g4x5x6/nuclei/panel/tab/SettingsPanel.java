@@ -76,7 +76,7 @@ public class SettingsPanel extends JPanel {
 
         // 选项卡面板后置工具栏
 
-        String iconPath = "icons/windows.svg";
+        String iconPath = "icons/threads.svg";
         JButton trailMenuBtn = new JButton(new FlatSVGIcon(iconPath));
         trailMenuBtn.addMouseListener(new MouseAdapter() {
             @Override
