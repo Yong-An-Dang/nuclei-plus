@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel.settings.target;
+package com.g3g4x5x6.nuclei.panel.setting.target;
 
 import com.g3g4x5x6.nuclei.ultils.Base64Utils;
 

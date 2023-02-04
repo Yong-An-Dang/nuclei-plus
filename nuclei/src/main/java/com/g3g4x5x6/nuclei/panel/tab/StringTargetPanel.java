@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel.tabs;
+package com.g3g4x5x6.nuclei.panel.tab;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -7,7 +7,7 @@ import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.panel.settings.target.FofaBot;
+import com.g3g4x5x6.nuclei.panel.setting.target.FofaBot;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.TextAreaUtils;

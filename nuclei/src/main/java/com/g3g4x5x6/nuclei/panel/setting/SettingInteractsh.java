@@ -1,8 +1,7 @@
-package com.g3g4x5x6.nuclei.panel.settings;
+package com.g3g4x5x6.nuclei.panel.setting;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
@@ -27,7 +26,7 @@ import java.io.IOException;
 
 
 @Slf4j
-public class SettingConfiguration extends JPanel implements SearchListener {
+public class SettingInteractsh extends JPanel implements SearchListener {
     private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
     private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
     private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
@@ -37,7 +36,7 @@ public class SettingConfiguration extends JPanel implements SearchListener {
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
 
-    public SettingConfiguration() {
+    public SettingInteractsh() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 

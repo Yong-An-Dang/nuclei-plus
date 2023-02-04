@@ -1,8 +1,8 @@
-package com.g3g4x5x6.nuclei.panel.settings.template;
+package com.g3g4x5x6.nuclei.panel.setting;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
@@ -27,32 +27,45 @@ import java.io.IOException;
 
 
 @Slf4j
-public class GlobalWorkflowPanel extends JPanel implements SearchListener {
-    private final JButton workflowBtn = new JButton("Workflows");
-    private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
-    private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
-    private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
-    private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
+public class SettingHeadless extends JPanel implements SearchListener {
+    private JTextField pageTimeout = new JTextField(11);
+    private JCheckBox headlessBtn = new JCheckBox("-headless    ");
+    private JCheckBox showBrowserBtn = new JCheckBox("-show-browser    ");
+    private JCheckBox systemChromeBtn = new JCheckBox("-system-chrome    ");
 
     private static RSyntaxTextArea textArea;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
+    private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
+    private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
+    private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    public GlobalWorkflowPanel() {
+    private String preText = "#\tHEADLESS:\n" +
+            "#\t   -headless            enable templates that require headless browser support (root user on linux will disable sandbox)\n" +
+            "#\t   -page-timeout int    seconds to wait for each page in headless mode (default 20)\n" +
+            "#\t   -sb, -show-browser   show the browser on the screen when running templates with headless mode\n" +
+            "#\t   -sc, -system-chrome  Use local installed chrome browser instead of nuclei installed";
+
+
+    public SettingHeadless() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        toolBar.add(workflowBtn);
-        toolBar.addSeparator();
-        toolBar.add(clearBtn);
+        toolBar.add(lineWrapBtn);
         toolBar.add(searchBtn);
         toolBar.add(replaceBtn);
-        toolBar.add(lineWrapBtn);
+        toolBar.addSeparator();
+        toolBar.add(headlessBtn);
+        toolBar.add(showBrowserBtn);
+        toolBar.add(systemChromeBtn);
+        toolBar.add(pageTimeout);
+
         initToolBarAction();
 
         textArea = createTextArea();
+        textArea.setText(preText);
         RTextScrollPane sp = new RTextScrollPane(textArea);
         sp.setBorder(null);
         initSearchDialogs();
@@ -69,7 +82,7 @@ public class GlobalWorkflowPanel extends JPanel implements SearchListener {
         textArea.setCodeFoldingEnabled(true);
         textArea.setClearWhitespaceLinesEnabled(false);
         textArea.setCodeFoldingEnabled(true);
-        textArea.setSyntaxEditingStyle("text/plain");
+        textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_YAML);
 
         InputMap im = textArea.getInputMap();
         ActionMap am = textArea.getActionMap();
@@ -121,18 +134,13 @@ public class GlobalWorkflowPanel extends JPanel implements SearchListener {
     }
 
     private void initToolBarAction() {
-        workflowBtn.setSelected(true);
+        headlessBtn.setToolTipText("enable templates that require headless browser support (root user on linux will disable sandbox)");
+        showBrowserBtn.setToolTipText("show the browser on the screen when running templates with headless mode");
+        systemChromeBtn.setToolTipText("Use local installed chrome browser instead of nuclei installed");
+        pageTimeout.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "-page-timeout     seconds to wait for each page in headless mode (default 20)");
 
         lineWrapBtn.addChangeListener(e -> {
             textArea.setLineWrap(lineWrapBtn.isSelected());
-        });
-
-        clearBtn.setToolTipText("清除当前工作流");
-        clearBtn.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                textArea.setText("");
-            }
         });
 
         searchBtn.setToolTipText("搜索......");
@@ -218,8 +226,8 @@ public class GlobalWorkflowPanel extends JPanel implements SearchListener {
         }
     };
 
-    public static void addWorkflows(String workflowPath){
-        textArea.append(workflowPath + "\n");
+    public static void addTemplates(String templatePath) {
+        textArea.append(templatePath + "\n");
     }
 
 }

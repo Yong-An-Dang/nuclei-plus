@@ -2,7 +2,7 @@ package com.g3g4x5x6.nuclei.ultils;
 
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
-import com.g3g4x5x6.nuclei.panel.tabs.RunningPanel;
+import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 
 import java.util.UUID;

@@ -1,10 +1,8 @@
-package com.g3g4x5x6.nuclei.panel.settings.target;
+package com.g3g4x5x6.nuclei.panel.setting.template;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
@@ -26,35 +24,31 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-@Deprecated
+
 @Slf4j
-public class FileTargetPanel extends JPanel implements SearchListener {
-    private static final String tempDir = NucleiConfig.getProperty("nuclei.temp.path");
+public class GlobalWorkflowPanel extends JPanel implements SearchListener {
+    private final JButton workflowBtn = new JButton("Workflows");
+    private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
+    private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
+    private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
+    private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    private JButton openBtn = new JButton(new FlatSVGIcon("icons/menu-open.svg"));
-    private JButton saveBtn = new JButton(new FlatSVGIcon("icons/menu-saveall.svg"));
-    private JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
-    private JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
-    private JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
-
-    private RSyntaxTextArea textArea;
+    private static RSyntaxTextArea textArea;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
 
-    public FileTargetPanel(JRadioButton listBtn) {
+    public GlobalWorkflowPanel() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        toolBar.add(listBtn);
+        toolBar.add(workflowBtn);
         toolBar.addSeparator();
-        toolBar.add(openBtn);
-        toolBar.add(saveBtn);
-        toolBar.add(lineWrapBtn);
-        toolBar.addSeparator();
+        toolBar.add(clearBtn);
         toolBar.add(searchBtn);
         toolBar.add(replaceBtn);
+        toolBar.add(lineWrapBtn);
         initToolBarAction();
 
         textArea = createTextArea();
@@ -126,8 +120,18 @@ public class FileTargetPanel extends JPanel implements SearchListener {
     }
 
     private void initToolBarAction() {
+        workflowBtn.setSelected(true);
+
         lineWrapBtn.addChangeListener(e -> {
             textArea.setLineWrap(lineWrapBtn.isSelected());
+        });
+
+        clearBtn.setToolTipText("清除当前工作流");
+        clearBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textArea.setText("");
+            }
         });
 
         searchBtn.setToolTipText("搜索......");
@@ -212,5 +216,9 @@ public class FileTargetPanel extends JPanel implements SearchListener {
             replaceDialog.setVisible(true);
         }
     };
+
+    public static void addWorkflows(String workflowPath){
+        textArea.append(workflowPath + "\n");
+    }
 
 }

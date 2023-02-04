@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel.settings;
+package com.g3g4x5x6.nuclei.panel.setting;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
@@ -16,7 +16,6 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
 import org.fife.ui.rtextarea.SearchResult;
-import org.yaml.snakeyaml.Yaml;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,115 +23,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 
 @Slf4j
-public class SettingDebug extends JPanel implements SearchListener {
-    private final JCheckBox debugBtn = new JCheckBox("-debug    ");
-    private final JCheckBox dreqBtn = new JCheckBox("-dreq    ");
-    private final JCheckBox drespBtn = new JCheckBox("-dresp    ");
-    private final JCheckBox piBtn = new JCheckBox("-pi    ");
-    private final JCheckBox versionBtn = new JCheckBox("-version    ");
-    private final JCheckBox hmBtn = new JCheckBox("-hm    ");
-    private final JCheckBox vBtn = new JCheckBox("-v    ");
-    private final JCheckBox vvBtn = new JCheckBox("-vv    ");
-    private final JCheckBox epBtn = new JCheckBox("-ep    ");
-    private final JCheckBox tvBtn = new JCheckBox("-tv    ");
-    private final JCheckBox hcBtn = new JCheckBox("-health-check    ");
-
-    private static RSyntaxTextArea textArea;
-    private FindDialog findDialog;
-    private ReplaceDialog replaceDialog;
+public class SettingOptimization extends JPanel implements SearchListener {
+    private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
     private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
     private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
     private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    private final String preText = "#\tDEBUG:\n" +
-            "#\t   -debug                    show all requests and responses\n" +
-            "#\t   -dreq, -debug-req         show all sent requests\n" +
-            "#\t   -dresp, -debug-resp       show all received responses\n" +
-            "#\t   -p, -proxy string[]       list of http/socks5 proxy to use (comma separated or file input)\n" +
-            "#\t   -pi, -proxy-internal      proxy all internal requests\n" +
-            "#\t   -tlog, -trace-log string  file to write sent requests trace log\n" +
-            "#\t   -elog, -error-log string  file to write sent requests error log\n" +
-            "#\t   -version                  show nuclei version\n" +
-            "#\t   -hm, -hang-monitor        enable nuclei hang monitoring\n" +
-            "#\t   -v, -verbose              show verbose output\n" +
-            "#\t   -vv                       display templates loaded for scan\n" +
-            "#\t   -ep, -enable-pprof        enable pprof debugging server\n" +
-            "#\t   -tv, -templates-version   shows the version of the installed nuclei-templates\n" +
-            "#\t   -health-check             run diagnostic check up\n" +
-            "\n" +
-            "# file to write sent requests trace log\n" +
-            "tlog: \"\"\n" +
-            "\n" +
-            "# file to write sent requests error log\n" +
-            "elog: \"\"\n" +
-            "\n" +
-            "# list of http/socks5 proxy to use (comma separated or file input)\n" +
-            "proxy: [\n" +
-            "    # socks5://XXX:XXX@XYZ.tld:5080\n" +
-            "    socks5://127.0.0.1:10808,\n" +
-            "]";
+    private static RSyntaxTextArea textArea;
+    private FindDialog findDialog;
+    private ReplaceDialog replaceDialog;
 
-    public SettingDebug() {
+    public SettingOptimization() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        toolBar.setFloatable(false);
         toolBar.add(lineWrapBtn);
         toolBar.add(searchBtn);
         toolBar.add(replaceBtn);
         toolBar.addSeparator();
-        toolBar.add(debugBtn);
-        toolBar.add(dreqBtn);
-        toolBar.add(drespBtn);
-        toolBar.add(piBtn);
-        toolBar.add(versionBtn);
-        toolBar.add(hmBtn);
-        toolBar.add(vBtn);
-        toolBar.add(vvBtn);
-        toolBar.add(epBtn);
-        toolBar.add(tvBtn);
-        toolBar.add(hcBtn);
+        toolBar.add(clearBtn);
 
         initToolBarAction();
 
         textArea = createTextArea();
-        textArea.setText(preText);
         RTextScrollPane sp = new RTextScrollPane(textArea);
         sp.setBorder(null);
         initSearchDialogs();
 
         this.add(toolBar, BorderLayout.NORTH);
         this.add(sp, BorderLayout.CENTER);
-    }
-
-    private void initToolBarAction() {
-        lineWrapBtn.addChangeListener(e -> textArea.setLineWrap(lineWrapBtn.isSelected()));
-        searchBtn.setToolTipText("搜索......");
-        searchBtn.addActionListener(showFindDialogAction);
-        searchBtn.registerKeyboardAction(showFindDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
-        replaceBtn.setToolTipText("替换......");
-        replaceBtn.addActionListener(showReplaceDialogAction);
-        replaceBtn.registerKeyboardAction(showReplaceDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
-
-        debugBtn.setToolTipText("show all requests and responses");
-        dreqBtn.setToolTipText("show all sent requests");
-        drespBtn.setToolTipText("show all received responses");
-        piBtn.setToolTipText("proxy all internal requests");
-        versionBtn.setToolTipText("show nuclei version");
-        hmBtn.setToolTipText("enable nuclei hang monitoring");
-        vBtn.setToolTipText("show verbose output");
-        vvBtn.setToolTipText("display templates loaded for scan");
-        epBtn.setToolTipText("enable pprof debugging server");
-        tvBtn.setToolTipText("shows the version of the installed nuclei-templates");
-        hcBtn.setToolTipText("run diagnostic check up");
-
     }
 
     private RSyntaxTextArea createTextArea() {
@@ -143,7 +67,7 @@ public class SettingDebug extends JPanel implements SearchListener {
         textArea.setCodeFoldingEnabled(true);
         textArea.setClearWhitespaceLinesEnabled(false);
         textArea.setCodeFoldingEnabled(true);
-        textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_YAML);
+        textArea.setSyntaxEditingStyle("text/plain");
 
         InputMap im = textArea.getInputMap();
         ActionMap am = textArea.getActionMap();
@@ -192,6 +116,29 @@ public class SettingDebug extends JPanel implements SearchListener {
         // regex, etc.).
         SearchContext context = findDialog.getSearchContext();
         replaceDialog.setSearchContext(context);
+    }
+
+    private void initToolBarAction() {
+
+        lineWrapBtn.addChangeListener(e -> {
+            textArea.setLineWrap(lineWrapBtn.isSelected());
+        });
+
+        clearBtn.setToolTipText("清除当前模板");
+        clearBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textArea.setText("");
+            }
+        });
+
+        searchBtn.setToolTipText("搜索......");
+        searchBtn.addActionListener(showFindDialogAction);
+        searchBtn.registerKeyboardAction(showFindDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        replaceBtn.setToolTipText("替换......");
+        replaceBtn.addActionListener(showReplaceDialogAction);
+        replaceBtn.registerKeyboardAction(showReplaceDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+
     }
 
     public RSyntaxTextArea getTextArea() {
@@ -268,22 +215,8 @@ public class SettingDebug extends JPanel implements SearchListener {
         }
     };
 
-    /**
-     * 获取代理配置
-     * @return
-     */
-    public List<String> getProxy() {
-        Yaml yaml = new Yaml();
-        Map<String, Object> obj = yaml.load(textArea.getText());
-        return (List<String>) obj.get("proxy");
-    }
-
-    /**
-     * 获取调试配置
-     * @return
-     */
-    public boolean isDebug(){
-        return debugBtn.isSelected();
+    public static void addTemplates(String templatePath){
+        textArea.append(templatePath + "\n");
     }
 
 }

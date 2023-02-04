@@ -1,9 +1,7 @@
-package com.g3g4x5x6.nuclei.panel.settings;
+package com.g3g4x5x6.nuclei.panel.setting;
 
-import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
@@ -28,71 +26,37 @@ import java.io.IOException;
 
 
 @Slf4j
-public class SettingUpdate extends JPanel implements SearchListener {
-    private JCheckBox updateBtn = new JCheckBox("-update    ");
-    private JCheckBox updateTpBtn = new JCheckBox("-update-templates    ");
-    private JCheckBox disableBtn = new JCheckBox("-disable-update-check    ");
-    private JTextField udField = new JTextField(11);
-
-    private static RSyntaxTextArea textArea;
-    private FindDialog findDialog;
-    private ReplaceDialog replaceDialog;
+public class SettingRateLimit extends JPanel implements SearchListener {
+    private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
     private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
     private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
     private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    private final String preText = "#\tUPDATE:\n" +
-            "#\t   -update                        update nuclei engine to the latest released version\n" +
-            "#\t   -ut, -update-templates         update nuclei-templates to latest released version\n" +
-            "#\t   -ud, -update-directory string  overwrite the default directory to install nuclei-templates\n" +
-            "#\t   -duc, -disable-update-check    disable automatic nuclei/templates update check\n" +
-            "\n";
+    private static RSyntaxTextArea textArea;
+    private FindDialog findDialog;
+    private ReplaceDialog replaceDialog;
 
-    public SettingUpdate() {
+    public SettingRateLimit() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        toolBar.setFloatable(false);
         toolBar.add(lineWrapBtn);
         toolBar.add(searchBtn);
         toolBar.add(replaceBtn);
         toolBar.addSeparator();
-        toolBar.add(updateBtn);
-        toolBar.add(updateTpBtn);
-        toolBar.add(disableBtn);
-        toolBar.add(udField);
+        toolBar.add(clearBtn);
 
         initToolBarAction();
 
         textArea = createTextArea();
-        textArea.setText(preText);
         RTextScrollPane sp = new RTextScrollPane(textArea);
         sp.setBorder(null);
         initSearchDialogs();
 
         this.add(toolBar, BorderLayout.NORTH);
         this.add(sp, BorderLayout.CENTER);
-    }
-
-    private void initToolBarAction() {
-        updateBtn.setToolTipText("update nuclei engine to the latest released version");
-        updateTpBtn.setToolTipText("update nuclei-templates to latest released version");
-        disableBtn.setToolTipText("disable automatic nuclei/templates update check");
-        udField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "-ud   -update-directory   overwrite the default directory to install nuclei-templates");
-
-        lineWrapBtn.addChangeListener(e -> {
-            textArea.setLineWrap(lineWrapBtn.isSelected());
-        });
-
-        searchBtn.setToolTipText("搜索......");
-        searchBtn.addActionListener(showFindDialogAction);
-        searchBtn.registerKeyboardAction(showFindDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
-        replaceBtn.setToolTipText("替换......");
-        replaceBtn.addActionListener(showReplaceDialogAction);
-        replaceBtn.registerKeyboardAction(showReplaceDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
-
     }
 
     private RSyntaxTextArea createTextArea() {
@@ -103,7 +67,7 @@ public class SettingUpdate extends JPanel implements SearchListener {
         textArea.setCodeFoldingEnabled(true);
         textArea.setClearWhitespaceLinesEnabled(false);
         textArea.setCodeFoldingEnabled(true);
-        textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_YAML);
+        textArea.setSyntaxEditingStyle("text/plain");
 
         InputMap im = textArea.getInputMap();
         ActionMap am = textArea.getActionMap();
@@ -152,6 +116,29 @@ public class SettingUpdate extends JPanel implements SearchListener {
         // regex, etc.).
         SearchContext context = findDialog.getSearchContext();
         replaceDialog.setSearchContext(context);
+    }
+
+    private void initToolBarAction() {
+
+        lineWrapBtn.addChangeListener(e -> {
+            textArea.setLineWrap(lineWrapBtn.isSelected());
+        });
+
+        clearBtn.setToolTipText("清除当前模板");
+        clearBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textArea.setText("");
+            }
+        });
+
+        searchBtn.setToolTipText("搜索......");
+        searchBtn.addActionListener(showFindDialogAction);
+        searchBtn.registerKeyboardAction(showFindDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        replaceBtn.setToolTipText("替换......");
+        replaceBtn.addActionListener(showReplaceDialogAction);
+        replaceBtn.registerKeyboardAction(showReplaceDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+
     }
 
     public RSyntaxTextArea getTextArea() {

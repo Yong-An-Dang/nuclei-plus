@@ -1,6 +1,6 @@
 package com.g3g4x5x6.nuclei.panel.console;
 
-import com.g3g4x5x6.nuclei.panel.tabs.RunningPanel;
+import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import com.jediterm.terminal.Questioner;
 import com.jediterm.terminal.TtyConnector;

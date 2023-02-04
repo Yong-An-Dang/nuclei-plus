@@ -1,8 +1,7 @@
-package com.g3g4x5x6.nuclei.panel.settings;
+package com.g3g4x5x6.nuclei.panel.setting.template;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
@@ -27,7 +26,8 @@ import java.io.IOException;
 
 
 @Slf4j
-public class SettingFiltering extends JPanel implements SearchListener {
+public class GlobalTemplatePanel extends JPanel implements SearchListener {
+    private final JButton templateBtn = new JButton("Templates");
     private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
     private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
     private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
@@ -37,17 +37,18 @@ public class SettingFiltering extends JPanel implements SearchListener {
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
 
-    public SettingFiltering() {
+    public GlobalTemplatePanel() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        toolBar.add(lineWrapBtn);
-        toolBar.add(searchBtn);
-        toolBar.add(replaceBtn);
+        toolBar.add(templateBtn);
         toolBar.addSeparator();
         toolBar.add(clearBtn);
+        toolBar.add(searchBtn);
+        toolBar.add(replaceBtn);
+        toolBar.add(lineWrapBtn);
 
         initToolBarAction();
 
@@ -120,10 +121,9 @@ public class SettingFiltering extends JPanel implements SearchListener {
     }
 
     private void initToolBarAction() {
+        templateBtn.setSelected(true);
 
-        lineWrapBtn.addChangeListener(e -> {
-            textArea.setLineWrap(lineWrapBtn.isSelected());
-        });
+        lineWrapBtn.addChangeListener(e -> textArea.setLineWrap(lineWrapBtn.isSelected()));
 
         clearBtn.setToolTipText("清除当前模板");
         clearBtn.addActionListener(new AbstractAction() {
@@ -216,7 +216,7 @@ public class SettingFiltering extends JPanel implements SearchListener {
         }
     };
 
-    public static void addTemplates(String templatePath){
+    public static void addTemplates(String templatePath) {
         textArea.append(templatePath + "\n");
     }
 

@@ -1,6 +1,6 @@
-package com.g3g4x5x6.nuclei.panel.settings;
+package com.g3g4x5x6.nuclei.panel.setting;
 
-import com.g3g4x5x6.nuclei.panel.settings.target.StringTargetPanel;
+import com.g3g4x5x6.nuclei.panel.setting.target.StringTargetPanel;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;

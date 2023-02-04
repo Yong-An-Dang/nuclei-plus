@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel.tabs;
+package com.g3g4x5x6.nuclei.panel.tab;
 
 import com.alibaba.fastjson.JSONObject;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -11,8 +11,8 @@ import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.model.SelectedTagsConfig;
 import com.g3g4x5x6.nuclei.model.SelectedTemplatesConfig;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
-import com.g3g4x5x6.nuclei.panel.settings.template.GlobalTemplatePanel;
-import com.g3g4x5x6.nuclei.panel.settings.template.GlobalWorkflowPanel;
+import com.g3g4x5x6.nuclei.panel.setting.template.GlobalTemplatePanel;
+import com.g3g4x5x6.nuclei.panel.setting.template.GlobalWorkflowPanel;
 import com.g3g4x5x6.nuclei.ui.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.SneakyThrows;

@@ -1,8 +1,7 @@
-package com.g3g4x5x6.nuclei.panel.settings.target;
+package com.g3g4x5x6.nuclei.panel.setting;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
 import org.fife.ui.rtextarea.SearchResult;
+import org.yaml.snakeyaml.Yaml;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,39 +25,79 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Map;
 
-@Deprecated
+
 @Slf4j
-public class ResumeTargetPanel extends JPanel implements SearchListener {
-    private static final String tempDir = NucleiConfig.getProperty("nuclei.temp.path");
+public class SettingOutput extends JPanel implements SearchListener {
+    private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
+    private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
+    private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    private JButton openBtn = new JButton(new FlatSVGIcon("icons/menu-open.svg"));
-    private JButton saveBtn = new JButton(new FlatSVGIcon("icons/menu-saveall.svg"));
-    private JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
-    private JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
-    private JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
-    private RSyntaxTextArea textArea;
+    private final JCheckBox jsonBtn = new JCheckBox("-json    ");
+    private final JCheckBox seBtn = new JCheckBox("-se    ");
+//    private final JCheckBox drespBtn = new JCheckBox("-dresp    ");
+//    private final JCheckBox piBtn = new JCheckBox("-pi    ");
+//    private final JCheckBox versionBtn = new JCheckBox("-version    ");
+//    private final JCheckBox hmBtn = new JCheckBox("-hm    ");
+//    private final JCheckBox vBtn = new JCheckBox("-v    ");
+//    private final JCheckBox vvBtn = new JCheckBox("-vv    ");
+//    private final JCheckBox epBtn = new JCheckBox("-ep    ");
+//    private final JCheckBox tvBtn = new JCheckBox("-tv    ");
+//    private final JCheckBox hcBtn = new JCheckBox("-health-check    ");
+
+    private static RSyntaxTextArea textArea;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
 
-    public ResumeTargetPanel(JRadioButton resumeBtn) {
+    private String preText = "#\tOUTPUT:\n" +
+            "#\t   -o, -output string            output file to write found issues/vulnerabilities\n" +
+            "#\t   -sresp, -store-resp           store all request/response passed through nuclei to output directory\n" +
+            "#\t   -srd, -store-resp-dir string  store all request/response passed through nuclei to custom directory (default \"output\")\n" +
+            "#\t   -silent                       display findings only\n" +
+            "#\t   -nc, -no-color                disable output content coloring (ANSI escape codes)\n" +
+            "#\t   -json                         write output in JSONL(ines) format\n" +
+            "#\t   -irr, -include-rr             include request/response pairs in the JSONL output (for findings only)\n" +
+            "#\t   -nm, -no-meta                 disable printing result metadata in cli output\n" +
+            "#\t   -nts, -no-timestamp           disable printing timestamp in cli output\n" +
+            "#\t   -rdb, -report-db string       nuclei reporting database (always use this to persist report data)\n" +
+            "#\t   -ms, -matcher-status          display match failure status\n" +
+            "#\t   -me, -markdown-export string  directory to export results in markdown format\n" +
+            "#\t   -se, -sarif-export string     file to export results in SARIF format\n" +
+            "\n" +
+            "# 注意：请输入文件路径，不能是目录。最好不要改了，要提取漏洞目标\n" +
+            "# output file to write found issues/vulnerabilities\n" +
+            "output: \"" +
+            Path.of(NucleiConfig.getProperty("nuclei.report.path"), "issues.txt").toString().replace("\\", "\\\\") +
+            "\"\n\n" +
+            "# 导出 `markdown` 格式报告，每个目标生成一份报告\n" +
+            "# directory to export results in markdown format\n" +
+            "# markdown: \"" +
+            Path.of(NucleiConfig.getProperty("nuclei.report.path")).toString().replace("\\", "\\\\") +
+            "\"\n\n" +
+            "# file to export results in SARIF format\n" +
+            "# se: \"" +
+            Path.of(NucleiConfig.getProperty("nuclei.report.path"), "SARIF.txt").toString().replace("\\", "\\\\") +
+            "\"\n";
+
+    public SettingOutput() {
         this.setLayout(new BorderLayout());
         this.setBorder(null);
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
-        toolBar.add(resumeBtn);
-        toolBar.addSeparator();
-        toolBar.add(openBtn);
-        toolBar.add(saveBtn);
         toolBar.add(lineWrapBtn);
-        toolBar.addSeparator();
         toolBar.add(searchBtn);
         toolBar.add(replaceBtn);
+        toolBar.addSeparator();
+        toolBar.add(jsonBtn);
+
         initToolBarAction();
 
         textArea = createTextArea();
+        textArea.setText(preText);
         RTextScrollPane sp = new RTextScrollPane(textArea);
         sp.setBorder(null);
         initSearchDialogs();
@@ -74,7 +114,7 @@ public class ResumeTargetPanel extends JPanel implements SearchListener {
         textArea.setCodeFoldingEnabled(true);
         textArea.setClearWhitespaceLinesEnabled(false);
         textArea.setCodeFoldingEnabled(true);
-        textArea.setSyntaxEditingStyle("text/plain");
+        textArea.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_YAML);
 
         InputMap im = textArea.getInputMap();
         ActionMap am = textArea.getActionMap();
@@ -126,9 +166,16 @@ public class ResumeTargetPanel extends JPanel implements SearchListener {
     }
 
     private void initToolBarAction() {
+
         lineWrapBtn.addChangeListener(e -> {
             textArea.setLineWrap(lineWrapBtn.isSelected());
         });
+
+        jsonBtn.setToolTipText("write output in JSONL(ines) format");
+        jsonBtn.setSelected(false);
+
+        seBtn.setToolTipText("file to export results in SARIF format");
+        seBtn.setSelected(true);
 
         searchBtn.setToolTipText("搜索......");
         searchBtn.addActionListener(showFindDialogAction);
@@ -213,4 +260,25 @@ public class ResumeTargetPanel extends JPanel implements SearchListener {
         }
     };
 
+    public String getOutputPath() {
+        Yaml yaml = new Yaml();
+        Map<String, Object> obj = yaml.load(textArea.getText());
+        return (String) obj.get("output");
+    }
+
+    public String getMarkdownExportPath() {
+        Yaml yaml = new Yaml();
+        Map<String, Object> obj = yaml.load(textArea.getText());
+        return (String) obj.get("markdown");
+    }
+
+    public boolean isJson(){
+        return jsonBtn.isSelected();
+    }
+
+    public String getSeFilePath(){
+        Yaml yaml = new Yaml();
+        Map<String, Object> obj = yaml.load(textArea.getText());
+        return (String) obj.get("se");
+    }
 }

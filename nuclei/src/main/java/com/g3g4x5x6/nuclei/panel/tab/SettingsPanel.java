@@ -1,7 +1,7 @@
-package com.g3g4x5x6.nuclei.panel.tabs;
+package com.g3g4x5x6.nuclei.panel.tab;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.g3g4x5x6.nuclei.panel.settings.*;
+import com.g3g4x5x6.nuclei.panel.setting.*;
 
 import javax.swing.*;
 import java.awt.*;

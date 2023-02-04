@@ -1,8 +1,8 @@
-package com.g3g4x5x6.nuclei.panel.settings;
+package com.g3g4x5x6.nuclei.panel.setting;
 
 
-import com.g3g4x5x6.nuclei.panel.settings.template.GlobalTemplatePanel;
-import com.g3g4x5x6.nuclei.panel.settings.template.GlobalWorkflowPanel;
+import com.g3g4x5x6.nuclei.panel.setting.template.GlobalTemplatePanel;
+import com.g3g4x5x6.nuclei.panel.setting.template.GlobalWorkflowPanel;
 
 import javax.swing.*;
 import java.awt.*;
