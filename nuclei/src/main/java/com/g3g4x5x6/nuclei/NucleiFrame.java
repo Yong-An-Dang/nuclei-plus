@@ -5,8 +5,8 @@ import com.formdev.flatlaf.extras.components.FlatButton;
 import com.formdev.flatlaf.extras.components.FlatToggleButton;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
-import com.g3g4x5x6.nuclei.panel.*;
-import com.g3g4x5x6.nuclei.panel.connector.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.tabs.*;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.ExecUtils;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
@@ -39,10 +39,10 @@ public class NucleiFrame extends JFrame {
     // 寻找大师，追随大师，与师偕行，领悟大师，成为大师
     private final JLabel mottoLabel = new JLabel("寻找大师，追随大师，成为大师，超越大师");
 
-    private final TemplatesPanel templatesPanel = new TemplatesPanel();
-    private final StringTargetPanel targetPanel = new StringTargetPanel();
-    private final SettingsPanel settingsPanel = new SettingsPanel();
-    private final RunningPanel runningPanel = new RunningPanel();
+    public final TemplatesPanel templatesPanel = new TemplatesPanel();
+    public final StringTargetPanel targetPanel = new StringTargetPanel();
+    public final SettingsPanel settingsPanel = new SettingsPanel();
+    public final RunningPanel runningPanel = new RunningPanel();
 
     private JMenuBar menuBar;
     private final JMenu fileMenu = new JMenu("开始");
@@ -279,11 +279,11 @@ public class NucleiFrame extends JFrame {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 log.debug("Execute in " + title);
-                                if (!NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().strip().equals("")) {
+                                if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
                                     ExecUtils.runGlobalNucleiConfig(consolePanels.get(title));
 
                                     // 跳转至运行终端
-                                    NucleiFrame.frameTabbedPane.setSelectedIndex(2);
+                                    NucleiFrame.frameTabbedPane.setSelectedIndex(3);
                                     RunningPanel.tabbedPane.setSelectedComponent(consolePanels.get(title));
                                 } else {
                                     JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
@@ -294,14 +294,14 @@ public class NucleiFrame extends JFrame {
                     }
                     popupMenu.show(executeBtn, e.getX(), e.getY());
                 } else {
-                    if (!NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().strip().equals("")) {
+                    if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
                         // 创建终端执行任务
                         ConsolePanel consolePanel = runningPanel.createConsole();
 
                         ExecUtils.runGlobalNucleiConfig(consolePanel);
 
                         // 跳转至运行终端
-                        NucleiFrame.frameTabbedPane.setSelectedIndex(2);
+                        NucleiFrame.frameTabbedPane.setSelectedIndex(3);
                         RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
                     } else {
                         JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
@@ -372,7 +372,7 @@ public class NucleiFrame extends JFrame {
         frameTabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_TOOLTIPTEXT, "Close");
         frameTabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_CALLBACK,
                 (BiConsumer<JTabbedPane, Integer>) (tabPane, tabIndex) -> {
-                    if (tabIndex >= 3) {
+                    if (tabIndex >= 4) {
                         frameTabbedPane.removeTabAt(tabIndex);
                     }
                 });

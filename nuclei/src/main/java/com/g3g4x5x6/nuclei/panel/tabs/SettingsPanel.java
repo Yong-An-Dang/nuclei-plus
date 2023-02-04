@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel;
+package com.g3g4x5x6.nuclei.panel.tabs;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.panel.settings.*;

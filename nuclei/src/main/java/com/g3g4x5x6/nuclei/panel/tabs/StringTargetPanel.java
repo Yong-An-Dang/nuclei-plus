@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel;
+package com.g3g4x5x6.nuclei.panel.tabs;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -305,6 +305,10 @@ public class StringTargetPanel extends JPanel implements SearchListener, ChangeL
 
     public RSyntaxTextArea getTextArea() {
         return textArea;
+    }
+
+    public String getTargetText(){
+        return this.textArea.getText();
     }
 
     @Override

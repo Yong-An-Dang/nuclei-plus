@@ -1,7 +1,7 @@
-package com.g3g4x5x6.nuclei.panel;
+package com.g3g4x5x6.nuclei.panel.tabs;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.g3g4x5x6.nuclei.panel.connector.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,10 +1,10 @@
-package com.g3g4x5x6.nuclei.panel;
+package com.g3g4x5x6.nuclei.panel.tabs;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.NucleiYamlCompletionProvider;
-import com.g3g4x5x6.nuclei.panel.connector.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.TextAreaUtils;
@@ -323,7 +323,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         // 优先获取测试目标URL
         String targets = editorPanel.getText().strip();
         if (targets.equalsIgnoreCase("")) {
-            targets = NucleiApp.nuclei.getSettingsPanel().targetSetting.getTargetText().strip();
+            targets = NucleiApp.nuclei.targetPanel.getTargetText().strip();
             if (targets.equalsIgnoreCase("")) {
                 JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
             }

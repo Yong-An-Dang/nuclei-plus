@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel.connector;
+package com.g3g4x5x6.nuclei.panel.console;
 
 import com.jediterm.terminal.TerminalColor;
 import com.jediterm.terminal.TextStyle;

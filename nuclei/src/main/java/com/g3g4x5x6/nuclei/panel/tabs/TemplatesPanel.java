@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel;
+package com.g3g4x5x6.nuclei.panel.tabs;
 
 import com.alibaba.fastjson.JSONObject;
 import com.formdev.flatlaf.FlatClientProperties;
@@ -10,7 +10,7 @@ import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.model.SelectedTagsConfig;
 import com.g3g4x5x6.nuclei.model.SelectedTemplatesConfig;
-import com.g3g4x5x6.nuclei.panel.connector.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.settings.template.GlobalTemplatePanel;
 import com.g3g4x5x6.nuclei.panel.settings.template.GlobalWorkflowPanel;
 import com.g3g4x5x6.nuclei.ui.AccentColorIcon;
@@ -493,7 +493,7 @@ public class TemplatesPanel extends JPanel {
 
         GlobalConfigModel globalConfigModel = GlobalConfigModel.createGlobalConfigModel();
 
-        if (!NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().strip().equals("")) {
+        if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
             List<String> template = new LinkedList<>();
             List<String> workflow = new LinkedList<>();
             // 加载选中模板
@@ -513,7 +513,7 @@ public class TemplatesPanel extends JPanel {
             globalConfigModel.toYaml(globalConfigModel, configPath);
 
             consolePanel.write("nuclei -config " + configPath + "\r");
-            NucleiFrame.frameTabbedPane.setSelectedIndex(2);
+            NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
         } else {
             JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
@@ -522,7 +522,7 @@ public class TemplatesPanel extends JPanel {
 
     @SneakyThrows
     private void runTagsInSelectedConsole(ConsolePanel consolePanel) {
-        if (!NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().strip().equals("")) {
+        if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
             // 配置对象
             SelectedTagsConfig selected = new SelectedTagsConfig();
             selected.setTarget(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().split("\\s+")));
@@ -541,7 +541,7 @@ public class TemplatesPanel extends JPanel {
             // 执行命令
             String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
             consolePanel.write(command + "\r");
-            NucleiFrame.frameTabbedPane.setSelectedIndex(2);
+            NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
         } else {
             JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
@@ -626,7 +626,7 @@ public class TemplatesPanel extends JPanel {
         public void actionPerformed(ActionEvent e) {
             log.debug("Generate command with Selected");
 
-            if (!NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().strip().equals("")) {
+            if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
                 SelectedTemplatesConfig selected = new SelectedTemplatesConfig();
 
                 ArrayList<String> tempTemplate = new ArrayList<>();
@@ -649,7 +649,7 @@ public class TemplatesPanel extends JPanel {
 
                 ConsolePanel consolePanel = (ConsolePanel) RunningPanel.tabbedPane.getSelectedComponent();
                 consolePanel.write(command);
-                NucleiFrame.frameTabbedPane.setSelectedIndex(2);
+                NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             } else {
                 JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
             }
@@ -661,7 +661,7 @@ public class TemplatesPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             log.debug("Generate command with Tags");
-            if (!NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().strip().equals("")) {
+            if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
                 // 配置对象
                 SelectedTagsConfig selected = new SelectedTagsConfig();
                 selected.setTarget(Arrays.asList(NucleiApp.nuclei.getSettingsPanel().getTargetSetting().getTargetText().split("\\s+")));
@@ -686,7 +686,7 @@ public class TemplatesPanel extends JPanel {
                 // 跳转到命令行面板
                 ConsolePanel consolePanel = (ConsolePanel) RunningPanel.tabbedPane.getSelectedComponent();
                 consolePanel.write(command);
-                NucleiFrame.frameTabbedPane.setSelectedIndex(2);
+                NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             } else {
                 JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
             }
