@@ -15,6 +15,10 @@ public class DialogUtil {
         return JOptionPane.showConfirmDialog(parent, msg, "提示", JOptionPane.YES_NO_OPTION);
     }
 
+    public static String input(Component parent, String msg) {
+        return JOptionPane.showInputDialog(parent, msg);
+    }
+
     public static void msg(String title, String msg) {
         JOptionPane.showMessageDialog(NucleiApp.nuclei, msg, title, JOptionPane.INFORMATION_MESSAGE);
     }

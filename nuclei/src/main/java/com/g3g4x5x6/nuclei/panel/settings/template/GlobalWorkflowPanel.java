@@ -29,10 +29,10 @@ import java.io.IOException;
 @Slf4j
 public class GlobalWorkflowPanel extends JPanel implements SearchListener {
     private final JButton workflowBtn = new JButton("Workflows");
-    private JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
-    private JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
-    private JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
-    private JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
+    private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
+    private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
+    private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
+    private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
     private static RSyntaxTextArea textArea;
     private FindDialog findDialog;

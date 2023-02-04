@@ -2,9 +2,7 @@ package com.g3g4x5x6.nuclei.panel.settings.template;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.rsta.ui.search.ReplaceDialog;
@@ -25,15 +23,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.Arrays;
+
 
 @Slf4j
 public class GlobalTemplatePanel extends JPanel implements SearchListener {
-    private JButton templateBtn = new JButton("Templates");
-    private JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
-    private JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
-    private JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
-    private JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
+    private final JButton templateBtn = new JButton("Templates");
+    private final JButton clearBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
+    private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
+    private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
+    private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
 
     private static RSyntaxTextArea textArea;
     private FindDialog findDialog;
@@ -125,9 +123,7 @@ public class GlobalTemplatePanel extends JPanel implements SearchListener {
     private void initToolBarAction() {
         templateBtn.setSelected(true);
 
-        lineWrapBtn.addChangeListener(e -> {
-            textArea.setLineWrap(lineWrapBtn.isSelected());
-        });
+        lineWrapBtn.addChangeListener(e -> textArea.setLineWrap(lineWrapBtn.isSelected()));
 
         clearBtn.setToolTipText("清除当前模板");
         clearBtn.addActionListener(new AbstractAction() {
@@ -220,7 +216,7 @@ public class GlobalTemplatePanel extends JPanel implements SearchListener {
         }
     };
 
-    public static void addTemplates(String templatePath){
+    public static void addTemplates(String templatePath) {
         textArea.append(templatePath + "\n");
     }
 

@@ -7,7 +7,7 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.*;
 import com.g3g4x5x6.nuclei.panel.connector.ConsolePanel;
-import com.g3g4x5x6.nuclei.ultils.CommonUtil;
+import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.ExecUtils;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.SneakyThrows;
@@ -21,13 +21,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 
 import static com.formdev.flatlaf.FlatClientProperties.*;
 
@@ -64,7 +60,7 @@ public class NucleiFrame extends JFrame {
 
     public NucleiFrame() {
         this.setLayout(new BorderLayout());
-        this.setTitle("PoC-概念验证框架");
+        this.setTitle(NucleiConfig.getProperty("nuclei.title"));
         this.setSize(new Dimension(1200, 700));
         this.setPreferredSize(new Dimension(1200, 700));
         this.setLocationRelativeTo(null);
@@ -131,9 +127,21 @@ public class NucleiFrame extends JFrame {
     }
 
     private void initMenu() {
-        // pluginIcon.svg
-        JMenuItem openSpaceItem = new JMenuItem("打开工作目录");
-        openSpaceItem.setIcon(new FlatSVGIcon("icons/pluginIcon.svg"));
+        // fileMenu
+        JMenuItem newProjectItem = new JMenuItem("新建项目");
+        newProjectItem.setIcon(new FlatSVGIcon("icons/newFolder.svg"));
+        newProjectItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String projectName = DialogUtil.input(NucleiFrame.this, "请输出项目名称（目录）");
+                log.debug(projectName);
+                if (projectName.strip().equals(""))
+                    DialogUtil.warn("【项目名称（目录）】不能为空");
+            }
+        });
+
+        JMenuItem openSpaceItem = new JMenuItem("工作目录");
+        openSpaceItem.setIcon(new FlatSVGIcon("icons/moduleDirectory.svg"));
         openSpaceItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -147,13 +155,37 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        //
+        JMenuItem openTemplateItem = new JMenuItem("模板目录");
+        openTemplateItem.setIcon(new FlatSVGIcon("icons/moduleDirectory.svg"));
+        openTemplateItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().open(new File(NucleiConfig.getProperty("nuclei.templates.path")));
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }).start();
+            }
+        });
 
         // Quit
         JMenuItem quitItem = new JMenuItem("退出");
         quitItem.setToolTipText("退出程序");
         quitItem.setIcon(new FlatSVGIcon("icons/exit.svg"));
+        quitItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (DialogUtil.yesOrNo(NucleiFrame.this, "是否退出程序？") == JOptionPane.YES_OPTION)
+                    System.exit(0);
+            }
+        });
+
+        fileMenu.add(newProjectItem);
+        fileMenu.addSeparator();
         fileMenu.add(openSpaceItem);
+        fileMenu.add(openTemplateItem);
         fileMenu.addSeparator();
         fileMenu.add(quitItem);
 

@@ -9,8 +9,8 @@ import java.awt.*;
 
 public class SettingTemplate extends JPanel {
 
-    private GlobalTemplatePanel globalTemplatePanel;
-    private GlobalWorkflowPanel globalWorkflowPanel;
+    private final GlobalTemplatePanel globalTemplatePanel;
+    private final GlobalWorkflowPanel globalWorkflowPanel;
 
     public SettingTemplate(){
         this.setLayout(new BorderLayout());

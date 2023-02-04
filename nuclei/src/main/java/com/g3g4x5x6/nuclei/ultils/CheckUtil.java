@@ -14,12 +14,13 @@ public class CheckUtil {
         String workspace = NucleiConfig.getWorkPath();
         String[] pathArray = new String[]{
                 NucleiConfig.getHomePath() + "/.nuclei-plus",   // 检测 nuclei-plus 工作空间目录
-                workspace + "/bin/",                            // 检查终端配色目录
-                workspace + "/config/theme",                    // 检查终端配色目录
+                workspace + "/bin/",                            // 检查终端 bin 目录
+                workspace + "/config",                          // 检查配置目录
                 workspace + "/temp",                            // 检查缓存目录
                 workspace + "/temp/nuclei",                     // 检查 Nuclei 运行缓存目录
                 workspace + "/report/nuclei",                   // 检查 Nuclei 报告保存目录
                 workspace + "/templates",                       // 检查定制模板目录
+                workspace + "/projects",                       // 检查项目管理目录
         };
         for (String path : pathArray) {
             File temp = new File(path);
