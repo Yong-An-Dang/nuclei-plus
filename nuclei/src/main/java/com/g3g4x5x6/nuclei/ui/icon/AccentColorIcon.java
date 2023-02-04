@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.ui;
+package com.g3g4x5x6.nuclei.ui.icon;
 
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.icons.FlatAbstractIcon;

@@ -7,6 +7,7 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
+import com.g3g4x5x6.nuclei.ui.StatusBar;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.ExecUtils;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
@@ -44,6 +45,8 @@ public class NucleiFrame extends JFrame {
     public final SettingsPanel settingsPanel = new SettingsPanel();
     public final RunningPanel runningPanel = new RunningPanel();
 
+    public final StatusBar statusBar = new StatusBar();
+
     private JMenuBar menuBar;
     private final JMenu fileMenu = new JMenu("开始");
     private final JMenu viewMenu = new JMenu("视图");
@@ -71,6 +74,12 @@ public class NucleiFrame extends JFrame {
         initToolBar();
 
         initTabbedPane();
+        
+        initStatusBar();
+    }
+
+    private void initStatusBar() {
+        this.add(statusBar, BorderLayout.SOUTH);
     }
 
     private void initMenuBar() {

@@ -13,7 +13,7 @@ import com.g3g4x5x6.nuclei.model.SelectedTemplatesConfig;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.setting.template.GlobalTemplatePanel;
 import com.g3g4x5x6.nuclei.panel.setting.template.GlobalWorkflowPanel;
-import com.g3g4x5x6.nuclei.ui.AccentColorIcon;
+import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -231,7 +231,7 @@ public class TemplatesPanel extends JPanel {
         templatesTable.setModel(tableModel);
         refreshDataForTable();
         tableScroll = new JScrollPane(templatesTable);
-        tableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+//        tableScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         tableScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
