@@ -5,10 +5,7 @@ import com.formdev.flatlaf.extras.components.FlatButton;
 import com.formdev.flatlaf.extras.components.FlatToggleButton;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
-import com.g3g4x5x6.nuclei.panel.EditTemplatePanel;
-import com.g3g4x5x6.nuclei.panel.RunningPanel;
-import com.g3g4x5x6.nuclei.panel.SettingsPanel;
-import com.g3g4x5x6.nuclei.panel.TemplatesPanel;
+import com.g3g4x5x6.nuclei.panel.*;
 import com.g3g4x5x6.nuclei.panel.connector.ConsolePanel;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.ExecUtils;
@@ -23,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,13 +44,12 @@ public class NucleiFrame extends JFrame {
     private final JLabel mottoLabel = new JLabel("寻找大师，追随大师，成为大师，超越大师");
 
     private final TemplatesPanel templatesPanel = new TemplatesPanel();
+    private final StringTargetPanel targetPanel = new StringTargetPanel();
     private final SettingsPanel settingsPanel = new SettingsPanel();
     private final RunningPanel runningPanel = new RunningPanel();
 
     private JMenuBar menuBar;
     private final JMenu fileMenu = new JMenu("开始");
-    private final JMenu editMenu = new JMenu("编辑");
-    private final JMenu searchMenu = new JMenu("搜索");
     private final JMenu viewMenu = new JMenu("视图");
     private final JMenu encodeMenu = new JMenu("编码");
     private final JMenu langMenu = new JMenu("语言");
@@ -83,8 +80,6 @@ public class NucleiFrame extends JFrame {
     private void initMenuBar() {
         menuBar = new JMenuBar();
         menuBar.add(fileMenu);
-        menuBar.add(editMenu);
-        menuBar.add(searchMenu);
         menuBar.add(viewMenu);
         menuBar.add(encodeMenu);
         menuBar.add(langMenu);
@@ -151,10 +146,30 @@ public class NucleiFrame extends JFrame {
                 }).start();
             }
         });
+
+        //
+
+        // Quit
+        JMenuItem quitItem = new JMenuItem("退出");
+        quitItem.setToolTipText("退出程序");
+        quitItem.setIcon(new FlatSVGIcon("icons/exit.svg"));
         fileMenu.add(openSpaceItem);
+        fileMenu.addSeparator();
+        fileMenu.add(quitItem);
+
+        // settingsMenu
+        JMenuItem globalItem = new JMenuItem("全局配置");
+        globalItem.setToolTipText("程序全局配置");
+
+        JMenuItem projectItem = new JMenuItem("项目配置");
+        projectItem.setToolTipText("项目配置");
+
+        settingsMenu.add(globalItem);
+        settingsMenu.addSeparator();
+        settingsMenu.add(projectItem);
 
         // help
-        JMenuItem helpItem = new JMenuItem("帮助");
+        JMenuItem helpItem = new JMenuItem("帮助 nuclei -h");
         helpItem.setIcon(new FlatSVGIcon("icons/help.svg"));
         helpItem.addActionListener(new AbstractAction() {
             @Override
@@ -183,7 +198,31 @@ public class NucleiFrame extends JFrame {
                 frameTabbedPane.setSelectedIndex(frameTabbedPane.getTabCount() - 1);
             }
         });
+
+        JMenuItem supportItem = new JMenuItem("技术支持");
+        supportItem.setIcon(new FlatSVGIcon("icons/contextHelp.svg"));
+        supportItem.addActionListener(new AbstractAction() {
+            @SneakyThrows
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Desktop.getDesktop().browse(new URI("https://yong-an-dang.github.io/nuclei-plus/"));
+            }
+        });
+
+        JMenuItem aboutItem = new JMenuItem("关于 nuclei-plus");
+        aboutItem.setIcon(new FlatSVGIcon("icons/contextHelp.svg"));
+        aboutItem.addActionListener(new AbstractAction() {
+            @SneakyThrows
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Desktop.getDesktop().browse(new URI("https://github.com/Yong-An-Dang/nuclei-plus"));
+            }
+        });
+
         aboutMenu.add(helpItem);
+        aboutMenu.addSeparator();
+        aboutMenu.add(supportItem);
+        aboutMenu.add(aboutItem);
 
     }
 
@@ -239,22 +278,12 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        // Target.svg
-        JButton targetBtn = new JButton(new FlatSVGIcon("icons/Target.svg"));
-        targetBtn.setToolTipText("设置全局目标");
-        targetBtn.addActionListener(e -> {
-            NucleiFrame.frameTabbedPane.setSelectedIndex(1);
-            SettingsPanel.tabbedPane.setSelectedIndex(0);
-        });
-
         // new FlatSVGIcon("icons/template.svg")
         JButton templateBtn = new JButton(new FlatSVGIcon("icons/template.svg"));
         templateBtn.setToolTipText("查看已配置PoC");
         templateBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                NucleiFrame.frameTabbedPane.setSelectedIndex(1);
-                SettingsPanel.tabbedPane.setSelectedIndex(1);
             }
         });
 
@@ -264,8 +293,6 @@ public class NucleiFrame extends JFrame {
         debugBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                NucleiFrame.frameTabbedPane.setSelectedIndex(1);
-                SettingsPanel.tabbedPane.setSelectedIndex(9);
             }
         });
 
@@ -276,26 +303,12 @@ public class NucleiFrame extends JFrame {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                String fileName = Path.of(NucleiConfig.getProperty("nuclei.report.path"), "issues.txt").toString().replace("\\", "\\\\");
-                if (Files.exists(Path.of(fileName))) {
-                    // 读取文件内容到Stream流中，按行读取
-                    Stream<String> lines = Files.lines(Paths.get(fileName));
 
-                    StringBuilder sb = new StringBuilder();
-                    // 随机行顺序进行数据处理
-                    lines.forEach(ele -> {
-                        sb.append(CommonUtil.urlRegex(ele)).append("\n");
-                    });
-                    CommonUtil.setClipboardString(sb.toString());
-                } else {
-                    CommonUtil.setClipboardString("文件不存在");
-                }
             }
         });
 
         toolBar.add(executeBtn);
         toolBar.addSeparator();
-        toolBar.add(targetBtn);
         toolBar.add(templateBtn);
         toolBar.addSeparator();
         toolBar.add(debugBtn);
@@ -315,6 +328,7 @@ public class NucleiFrame extends JFrame {
         initClosableTabs(frameTabbedPane);
         customComponents();
         frameTabbedPane.addTab("Templates", new FlatSVGIcon("icons/pinTab.svg"), templatesPanel);
+        frameTabbedPane.addTab("Targets", new FlatSVGIcon("icons/pinTab.svg"), targetPanel);
         frameTabbedPane.addTab("Settings", new FlatSVGIcon("icons/pinTab.svg"), settingsPanel);
         frameTabbedPane.addTab("Running", new FlatSVGIcon("icons/pinTab.svg"), runningPanel);
 

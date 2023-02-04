@@ -11,14 +11,12 @@ import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.model.SelectedTagsConfig;
 import com.g3g4x5x6.nuclei.model.SelectedTemplatesConfig;
 import com.g3g4x5x6.nuclei.panel.connector.ConsolePanel;
-import com.g3g4x5x6.nuclei.panel.settings.SettingTarget;
 import com.g3g4x5x6.nuclei.panel.settings.template.GlobalTemplatePanel;
 import com.g3g4x5x6.nuclei.panel.settings.template.GlobalWorkflowPanel;
 import com.g3g4x5x6.nuclei.ui.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.swing.*;

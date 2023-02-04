@@ -61,7 +61,7 @@ public class SettingsPanel extends JPanel {
         tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
         // add Tab
-        tabbedPane.addTab("Target", new FlatSVGIcon("icons/Target.svg"), targetSetting);
+//        tabbedPane.addTab("Target", new FlatSVGIcon("icons/Target.svg"), targetSetting);
         tabbedPane.addTab("Templates", new FlatSVGIcon("icons/template.svg"), templateSetting);
         tabbedPane.addTab("Filtering", new FlatSVGIcon("icons/shortcutFilter.svg"), filteringSetting);
         tabbedPane.addTab("Output", new FlatSVGIcon("icons/output.svg"), outputSetting);

@@ -5,7 +5,6 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.NucleiYamlCompletionProvider;
 import com.g3g4x5x6.nuclei.panel.connector.ConsolePanel;
-import com.g3g4x5x6.nuclei.panel.settings.SettingTarget;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.TextAreaUtils;
