@@ -119,10 +119,10 @@ public class TemplatesPanel extends JPanel {
 
 
         tablePopMenu = new JPopupMenu();
-        tablePopMenu.add(new AbstractAction("追加选中模板到全局配置") {
+        tablePopMenu.add(new AbstractAction("追加选中模板到活动配置") {
             @Override
             public void actionPerformed(ActionEvent e) {
-                log.debug("追加选中模板到全局配置");
+                log.debug("追加选中模板到活动配置");
                 for (int index : templatesTable.getSelectedRows()) {
                     int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
                     String savePath = templates.get(num).get("path");
@@ -495,6 +495,7 @@ public class TemplatesPanel extends JPanel {
             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
         } else {
             JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+            CommonUtil.goToTarget();
         }
     }
 
@@ -510,6 +511,7 @@ public class TemplatesPanel extends JPanel {
             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
         } else {
             JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+            CommonUtil.goToTarget();
         }
     }
 
@@ -605,6 +607,7 @@ public class TemplatesPanel extends JPanel {
                 NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             } else {
                 JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                CommonUtil.goToTarget();
             }
         }
     };
@@ -629,6 +632,7 @@ public class TemplatesPanel extends JPanel {
                 NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             } else {
                 JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                CommonUtil.goToTarget();
             }
         }
     };

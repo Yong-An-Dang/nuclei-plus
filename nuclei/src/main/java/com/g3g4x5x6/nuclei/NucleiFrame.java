@@ -292,6 +292,7 @@ public class NucleiFrame extends JFrame {
                                     RunningPanel.tabbedPane.setSelectedComponent(consolePanels.get(title));
                                 } else {
                                     JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                                    CommonUtil.goToTarget();
                                 }
                             }
                         });
@@ -310,6 +311,7 @@ public class NucleiFrame extends JFrame {
                         RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
                     } else {
                         JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                        CommonUtil.goToTarget();
                     }
                 }
             }

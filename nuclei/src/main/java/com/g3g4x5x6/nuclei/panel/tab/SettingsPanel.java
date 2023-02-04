@@ -74,8 +74,12 @@ public class SettingsPanel extends JPanel {
             }
         });
 
-        // 选项卡面板后置工具栏
+        JButton groupBtn = new JButton(new FlatSVGIcon("icons/GroupByPackage.svg"));
+        groupBtn.setText("应用分组");
+        groupBtn.setToolTipText("应用分组到当前活动配置");
+        groupBtn.setSelected(true);
 
+        // 选项卡面板后置工具栏
         String iconPath = "icons/threads.svg";
         JButton trailMenuBtn = new JButton(new FlatSVGIcon(iconPath));
         trailMenuBtn.addMouseListener(new MouseAdapter() {
@@ -86,6 +90,8 @@ public class SettingsPanel extends JPanel {
         });
 
         trailing.add(addBtn);
+        trailing.add(new JLabel(" "));
+        trailing.add(groupBtn);
         trailing.add(Box.createGlue());
         trailing.add(trailMenuBtn);
         tabbedPane.putClientProperty(TABBED_PANE_TRAILING_COMPONENT, trailing);

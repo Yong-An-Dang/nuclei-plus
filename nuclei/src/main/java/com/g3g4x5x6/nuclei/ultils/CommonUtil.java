@@ -135,4 +135,8 @@ public class CommonUtil {
         }
         return popupMenu;
     }
+
+    public static void goToTarget(){
+        NucleiFrame.frameTabbedPane.setSelectedIndex(1);
+    }
 }
