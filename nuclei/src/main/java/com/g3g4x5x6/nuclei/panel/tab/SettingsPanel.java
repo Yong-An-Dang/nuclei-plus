@@ -1,7 +1,9 @@
 package com.g3g4x5x6.nuclei.panel.tab;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.panel.setting.*;
+import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,6 +12,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
 
 import static com.formdev.flatlaf.FlatClientProperties.*;
@@ -75,9 +79,16 @@ public class SettingsPanel extends JPanel {
         });
 
         JButton groupBtn = new JButton(new FlatSVGIcon("icons/GroupByPackage.svg"));
-        groupBtn.setText("应用分组");
+        groupBtn.setText("自定义分组");
         groupBtn.setToolTipText("应用分组到当前活动配置");
         groupBtn.setSelected(true);
+        groupBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JPopupMenu popupMenu = createPopupMenu();
+                popupMenu.show(groupBtn, e.getX(), e.getY());
+            }
+        });
 
         // 选项卡面板后置工具栏
         String iconPath = "icons/threads.svg";
@@ -101,4 +112,30 @@ public class SettingsPanel extends JPanel {
         this.activeConfigAllPanel = activeConfigAllPanel;
     }
 
+    private JPopupMenu createPopupMenu(){
+        JPopupMenu popupMenu = new JPopupMenu();
+        LinkedHashMap<String, Object> groupMap = CommonUtil.loadGroupByMap();
+        if (groupMap != null) {
+            for (String key : groupMap.keySet()) {
+                JMenuItem tmpItem = new JMenuItem(key);
+                tmpItem.addActionListener(new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        log.debug("应用选中分组");
+                        ArrayList<String> list = (ArrayList<String>) groupMap.get(key);
+                        for (String pocPath : list){
+                            if (pocPath.contains("workflow")) {
+                                NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addWorkflows(pocPath);
+                            } else {
+                                NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addTemplates(pocPath);
+                            }
+                        }
+                    }
+                });
+                popupMenu.add(tmpItem);
+            }
+        }
+
+        return popupMenu;
+    }
 }

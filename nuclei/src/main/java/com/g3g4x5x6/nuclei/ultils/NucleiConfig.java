@@ -72,6 +72,10 @@ public class NucleiConfig {
         return work;
     }
 
+    public static String getConfigPath() {
+        return getWorkPath() + "/config";
+    }
+
     public static String getPropertiesPath() {
         return getWorkPath() + "/config/nuclei.properties";
     }

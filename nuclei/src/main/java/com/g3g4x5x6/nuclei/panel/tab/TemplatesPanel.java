@@ -10,10 +10,12 @@ import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
+import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -58,6 +60,8 @@ public class TemplatesPanel extends JPanel {
     private JPopupMenu tablePopMenu;
     private TableRowSorter<DefaultTableModel> sorter;
     private Clipboard clipboard;
+
+    private LinkedHashMap<String, Object> groupMap;
 
     public TemplatesPanel() {
         this.setLayout(new BorderLayout());
@@ -114,95 +118,8 @@ public class TemplatesPanel extends JPanel {
         toolBar.addSeparator();
         toolBar.add(Box.createGlue());
         toolBar.add(searchField);
-
+        // 初始化工具栏动作
         initToolBarAction();
-
-
-        tablePopMenu = new JPopupMenu();
-        tablePopMenu.add(new AbstractAction("追加选中模板到活动配置") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                log.debug("追加选中模板到活动配置");
-                for (int index : templatesTable.getSelectedRows()) {
-                    int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
-                    String savePath = templates.get(num).get("path");
-                    if (savePath.contains("workflow")) {
-                        NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addWorkflows(savePath);
-                    } else {
-                        NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addTemplates(savePath);
-                    }
-                }
-            }
-        });
-        tablePopMenu.addSeparator();
-        tablePopMenu.add(editAction);
-        tablePopMenu.add(openDirAction);
-        tablePopMenu.add(copyPathAction);
-        tablePopMenu.add(deleteTemplateAction);
-        tablePopMenu.addSeparator();
-        tablePopMenu.add(generateWithTemplatesAction);
-        tablePopMenu.add(generateWithTagsAction);
-        JMenu selectedTemplatesMenu = new JMenu("运行选中的模板");
-        selectedTemplatesMenu.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                log.debug("menuSelected");
-                selectedTemplatesMenu.removeAll();
-                LinkedHashMap<String, ConsolePanel> consolePanels = getConsolePanels();
-                for (String title : consolePanels.keySet()) {
-                    JMenuItem tempItem = new JMenuItem(title);
-                    tempItem.addActionListener(new AbstractAction() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            log.debug("Execute in " + title);
-                            runTemplatesInSelectedConsole(consolePanels.get(title));
-                        }
-                    });
-                    selectedTemplatesMenu.add(tempItem);
-                }
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-                log.debug("menuDeselected");
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-                log.debug("menuCanceled");
-            }
-        });
-        tablePopMenu.add(selectedTemplatesMenu);
-        JMenu selectedTagsMenu = new JMenu("运行包含选中标签的模板");
-        selectedTagsMenu.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                selectedTagsMenu.removeAll();
-                LinkedHashMap<String, ConsolePanel> consolePanels = getConsolePanels();
-                for (String title : consolePanels.keySet()) {
-                    JMenuItem tempItem = new JMenuItem(title);
-                    tempItem.addActionListener(new AbstractAction() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            log.debug("Execute in " + title);
-                            runTagsInSelectedConsole(consolePanels.get(title));
-                        }
-                    });
-                    selectedTagsMenu.add(tempItem);
-                }
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-
-            }
-        });
-        tablePopMenu.add(selectedTagsMenu);
 
         templatesTable = new JTable();
         tableModel = new DefaultTableModel() {
@@ -237,10 +154,14 @@ public class TemplatesPanel extends JPanel {
         templatesTable.getColumn("templates_name").setPreferredWidth(100);
         templatesTable.getColumn("templates_severity").setPreferredWidth(40);
         templatesTable.getColumn("templates_author").setPreferredWidth(30);
-        templatesTable.setComponentPopupMenu(tablePopMenu);
         templatesTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == 3) {
+                    // 模板面板右键功能
+                    tablePopMenu = createTablePopMenu();
+                    tablePopMenu.show(templatesTable, e.getX(), e.getY());
+                }
             }
         });
 
@@ -308,6 +229,139 @@ public class TemplatesPanel extends JPanel {
                 },
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
                 JComponent.WHEN_FOCUSED);
+    }
+
+    private JPopupMenu createTablePopMenu() {
+        JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.add(new AbstractAction("追加选中模板到活动配置") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                log.debug("追加选中模板到活动配置");
+                for (int index : templatesTable.getSelectedRows()) {
+                    int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
+                    String savePath = templates.get(num).get("path");
+                    if (savePath.contains("workflow")) {
+                        NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addWorkflows(savePath);
+                    } else {
+                        NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addTemplates(savePath);
+                    }
+                }
+            }
+        });
+
+        JMenu groupByMenu = new JMenu("模板自定义分组管理");
+        JMenuItem createItem = new JMenuItem("新建分组");
+        createItem.setIcon(new FlatSVGIcon("icons/addFolder.svg"));
+        createItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                log.debug("创建新的分组");
+                String groupName = DialogUtil.input(createItem, "请输入分组名称：");
+                groupMap.put(groupName, new LinkedList<String>());
+                saveGroupToYaml();
+            }
+        });
+        groupByMenu.add(createItem);
+        groupByMenu.addSeparator();
+
+        groupMap = CommonUtil.loadGroupByMap();
+        if (groupMap != null) {
+            for (String key : groupMap.keySet()) {
+                JMenuItem tmpItem = new JMenuItem(key);
+                tmpItem.addActionListener(new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        log.debug("添加选择模板到选中分组中");
+                        ArrayList<String> list = new ArrayList<>();
+                        if (groupMap.get(key) != null)
+                            list = (ArrayList<String>) groupMap.get(key);
+                        for (int index : templatesTable.getSelectedRows()) {
+                            int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
+                            String savePath = templates.get(num).get("path");
+                            list.add(savePath);
+                        }
+                        groupMap.put(key, list);
+                        saveGroupToYaml();
+                    }
+                });
+                groupByMenu.add(tmpItem);
+            }
+        }
+
+        JMenu selectedTemplatesMenu = new JMenu("运行选中的模板");
+        selectedTemplatesMenu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                log.debug("menuSelected");
+                selectedTemplatesMenu.removeAll();
+                LinkedHashMap<String, ConsolePanel> consolePanels = getConsolePanels();
+                for (String title : consolePanels.keySet()) {
+                    JMenuItem tempItem = new JMenuItem(title);
+                    tempItem.addActionListener(new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            log.debug("Execute in " + title);
+                            runTemplatesInSelectedConsole(consolePanels.get(title));
+                        }
+                    });
+                    selectedTemplatesMenu.add(tempItem);
+                }
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+                log.debug("menuDeselected");
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+                log.debug("menuCanceled");
+            }
+        });
+        JMenu selectedTagsMenu = new JMenu("运行包含选中标签的模板");
+        selectedTagsMenu.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                selectedTagsMenu.removeAll();
+                LinkedHashMap<String, ConsolePanel> consolePanels = getConsolePanels();
+                for (String title : consolePanels.keySet()) {
+                    JMenuItem tempItem = new JMenuItem(title);
+                    tempItem.addActionListener(new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            log.debug("Execute in " + title);
+                            runTagsInSelectedConsole(consolePanels.get(title));
+                        }
+                    });
+                    selectedTagsMenu.add(tempItem);
+                }
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+
+            }
+        });
+
+        popupMenu.addSeparator();
+        popupMenu.add(groupByMenu);
+        popupMenu.addSeparator();
+        popupMenu.add(editAction);
+        popupMenu.add(openDirAction);
+        popupMenu.add(copyPathAction);
+        popupMenu.add(deleteTemplateAction);
+        popupMenu.addSeparator();
+        popupMenu.add(generateWithTemplatesAction);
+        popupMenu.add(generateWithTagsAction);
+        popupMenu.add(selectedTemplatesMenu);
+        popupMenu.add(selectedTagsMenu);
+
+        return popupMenu;
     }
 
     /**
@@ -637,7 +691,7 @@ public class TemplatesPanel extends JPanel {
         }
     };
 
-    private Map<String, Object> getSelectedTemplateMap(){
+    private Map<String, Object> getSelectedTemplateMap() {
         ArrayList<String> template = new ArrayList<>();
         ArrayList<String> workflow = new ArrayList<>();
         for (int index : templatesTable.getSelectedRows()) {
@@ -658,7 +712,7 @@ public class TemplatesPanel extends JPanel {
         configMap.remove("templates");
         configMap.remove("workflows");
 
-        Map<String, Object> config= new HashMap<>();
+        Map<String, Object> config = new HashMap<>();
         config.putAll(selectedMap);
         config.putAll(configMap);
 
@@ -667,7 +721,7 @@ public class TemplatesPanel extends JPanel {
         return config;
     }
 
-    private Map<String, Object> getSelectedTagMap(){
+    private Map<String, Object> getSelectedTagMap() {
         ArrayList<String> tempTags = new ArrayList<>();
         for (int index : templatesTable.getSelectedRows()) {
             int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
@@ -683,11 +737,21 @@ public class TemplatesPanel extends JPanel {
         configMap.remove("workflows");
         configMap.remove("tags");
 
-        Map<String, Object> config= new HashMap<>();
+        Map<String, Object> config = new HashMap<>();
         config.putAll(tagMap);
         config.putAll(configMap);
 
         config.put("target", CommonUtil.getTargets());
         return config;
+    }
+
+    @SneakyThrows
+    private void saveGroupToYaml() {
+        if (!Files.exists(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml")))
+            Files.createFile(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"));
+        if (groupMap != null) {
+            Yaml yaml = new Yaml();
+            yaml.dump(groupMap, new FileWriter(String.valueOf(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"))));
+        }
     }
 }

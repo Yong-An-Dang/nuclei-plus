@@ -176,7 +176,7 @@ public class NucleiFrame extends JFrame {
         });
 
         // Quit
-        JMenuItem quitItem = new JMenuItem("退出");
+        JMenuItem quitItem = new JMenuItem("退出程序");
         quitItem.setToolTipText("退出程序");
         quitItem.setIcon(new FlatSVGIcon("icons/exit.svg"));
         quitItem.addActionListener(new AbstractAction() {

@@ -16,8 +16,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -136,7 +135,29 @@ public class CommonUtil {
         return popupMenu;
     }
 
-    public static void goToTarget(){
+    public static void goToTarget() {
         NucleiFrame.frameTabbedPane.setSelectedIndex(1);
+    }
+
+    private static LinkedHashMap getMapFromYaml(String path) {
+        LinkedHashMap yamlMap;
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        // 调基础工具类的方法
+        Yaml yaml = new Yaml();
+        yamlMap = yaml.loadAs(inputStream, LinkedHashMap.class);
+        return yamlMap;
+    }
+
+    @SneakyThrows
+    public static LinkedHashMap<String, Object> loadGroupByMap() {
+        if (!Files.exists(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml")))
+            Files.createFile(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"));
+        LinkedHashMap yamlMap = getMapFromYaml(String.valueOf(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml")));
+        return yamlMap;
     }
 }
