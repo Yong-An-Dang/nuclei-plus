@@ -40,7 +40,7 @@ import java.util.LinkedList;
 
 @Slf4j
 public class StringTargetPanel extends JPanel implements SearchListener, ChangeListener {
-    private final JButton newBtn = new JButton(new FlatSVGIcon("icons/deleteTagHover.svg"));
+    private final JButton newBtn = new JButton(new FlatSVGIcon("icons/delete.svg"));
     private final JButton openBtn = new JButton(new FlatSVGIcon("icons/menu-open.svg"));
     private final JButton saveBtn = new JButton(new FlatSVGIcon("icons/menu-saveall.svg"));
     private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));

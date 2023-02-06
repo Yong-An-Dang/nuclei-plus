@@ -68,7 +68,7 @@ public class SettingsPanel extends JPanel {
                 log.debug("Add ConfigPanel");
                 ConfigAllPanel tmpConfigAllPanel = new ConfigAllPanel();
                 String configName = DialogUtil.input(SettingsPanel.this, "请输入配置名称");
-                if (configName.strip().equals("")) {
+                if (configName == null || configName.strip().equals("")) {
                     DialogUtil.warn("配置名称不能为空");
                 } else {
                     tmpConfigAllPanel.setTitle(configName);

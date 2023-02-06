@@ -138,8 +138,17 @@ public class NucleiFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String projectName = DialogUtil.input(NucleiFrame.this, "请输出项目名称（目录）");
                 log.debug(projectName);
-                if (projectName.strip().equals(""))
+                if (projectName == null || projectName.strip().equals(""))
                     DialogUtil.warn("【项目名称（目录）】不能为空");
+            }
+        });
+
+        JMenuItem openProjectItem = new JMenuItem("打开项目");
+        openProjectItem.setIcon(new FlatSVGIcon("icons/menu-open.svg"));
+        openProjectItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                log.debug("打开项目");
             }
         });
 
@@ -173,6 +182,21 @@ public class NucleiFrame extends JFrame {
             }
         });
 
+        JMenuItem openProjectDirItem = new JMenuItem("项目目录");
+        openProjectDirItem.setIcon(new FlatSVGIcon("icons/moduleDirectory.svg"));
+        openProjectDirItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().open(new File(NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName));
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }).start();
+            }
+        });
+
         // Quit
         JMenuItem quitItem = new JMenuItem("退出程序");
         quitItem.setToolTipText("退出程序");
@@ -186,9 +210,11 @@ public class NucleiFrame extends JFrame {
         });
 
         fileMenu.add(newProjectItem);
+        fileMenu.add(openProjectItem);
         fileMenu.addSeparator();
         fileMenu.add(openSpaceItem);
         fileMenu.add(openTemplateItem);
+        fileMenu.add(openProjectDirItem);
         fileMenu.addSeparator();
         fileMenu.add(quitItem);
 
