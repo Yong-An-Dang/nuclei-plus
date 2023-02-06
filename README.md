@@ -32,3 +32,9 @@ java -jar nuclei-x.x.x.jar
 
 #### Usage
 See [doc](https://yong-an-dang.github.io/nuclei-plus/)
+
+#### Dependency
+- [projectdiscovery/nuclei](https://github.com/projectdiscovery/nuclei)
+- [JetBrains/jediterm](https://github.com/JetBrains/jediterm)
+- [JFormDesigner/FlatLaf](https://github.com/JFormDesigner/FlatLaf)
+- more...

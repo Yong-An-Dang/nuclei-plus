@@ -52,7 +52,6 @@ public class NucleiFrame extends JFrame {
     private JMenuBar menuBar;
     private final JMenu fileMenu = new JMenu("开始");
     private final JMenu settingsMenu = new JMenu("设置");
-    private final JMenu macroMenu = new JMenu("宏");
     private final JMenu runMenu = new JMenu("运行");
     private final JMenu pluginMenu = new JMenu("插件");
     private final JMenu winMenu = new JMenu("窗口");
@@ -85,7 +84,6 @@ public class NucleiFrame extends JFrame {
         menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         menuBar.add(settingsMenu);
-        menuBar.add(macroMenu);
         menuBar.add(runMenu);
         menuBar.add(pluginMenu);
         menuBar.add(winMenu);
@@ -267,7 +265,8 @@ public class NucleiFrame extends JFrame {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
-        JButton executeBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
+//        JButton executeBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
+        JButton executeBtn = new JButton(new FlatSVGIcon("icons/runAll.svg"));
         executeBtn.setToolTipText("默认新建终端运行（右键可选择已有终端运行）");
         executeBtn.addMouseListener(new MouseAdapter() {
             @Override
@@ -318,18 +317,18 @@ public class NucleiFrame extends JFrame {
         });
 
         // cwmInvite.svg
-        JButton debugBtn = new JButton(new FlatSVGIcon("icons/cwmInvite.svg"));
-        debugBtn.setToolTipText("调试及代理配置");
-        debugBtn.addActionListener(new AbstractAction() {
+        JButton ntBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
+        ntBtn.setToolTipText("仅运行在最新的 nuclei-templates 版本中添加的新模板");
+        ntBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
             }
         });
 
 
-        JButton validBtn = new JButton(new FlatSVGIcon("icons/copy.svg"));
-        validBtn.setToolTipText("复制漏洞目标");
-        validBtn.addActionListener(new AbstractAction() {
+        JButton asBtn = new JButton(new FlatSVGIcon("icons/runWithCoverage.svg"));
+        asBtn.setToolTipText("使用 wappalyzer 技术检测到标签映射的自动 Web 扫描");
+        asBtn.addActionListener(new AbstractAction() {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -350,8 +349,8 @@ public class NucleiFrame extends JFrame {
 
         toolBar.add(executeBtn);
         toolBar.addSeparator();
-        toolBar.add(debugBtn);
-        toolBar.add(validBtn);
+        toolBar.add(ntBtn);
+        toolBar.add(asBtn);
         toolBar.addSeparator();
         toolBar.add(activeBtn);
 
