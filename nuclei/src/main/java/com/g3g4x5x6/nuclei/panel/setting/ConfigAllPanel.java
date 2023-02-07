@@ -61,9 +61,14 @@ public class ConfigAllPanel extends JPanel {
 
     public Map<String, Object> getNucleiConfig() {
         Yaml yaml = new Yaml(new SafeConstructor());
-        Map<String, Object> config = (Map<String, Object>) yaml.load(configPanel.getConfig());
+        Map<String, Object> config = yaml.load(configPanel.getConfig());
         config.put("templates", configTemplatePanel.getTemplates());
         config.put("workflows", configWorkflowPanel.getWorkflows());
         return config;
+    }
+
+    public void saveConfigToYaml(){
+        Map<String, Object> config = getNucleiConfig();
+
     }
 }
