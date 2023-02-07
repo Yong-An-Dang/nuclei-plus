@@ -11,6 +11,10 @@ import java.nio.file.Path;
 
 @Slf4j
 public class ProjectUtil {
+    public static String reportDir(){
+
+        return "";
+    }
 
     public static void newProject(String projectName) throws IOException {
         NucleiConfig.projectName = projectName;

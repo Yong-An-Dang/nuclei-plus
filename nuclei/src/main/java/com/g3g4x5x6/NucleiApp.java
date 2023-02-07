@@ -26,17 +26,17 @@ public class NucleiApp {
         // 检查运行环境
         CheckUtil.checkEnv();
 
-        // 启动主程序
-        SwingUtilities.invokeLater(NucleiApp::createGUI);
-    }
-
-    private static void createGUI() {
         // 加载主题
         initFlatLaf();
 
+        // Setup
+        StartupFrame.setup();
+    }
+
+    public static void createGUI() {
         // 启动程序
         nuclei = new NucleiFrame();
-        nuclei.setTitle(NucleiConfig.getProperty("nuclei.title"));
+        nuclei.setTitle(NucleiConfig.getProperty("nuclei.title") + " [" + NucleiConfig.projectName + "]");
         nuclei.setVisible(true);
 
         WindowListener exitListener = new WindowAdapter() {

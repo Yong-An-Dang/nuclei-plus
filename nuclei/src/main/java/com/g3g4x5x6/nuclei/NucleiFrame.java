@@ -138,8 +138,10 @@ public class NucleiFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String projectName = DialogUtil.input(NucleiFrame.this, "请输出项目名称（目录）");
                 log.debug(projectName);
-                if (projectName == null || projectName.strip().equals(""))
-                    DialogUtil.warn("【项目名称（目录）】不能为空");
+                if (projectName != null){
+                    if (projectName.strip().equals(""))
+                        DialogUtil.warn("【项目名称（目录）】不能为空");
+                }
             }
         });
 

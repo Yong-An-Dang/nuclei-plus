@@ -13,7 +13,7 @@ import java.util.Properties;
 @Slf4j
 public class NucleiConfig {
     public static Properties properties = loadProperties();
-    public static String projectName = "default";
+    public static String projectName = "";
 
     private NucleiConfig() {
 

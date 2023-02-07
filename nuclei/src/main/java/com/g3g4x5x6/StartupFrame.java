@@ -1,18 +1,24 @@
-package com.g3g4x5x6.nuclei;
+package com.g3g4x5x6;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 
@@ -68,6 +74,18 @@ public class StartupFrame extends JFrame {
         tableModel.setColumnIdentifiers(columnNames);
         tableModel.addRow(new String[]{"空", "空"});
         projectsTable.setModel(tableModel);
+        initTable();
+    }
+
+    private void initTable(){
+        File projects = new File(NucleiConfig.getWorkPath() + "/projects");
+        tableModel.setRowCount(0);
+        for (File project : Objects.requireNonNull(projects.listFiles(File::isDirectory))){
+            tableModel.addRow(new String[]{
+                    project.getName(),
+                    project.getAbsolutePath()
+            });
+        }
     }
 
     private void initLayout() {
@@ -124,9 +142,37 @@ public class StartupFrame extends JFrame {
         });
 
         okBtn.addActionListener(new AbstractAction() {
+            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
+                // 项目名称至关重要
+                String projectName = "";
 
+                if (defaultBtn.isSelected()) {
+                    projectName = "Default";
+                }
+                if (newBtn.isSelected()) {
+                    projectName = newTextField.getText().strip();
+                    if (!projectName.equals("")){
+                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
+                        createProjectProperties(projectName);
+                    }else {
+                        DialogUtil.warn("新建项目不能为空");
+                    }
+                }
+                if (selectBtn.isSelected()) {
+                    projectName = getProjectName();
+                }
+
+                if (!projectName.equals("")){
+                    NucleiConfig.projectName = projectName;
+
+                    // 启动主程序
+                    SwingUtilities.invokeLater(NucleiApp::createGUI);
+
+                    // 取消启动窗口
+                    StartupFrame.this.dispose();
+                }
             }
         });
         cancelBtn.addActionListener(new AbstractAction() {
@@ -136,6 +182,44 @@ public class StartupFrame extends JFrame {
                     System.exit(0);
             }
         });
+    }
+
+    private String getProjectName() {
+        int index = projectsTable.getSelectedRow();
+        String projectName = projectsTable.getValueAt(index, 0).toString();
+        if (!isExistProject(projectName)){
+            DialogUtil.warn("项目不存在");
+            projectName = "";
+        }
+        return projectName;
+    }
+
+    @SneakyThrows
+    private boolean isExistProject(String projectName) {
+        if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName)))
+            return false;
+
+        // 项目配置文件不存在则创建
+        if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName, "/", projectName + ".properties")))
+            createProjectProperties(projectName);
+
+        return true;
+    }
+
+    private void createProjectProperties(String projectName){
+        try {
+            InputStream nucleiIn = NucleiFrame.class.getClassLoader().getResourceAsStream("project.properties");
+            assert nucleiIn != null;
+            Files.copy(nucleiIn, Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName, "/", projectName + ".properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void setup() {
+        StartupFrame frame = new StartupFrame();
+        frame.pack();
+        frame.setVisible(true);
     }
 
 
