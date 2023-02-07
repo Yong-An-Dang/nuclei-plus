@@ -145,12 +145,13 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem openProjectItem = new JMenuItem("打开项目");
-        openProjectItem.setIcon(new FlatSVGIcon("icons/menu-open.svg"));
-        openProjectItem.addActionListener(new AbstractAction() {
+        JMenu openProjectMenu = new JMenu("打开项目");
+        openProjectMenu.setIcon(new FlatSVGIcon("icons/menu-open.svg"));
+        openProjectMenu.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 log.debug("打开项目");
+
             }
         });
 
@@ -212,13 +213,30 @@ public class NucleiFrame extends JFrame {
         });
 
         fileMenu.add(newProjectItem);
-        fileMenu.add(openProjectItem);
+        fileMenu.add(openProjectMenu);
         fileMenu.addSeparator();
         fileMenu.add(openSpaceItem);
         fileMenu.add(openTemplateItem);
         fileMenu.add(openProjectDirItem);
         fileMenu.addSeparator();
         fileMenu.add(quitItem);
+        fileMenu.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                openProjectMenu.removeAll();
+                File projects = new File(NucleiConfig.getWorkPath() + "/projects");
+                for (File project : Objects.requireNonNull(projects.listFiles(File::isDirectory))){
+                    JMenuItem tmpItem = new JMenuItem(project.getName());
+                    tmpItem.addActionListener(new AbstractAction() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // TODO 打开已有项目
+                        }
+                    });
+                    openProjectMenu.add(tmpItem);
+                }
+            }
+        });
 
         // settingsMenu
         JMenuItem globalItem = new JMenuItem("全局配置");
