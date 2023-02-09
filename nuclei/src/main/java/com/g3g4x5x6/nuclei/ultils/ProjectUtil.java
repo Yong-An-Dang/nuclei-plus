@@ -1,6 +1,7 @@
 package com.g3g4x5x6.nuclei.ultils;
 
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -11,9 +12,12 @@ import java.nio.file.Path;
 
 @Slf4j
 public class ProjectUtil {
+    @SneakyThrows
     public static String reportDir(){
-
-        return "";
+        String projectName = NucleiConfig.projectName;
+        if (!Files.exists(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "report")))
+            Files.createDirectories(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "report"));
+        return Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "report").toString();
     }
 
     public static void newProject(String projectName) throws IOException {

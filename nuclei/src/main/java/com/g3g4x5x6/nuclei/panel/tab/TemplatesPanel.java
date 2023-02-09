@@ -12,6 +12,7 @@ import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
@@ -543,7 +544,7 @@ public class TemplatesPanel extends JPanel {
             String configPath = CommonUtil.getNucleiConfigFile(getSelectedTemplateMap());
 
             // 执行命令
-            String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
+            String command = "nuclei -config " + configPath + " -markdown-export " + ProjectUtil.reportDir();
             consolePanel.write(command + "\r");
             NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
@@ -559,7 +560,7 @@ public class TemplatesPanel extends JPanel {
             // 配置对象
             String configPath = CommonUtil.getNucleiConfigFile(getSelectedTagMap());
             // 执行命令
-            String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
+            String command = "nuclei -config " + configPath + " -markdown-export " + ProjectUtil.reportDir();
             consolePanel.write(command + "\r");
             NucleiFrame.frameTabbedPane.setSelectedIndex(3);
             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
@@ -650,7 +651,7 @@ public class TemplatesPanel extends JPanel {
             if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
                 // 配置对象
                 String configPath = CommonUtil.getNucleiConfigFile(getSelectedTemplateMap());
-                String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
+                String command = "nuclei -config " + configPath + " -markdown-export " + ProjectUtil.reportDir();
                 if (clipboard == null)
                     clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
                 Transferable transferable = new StringSelection(command);
@@ -675,7 +676,7 @@ public class TemplatesPanel extends JPanel {
                 // 配置对象
                 String configPath = CommonUtil.getNucleiConfigFile(getSelectedTagMap());
                 // 复制命令到粘贴板
-                String command = "nuclei -config " + configPath + " -markdown-export " + NucleiFrame.reportDir;
+                String command = "nuclei -config " + configPath + " -markdown-export " + ProjectUtil.reportDir();
                 if (clipboard == null)
                     clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
                 Transferable transferable = new StringSelection(command);

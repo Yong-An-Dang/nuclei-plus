@@ -5,10 +5,7 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.NucleiYamlCompletionProvider;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
-import com.g3g4x5x6.nuclei.ultils.CommonUtil;
-import com.g3g4x5x6.nuclei.ultils.DialogUtil;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
-import com.g3g4x5x6.nuclei.ultils.TextAreaUtils;
+import com.g3g4x5x6.nuclei.ultils.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
@@ -367,9 +364,9 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
 
             // 是否显示调试信息
             if (isDebug) {
-                command = command + " -debug " + " -markdown-export " + NucleiFrame.reportDir + "\r";
+                command = command + " -debug " + " -markdown-export " + ProjectUtil.reportDir() + "\r";
             } else {
-                command = command + " -markdown-export " + NucleiFrame.reportDir + "\r";
+                command = command + " -markdown-export " + ProjectUtil.reportDir() + "\r";
             }
             runningDialog.runCommand(command);
 

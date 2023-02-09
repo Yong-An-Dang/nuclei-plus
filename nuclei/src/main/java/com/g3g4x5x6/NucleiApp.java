@@ -67,7 +67,10 @@ public class NucleiApp {
 
     private static void initFlatLaf() {
         try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
+            if (NucleiConfig.getProperty("nuclei.theme").equals(""))
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            else
+                UIManager.setLookAndFeel(NucleiConfig.getProperty("nuclei.theme"));
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }

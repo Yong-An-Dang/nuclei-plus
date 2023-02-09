@@ -8,10 +8,7 @@ import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
-import com.g3g4x5x6.nuclei.ultils.CommonUtil;
-import com.g3g4x5x6.nuclei.ultils.DialogUtil;
-import com.g3g4x5x6.nuclei.ultils.ExecUtils;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -200,6 +197,21 @@ public class NucleiFrame extends JFrame {
             }
         });
 
+        JMenuItem openReportDirItem = new JMenuItem("报告目录");
+        openReportDirItem.setIcon(new FlatSVGIcon("icons/moduleDirectory.svg"));
+        openReportDirItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().open(new File(ProjectUtil.reportDir()));
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }).start();
+            }
+        });
+
         // Quit
         JMenuItem quitItem = new JMenuItem("退出程序");
         quitItem.setToolTipText("退出程序");
@@ -218,6 +230,7 @@ public class NucleiFrame extends JFrame {
         fileMenu.add(openSpaceItem);
         fileMenu.add(openTemplateItem);
         fileMenu.add(openProjectDirItem);
+        fileMenu.add(openReportDirItem);
         fileMenu.addSeparator();
         fileMenu.add(quitItem);
         fileMenu.addMouseListener(new MouseAdapter() {
@@ -281,7 +294,7 @@ public class NucleiFrame extends JFrame {
         });
 
         JMenuItem supportItem = new JMenuItem("技术支持");
-        supportItem.setIcon(new FlatSVGIcon("icons/contextHelp.svg"));
+        supportItem.setIcon(new FlatSVGIcon("icons/cwmInvite.svg"));
         supportItem.addActionListener(new AbstractAction() {
             @SneakyThrows
             @Override
@@ -291,7 +304,7 @@ public class NucleiFrame extends JFrame {
         });
 
         JMenuItem aboutItem = new JMenuItem("关于 nuclei-plus");
-        aboutItem.setIcon(new FlatSVGIcon("icons/contextHelp.svg"));
+        aboutItem.setIcon(new FlatSVGIcon("icons/cwmInvite.svg"));
         aboutItem.addActionListener(new AbstractAction() {
             @SneakyThrows
             @Override
@@ -456,7 +469,7 @@ public class NucleiFrame extends JFrame {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                Desktop.getDesktop().open(new File(reportDir));
+                Desktop.getDesktop().open(new File(ProjectUtil.reportDir()));
             }
         });
         trailPopupMenu.add(reportItem);
