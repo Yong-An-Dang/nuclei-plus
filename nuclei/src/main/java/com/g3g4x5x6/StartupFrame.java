@@ -11,9 +11,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,10 +75,10 @@ public class StartupFrame extends JFrame {
         initTable();
     }
 
-    private void initTable(){
+    private void initTable() {
         File projects = new File(NucleiConfig.getWorkPath() + "/projects");
         tableModel.setRowCount(0);
-        for (File project : Objects.requireNonNull(projects.listFiles(File::isDirectory))){
+        for (File project : Objects.requireNonNull(projects.listFiles(File::isDirectory))) {
             tableModel.addRow(new String[]{
                     project.getName(),
                     project.getAbsolutePath()
@@ -90,6 +88,7 @@ public class StartupFrame extends JFrame {
 
     private void initLayout() {
         defaultBtn.setSelected(true);
+
         // 单选按钮
         ButtonGroup btnGroup = new ButtonGroup();
         btnGroup.add(defaultBtn);
@@ -153,10 +152,10 @@ public class StartupFrame extends JFrame {
                 }
                 if (newBtn.isSelected()) {
                     projectName = newTextField.getText().strip();
-                    if (!projectName.equals("")){
+                    if (!projectName.equals("")) {
                         Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
                         createProjectProperties(projectName);
-                    }else {
+                    } else {
                         DialogUtil.warn("新建项目不能为空");
                     }
                 }
@@ -164,14 +163,8 @@ public class StartupFrame extends JFrame {
                     projectName = getProjectName();
                 }
 
-                if (!projectName.equals("")){
-                    NucleiConfig.projectName = projectName;
-
-                    // 启动主程序
-                    SwingUtilities.invokeLater(NucleiApp::createGUI);
-
-                    // 取消启动窗口
-                    StartupFrame.this.dispose();
+                if (!projectName.equals("")) {
+                    next(projectName);
                 }
             }
         });
@@ -187,7 +180,7 @@ public class StartupFrame extends JFrame {
     private String getProjectName() {
         int index = projectsTable.getSelectedRow();
         String projectName = projectsTable.getValueAt(index, 0).toString();
-        if (!isExistProject(projectName)){
+        if (!isExistProject(projectName)) {
             DialogUtil.warn("项目不存在");
             projectName = "";
         }
@@ -206,7 +199,7 @@ public class StartupFrame extends JFrame {
         return true;
     }
 
-    private void createProjectProperties(String projectName){
+    private void createProjectProperties(String projectName) {
         try {
             InputStream nucleiIn = NucleiFrame.class.getClassLoader().getResourceAsStream("project.properties");
             assert nucleiIn != null;
@@ -214,6 +207,16 @@ public class StartupFrame extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void next(String projectName) {
+        NucleiConfig.projectName = projectName;
+
+        // 启动主程序
+        SwingUtilities.invokeLater(NucleiApp::createGUI);
+
+        // 取消启动窗口
+        StartupFrame.this.dispose();
     }
 
     public static void setup() {
