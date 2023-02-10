@@ -250,7 +250,12 @@ public class TemplatesPanel extends JPanel {
             }
         });
 
+
         JMenu groupByMenu = new JMenu("自定义分组管理");
+
+        JMenuItem manageGroupItem = new JMenuItem("管理分组");
+        manageGroupItem.setIcon(new FlatSVGIcon("icons/GroupByPackage.svg"));
+
         JMenuItem createItem = new JMenuItem("新建分组");
         createItem.setIcon(new FlatSVGIcon("icons/addFolder.svg"));
         createItem.addActionListener(new AbstractAction() {
@@ -268,7 +273,7 @@ public class TemplatesPanel extends JPanel {
                 }
             }
         });
-        groupByMenu.add(createItem);
+        groupByMenu.add(manageGroupItem);
         groupByMenu.addSeparator();
 
         groupMap = CommonUtil.loadGroupByMap();
@@ -293,7 +298,9 @@ public class TemplatesPanel extends JPanel {
                 });
                 groupByMenu.add(tmpItem);
             }
+            groupByMenu.addSeparator();
         }
+        groupByMenu.add(createItem);
 
         JMenu selectedTemplatesMenu = new JMenu("运行选中的模板");
         selectedTemplatesMenu.addMenuListener(new MenuListener() {

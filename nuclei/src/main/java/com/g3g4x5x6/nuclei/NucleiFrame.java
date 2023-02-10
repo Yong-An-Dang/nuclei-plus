@@ -397,6 +397,17 @@ public class NucleiFrame extends JFrame {
             }
         });
 
+
+        JButton runGroupBtn = new JButton(new FlatSVGIcon("icons/profile.svg"));
+        runGroupBtn.setToolTipText("使用选中分组模板扫描目标");
+        runGroupBtn.addActionListener(new AbstractAction() {
+            @SneakyThrows
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
         activeBtn = new JButton(new FlatSVGIcon("icons/active.svg"));
         activeBtn.setSelected(true);
         activeBtn.setText("当前活动配置：Default");
@@ -412,6 +423,7 @@ public class NucleiFrame extends JFrame {
         toolBar.addSeparator();
         toolBar.add(ntBtn);
         toolBar.add(asBtn);
+        toolBar.add(runGroupBtn);
         toolBar.addSeparator();
         toolBar.add(activeBtn);
 
