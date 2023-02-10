@@ -294,6 +294,7 @@ public class NucleiFrame extends JFrame {
         });
 
         JMenuItem supportItem = new JMenuItem("技术支持");
+        supportItem.setToolTipText("https://yong-an-dang.github.io/nuclei-plus/");
         supportItem.setIcon(new FlatSVGIcon("icons/cwmInvite.svg"));
         supportItem.addActionListener(new AbstractAction() {
             @SneakyThrows
@@ -304,6 +305,7 @@ public class NucleiFrame extends JFrame {
         });
 
         JMenuItem aboutItem = new JMenuItem("关于 nuclei-plus");
+        aboutItem.setToolTipText("https://github.com/Yong-An-Dang/nuclei-plus");
         aboutItem.setIcon(new FlatSVGIcon("icons/cwmInvite.svg"));
         aboutItem.addActionListener(new AbstractAction() {
             @SneakyThrows

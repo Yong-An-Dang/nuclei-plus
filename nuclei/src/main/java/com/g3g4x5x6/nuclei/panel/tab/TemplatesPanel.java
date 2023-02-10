@@ -250,7 +250,7 @@ public class TemplatesPanel extends JPanel {
             }
         });
 
-        JMenu groupByMenu = new JMenu("模板自定义分组管理");
+        JMenu groupByMenu = new JMenu("自定义分组管理");
         JMenuItem createItem = new JMenuItem("新建分组");
         createItem.setIcon(new FlatSVGIcon("icons/addFolder.svg"));
         createItem.addActionListener(new AbstractAction() {
@@ -258,8 +258,14 @@ public class TemplatesPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 log.debug("创建新的分组");
                 String groupName = DialogUtil.input(createItem, "请输入分组名称：");
-                groupMap.put(groupName, new LinkedList<String>());
-                saveGroupToYaml();
+                if (groupName != null && !groupName.strip().equals("")) {
+                    if (groupMap.get(groupName.strip()) == null) {
+                        groupMap.put(groupName, new LinkedList<String>());
+                        saveGroupToYaml();
+                    } else {
+                        DialogUtil.warn("已存在该分组！");
+                    }
+                }
             }
         });
         groupByMenu.add(createItem);
