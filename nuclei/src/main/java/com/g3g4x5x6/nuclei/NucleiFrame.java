@@ -69,7 +69,7 @@ public class NucleiFrame extends JFrame {
         initToolBar();
 
         initTabbedPane();
-        
+
         initStatusBar();
     }
 
@@ -135,7 +135,7 @@ public class NucleiFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String projectName = DialogUtil.input(NucleiFrame.this, "请输出项目名称（目录）");
                 log.debug(projectName);
-                if (projectName != null){
+                if (projectName != null) {
                     if (projectName.strip().equals(""))
                         DialogUtil.warn("【项目名称（目录）】不能为空");
                 }
@@ -238,7 +238,7 @@ public class NucleiFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 openProjectMenu.removeAll();
                 File projects = new File(NucleiConfig.getWorkPath() + "/projects");
-                for (File project : Objects.requireNonNull(projects.listFiles(File::isDirectory))){
+                for (File project : Objects.requireNonNull(projects.listFiles(File::isDirectory))) {
                     JMenuItem tmpItem = new JMenuItem(project.getName());
                     tmpItem.addActionListener(new AbstractAction() {
                         @Override
@@ -247,6 +247,9 @@ public class NucleiFrame extends JFrame {
                         }
                     });
                     openProjectMenu.add(tmpItem);
+                }
+                if (openProjectMenu.getItemCount() == 0){
+                    openProjectMenu.add(new JMenuItem("<空>"));
                 }
             }
         });

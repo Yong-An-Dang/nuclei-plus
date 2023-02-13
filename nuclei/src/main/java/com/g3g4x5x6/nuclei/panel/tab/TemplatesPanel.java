@@ -264,7 +264,9 @@ public class TemplatesPanel extends JPanel {
                 log.debug("创建新的分组");
                 String groupName = DialogUtil.input(createItem, "请输入分组名称：");
                 if (groupName != null && !groupName.strip().equals("")) {
-                    if (groupMap.get(groupName.strip()) == null) {
+                    if (groupMap == null || groupMap.get(groupName.strip()) == null) {
+                        if (groupMap == null)
+                            groupMap = new LinkedHashMap<>();
                         groupMap.put(groupName, new LinkedList<String>());
                         saveGroupToYaml();
                     } else {
@@ -298,6 +300,10 @@ public class TemplatesPanel extends JPanel {
                 });
                 groupByMenu.add(tmpItem);
             }
+            groupByMenu.addSeparator();
+        }
+        if (groupByMenu.getItemCount() == 2){
+            groupByMenu.add(new JMenuItem("<空>"));
             groupByMenu.addSeparator();
         }
         groupByMenu.add(createItem);
