@@ -148,7 +148,10 @@ public class StartupFrame extends JFrame {
                 String projectName = "";
 
                 if (defaultBtn.isSelected()) {
-                    projectName = "Default";
+                    projectName = "default";
+                    if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/default"))){
+                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/default"));
+                    }
                 }
                 if (newBtn.isSelected()) {
                     projectName = newTextField.getText().strip();
