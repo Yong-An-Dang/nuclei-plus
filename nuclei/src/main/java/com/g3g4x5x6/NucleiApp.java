@@ -13,6 +13,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 import static java.awt.Frame.NORMAL;
@@ -21,6 +24,26 @@ import static java.awt.Frame.NORMAL;
 @Slf4j
 public class NucleiApp {
     public static NucleiFrame nuclei;
+
+    static {
+        // Fixed: 初次启动无法找到配置文件的BUG
+        String configPath = System.getProperties().getProperty("user.home") + "/.nuclei-plus/config/";
+        if (!Files.exists(Path.of(configPath, "nuclei.properties"))) {
+            try {
+                // 创建目录
+                if (!Files.exists(Path.of(configPath))){
+                    Files.createDirectories(Path.of(configPath));
+                }
+
+                // 复制配置
+                InputStream nucleiIn = NucleiFrame.class.getClassLoader().getResourceAsStream("nuclei.properties");
+                assert nucleiIn != null;
+                Files.copy(nucleiIn, Path.of(configPath, "nuclei.properties"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public static void main(String[] args) {
         // 检查运行环境
