@@ -302,7 +302,7 @@ public class TemplatesPanel extends JPanel {
             }
             groupByMenu.addSeparator();
         }
-        if (groupByMenu.getItemCount() == 2){
+        if (groupByMenu.getItemCount() == 2) {
             groupByMenu.add(new JMenuItem("<空>"));
             groupByMenu.addSeparator();
         }
