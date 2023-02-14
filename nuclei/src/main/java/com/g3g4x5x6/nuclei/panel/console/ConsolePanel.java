@@ -60,7 +60,7 @@ public class ConsolePanel extends JPanel {
                 String path = envs.get("Path") + ";" + Path.of(RunningPanel.nucleiPath);
                 envs = new HashMap<>(System.getenv());
                 envs.put("Path", path);
-                command = new String[]{"cmd.exe"};
+                command = new String[]{"powershell.exe"};
             } else {
                 command = new String[]{"/bin/bash", "--login"};
                 envs = new HashMap<>(System.getenv());
