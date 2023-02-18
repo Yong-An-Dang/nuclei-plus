@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
@@ -72,6 +73,11 @@ public class StartupFrame extends JFrame {
         tableModel.setColumnIdentifiers(columnNames);
         tableModel.addRow(new String[]{"空", "空"});
         projectsTable.setModel(tableModel);
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JTextField.CENTER);
+        projectsTable.getColumn("project_name").setCellRenderer(centerRenderer);
+        projectsTable.getColumn("project_name").setPreferredWidth(20);
         initTable();
     }
 
