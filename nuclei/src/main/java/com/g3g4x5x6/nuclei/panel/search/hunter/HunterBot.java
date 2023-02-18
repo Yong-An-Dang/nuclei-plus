@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.panel.search.fofa;
+package com.g3g4x5x6.nuclei.panel.search.hunter;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -11,48 +11,36 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.util.LinkedList;
-
 
 @Slf4j
-public class FofaBot extends FofaVo {
+public class HunterBot extends HunterVo {
     private final OkHttpClient client = new OkHttpClient();
-    private String email;
     private String secret;
 
-    public FofaBot() {
+    public HunterBot() {
         if (NucleiConfig.getProperty("nuclei.fofa.api") == null || NucleiConfig.getProperty("nuclei.fofa.api").strip().equals("")) {
-            apiUrl = "https://fofa.info/api/v1/search/all";
+            apiUrl = "https://hunter.qianxin.com/openApi/search";
         } else {
-            apiUrl = NucleiConfig.getProperty("nuclei.fofa.api");
+            apiUrl = NucleiConfig.getProperty("nuclei.hunter.api");
         }
-        if (NucleiConfig.getProperty("nuclei.fofa.email") == null || NucleiConfig.getProperty("nuclei.fofa.email").strip().equals("")) {
-            DialogUtil.warn("请配置有效邮箱");
-        } else {
-            email = NucleiConfig.getProperty("nuclei.fofa.email");
-        }
-        if (NucleiConfig.getProperty("nuclei.fofa.secret") == null || NucleiConfig.getProperty("nuclei.fofa.secret").strip().equals("")) {
+        if (NucleiConfig.getProperty("nuclei.hunter.key") == null || NucleiConfig.getProperty("nuclei.hunter.key").strip().equals("")) {
             DialogUtil.warn("请配置有效密钥");
         } else {
-            secret = NucleiConfig.getProperty("nuclei.fofa.secret");
+            secret = NucleiConfig.getProperty("nuclei.hunter.key");
         }
 
-        qbase64 = "5Y2O6aG65L%2Bh5a6J";
-        fields = "ip,host,port,title,domain,icp,city";
+        search = "5Y2O6aG65L%2Bh5a6J";
         page = "1";
-        size = "1000";
-        full = String.valueOf(false);
+        size = "100";
     }
 
     public String packageUrl(String qbase64) {
         String url = apiUrl +
-                "?email=" + email +
-                "&key=" + secret +
-                "&qbase64=" + qbase64 +
-                "&fields=" + fields +
+                "?api-key=" + secret +
+                "&search=" + qbase64 +
                 "&page=" + page +
-                "&size=" + size +
-                "&full=" + full;
+                "&page_size=" + size +
+                "&is_web=" + 3;         // 资产类型，1代表”web资产“，2代表”非web资产“，3代表”全部“
         log.debug("Query URL: " + url);
         return url;
     }
@@ -64,7 +52,8 @@ public class FofaBot extends FofaVo {
 
         try (Response response = client.newCall(request).execute()) {
             JSONObject jsonObject = JSON.parseObject(response.body().string());
-            return jsonObject.getJSONArray("results");
+            // log.debug(jsonObject.toJSONString());
+            return jsonObject.getJSONObject("data").getJSONArray("arr");
         } catch (IOException e) {
             log.debug(e.getMessage());
             return null;
@@ -74,20 +63,17 @@ public class FofaBot extends FofaVo {
     @Override
     public String toString() {
         return "FofaBot{" +
-                ", email='" + email + '\'' +
                 ", secret='" + secret + '\'' +
                 ", apiUrl='" + apiUrl + '\'' +
-                ", qbase64='" + qbase64 + '\'' +
-                ", fields='" + fields + '\'' +
+                ", search='" + search + '\'' +
                 ", page='" + page + '\'' +
                 ", size='" + size + '\'' +
-                ", full='" + full + '\'' +
                 '}';
     }
 
     public static void main(String[] args) {
-        FofaBot fofaBot = new FofaBot();
-        JSONArray jsonArray = fofaBot.get(fofaBot.packageUrl("5Y2O6aG65L%2Bh5a6J"));
+        HunterBot hunterBot = new HunterBot();
+        JSONArray jsonArray = hunterBot.get(hunterBot.packageUrl("5Y2O6aG6"));
         log.debug(jsonArray.toJSONString());
     }
 }

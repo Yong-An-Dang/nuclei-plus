@@ -1,5 +1,6 @@
 package com.g3g4x5x6.nuclei.panel.search.fofa;
 
+import cn.hutool.core.codec.Base64;
 import com.alibaba.fastjson.JSONArray;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -60,7 +61,7 @@ public class Fofa extends JPanel {
         this.setLayout(new BorderLayout());
         this.title = "Fofa";
         this.tips = "Fofa 网络空间搜索引擎";
-        this.icon = new FlatSVGIcon("icons/pinTab.svg");
+        this.icon = new FlatSVGIcon("icons/inlayGlobe.svg");
 
         initToolBar();
         initTable();
@@ -69,11 +70,11 @@ public class Fofa extends JPanel {
     private void initToolBar() {
         toolBar = new JToolBar();
 
-        inputField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search... & Enter");
+        inputField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Fofa Search... & Enter");
         inputField.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSearchIcon());
         inputField.registerKeyboardAction(e -> {
             // 搜索动作
-            String qbase64 = Base64Utils.base64Encode(inputField.getText());
+            String qbase64 = Base64.encode(inputField.getText());
             log.debug("qbase64");
             new Thread(() -> {
                 resetTableRows(fofaBot.get(fofaBot.packageUrl(qbase64)));
@@ -189,7 +190,7 @@ public class Fofa extends JPanel {
             }
         });
 
-        JMenu applyGroupMenu = new JMenu("自定义分组扫描");
+        JMenu applyGroupMenu = new JMenu("扫描自定义分组模板");
         LinkedHashMap<String, Object> groupMap = CommonUtil.loadGroupByMap();
         if (groupMap != null) {
             for (String key : groupMap.keySet()) {
@@ -197,7 +198,7 @@ public class Fofa extends JPanel {
                 tmpItem.addActionListener(new AbstractAction() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        log.debug("应用选中分组进行扫描");
+                        log.debug("扫描自定义分组模板");
                         ArrayList<String> template = new ArrayList<>();
                         ArrayList<String> workflow = new ArrayList<>();
 
