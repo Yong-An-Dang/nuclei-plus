@@ -6,6 +6,7 @@ import com.formdev.flatlaf.extras.components.FlatToggleButton;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.search.SearchTabbedPanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
 import com.g3g4x5x6.nuclei.ultils.*;
@@ -43,6 +44,7 @@ public class NucleiFrame extends JFrame {
     public final StringTargetPanel targetPanel = new StringTargetPanel();
     public final SettingsPanel settingsPanel = new SettingsPanel();
     public final RunningPanel runningPanel = new RunningPanel();
+    public final SearchTabbedPanel searchTabbedPanel = new SearchTabbedPanel();
 
     public final StatusBar statusBar = new StatusBar();
 
@@ -447,6 +449,7 @@ public class NucleiFrame extends JFrame {
         frameTabbedPane.addTab("Targets", new FlatSVGIcon("icons/pinTab.svg"), targetPanel);
         frameTabbedPane.addTab("Settings", new FlatSVGIcon("icons/pinTab.svg"), settingsPanel);
         frameTabbedPane.addTab("Running", new FlatSVGIcon("icons/pinTab.svg"), runningPanel);
+        frameTabbedPane.addTab("SearchEngine", new FlatSVGIcon("icons/pinTab.svg"), searchTabbedPanel);
 
         this.add(frameTabbedPane, BorderLayout.CENTER);
     }
