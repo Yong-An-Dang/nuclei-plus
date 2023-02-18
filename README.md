@@ -39,5 +39,5 @@ See [doc](https://yong-an-dang.github.io/nuclei-plus/)
 - [JFormDesigner/FlatLaf](https://github.com/JFormDesigner/FlatLaf)
 - more...
 
-#### [Thanks to `JetBrain`](https://jb.gg/OpenSourceSupport)
+#### [Thanks to `JetBrains`](https://jb.gg/OpenSourceSupport)
 ![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
