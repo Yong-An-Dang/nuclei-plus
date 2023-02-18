@@ -449,7 +449,7 @@ public class NucleiFrame extends JFrame {
         frameTabbedPane.addTab("Targets", new FlatSVGIcon("icons/pinTab.svg"), targetPanel);
         frameTabbedPane.addTab("Settings", new FlatSVGIcon("icons/pinTab.svg"), settingsPanel);
         frameTabbedPane.addTab("Running", new FlatSVGIcon("icons/pinTab.svg"), runningPanel);
-        frameTabbedPane.addTab("SearchEngine", new FlatSVGIcon("icons/pinTab.svg"), searchTabbedPanel);
+        frameTabbedPane.addTab("Searching", new FlatSVGIcon("icons/pinTab.svg"), searchTabbedPanel);
 
         this.add(frameTabbedPane, BorderLayout.CENTER);
     }
@@ -459,7 +459,7 @@ public class NucleiFrame extends JFrame {
         frameTabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_TOOLTIPTEXT, "Close");
         frameTabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_CALLBACK,
                 (BiConsumer<JTabbedPane, Integer>) (tabPane, tabIndex) -> {
-                    if (tabIndex >= 4) {
+                    if (tabIndex >= 5) {
                         frameTabbedPane.removeTabAt(tabIndex);
                     }
                 });

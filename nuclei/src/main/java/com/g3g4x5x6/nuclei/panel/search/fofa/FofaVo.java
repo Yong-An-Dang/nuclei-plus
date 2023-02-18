@@ -1,8 +1,8 @@
-package com.g3g4x5x6.nuclei.panel.thirdparty;
+package com.g3g4x5x6.nuclei.panel.search.fofa;
 
 import com.g3g4x5x6.nuclei.ultils.Base64Utils;
 
-public class Fofa {
+public class FofaVo {
     /**
      * 查询参数
      */

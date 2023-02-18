@@ -1,4 +1,3 @@
-import com.g3g4x5x6.nuclei.panel.thirdparty.FofaBot;
 import org.junit.jupiter.api.Test;
 
 public class TestFofaBot {
