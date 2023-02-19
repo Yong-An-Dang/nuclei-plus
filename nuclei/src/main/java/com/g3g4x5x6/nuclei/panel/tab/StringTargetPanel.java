@@ -45,7 +45,6 @@ public class StringTargetPanel extends JPanel implements SearchListener, ChangeL
     private final JButton searchBtn = new JButton(new FlatSVGIcon("icons/find.svg"));
     private final JButton replaceBtn = new JButton(new FlatSVGIcon("icons/replace.svg"));
     private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
-    private final JButton fofaxBtn = new JButton("Fofa");
     private final JButton dupBtn = new JButton(new FlatSVGIcon("icons/diffWithClipboard.svg"));
 
     private final RSyntaxTextArea textArea;
@@ -82,7 +81,6 @@ public class StringTargetPanel extends JPanel implements SearchListener, ChangeL
         toolBar.addSeparator();
         toolBar.add(dupBtn);
         toolBar.addSeparator();
-        toolBar.add(fofaxBtn);
         toolBar.add(Box.createGlue());
         toolBar.add(showLabel);
         toolBar.add(Box.createGlue());

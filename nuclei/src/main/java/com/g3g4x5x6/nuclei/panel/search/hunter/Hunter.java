@@ -40,10 +40,12 @@ public class Hunter extends JPanel {
     private JToolBar toolBar;
     private final JTextField inputField = new JTextField();
     private final JTextField searchField = new JTextField();
-    private TableRowSorter<DefaultTableModel> sorter;
+    // intentionBulb.svg intentionBulbGrey.svg
+    private final JButton statusBtn = new JButton(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
 
     private JTable table;
     private DefaultTableModel tableModel;
+    private TableRowSorter<DefaultTableModel> sorter;
     private JPopupMenu popupMenu;
 
     private final String[] columnNames = {
@@ -76,9 +78,15 @@ public class Hunter extends JPanel {
         inputField.registerKeyboardAction(e -> {
             // 搜索动作
             String qbase64 = Base64.encode(inputField.getText());
-            log.debug("qbase64");
+            statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulb.svg"));
             new Thread(() -> {
-                resetTableRows(hunterBot.get(hunterBot.packageUrl(qbase64)));
+                try {
+                    resetTableRows(hunterBot.get(hunterBot.packageUrl(qbase64)));
+                    statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
+                } catch (IOException ex) {
+                    log.error(ex.getMessage());
+                    statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
+                }
             }).start();
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), JComponent.WHEN_FOCUSED);
 
@@ -91,7 +99,12 @@ public class Hunter extends JPanel {
                 KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
                 JComponent.WHEN_FOCUSED);
 
+        statusBtn.setToolTipText("搜素状态提示灯");
+
+
         toolBar.add(inputField);
+        toolBar.addSeparator();
+        toolBar.add(statusBtn);
         toolBar.addSeparator();
         toolBar.add(searchField);
         this.add(toolBar, BorderLayout.NORTH);
@@ -140,19 +153,21 @@ public class Hunter extends JPanel {
 
         tableModel.setRowCount(0);
         int num = 1;
-        for (Object obj : jsonArray) {
-            JSONObject jsonObject = (JSONObject) obj;
-            tableModel.addRow(new String[]{
-                    String.valueOf(num),
-                    jsonObject.getString("ip"),
-                    jsonObject.getString("url"),
-                    jsonObject.getString("port"),
-                    jsonObject.getString("web_title"),
-                    jsonObject.getString("domain"),
-                    jsonObject.getString("number"),
-                    jsonObject.getString("city")
-            });
-            num++;
+        if (jsonArray != null) {
+            for (Object obj : jsonArray) {
+                JSONObject jsonObject = (JSONObject) obj;
+                tableModel.addRow(new String[]{
+                        String.valueOf(num),
+                        jsonObject.getString("ip"),
+                        jsonObject.getString("url"),
+                        jsonObject.getString("port"),
+                        jsonObject.getString("web_title"),
+                        jsonObject.getString("domain"),
+                        jsonObject.getString("number"),
+                        jsonObject.getString("city")
+                });
+                num++;
+            }
         }
     }
 

@@ -57,7 +57,7 @@ public class FofaBot extends FofaVo {
         return url;
     }
 
-    public JSONArray get(String url) {
+    public JSONArray get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -66,8 +66,7 @@ public class FofaBot extends FofaVo {
             JSONObject jsonObject = JSON.parseObject(response.body().string());
             return jsonObject.getJSONArray("results");
         } catch (IOException e) {
-            log.debug(e.getMessage());
-            return null;
+            throw e;
         }
     }
 
@@ -85,7 +84,7 @@ public class FofaBot extends FofaVo {
                 '}';
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FofaBot fofaBot = new FofaBot();
         JSONArray jsonArray = fofaBot.get(fofaBot.packageUrl("5Y2O6aG65L%2Bh5a6J"));
         log.debug(jsonArray.toJSONString());

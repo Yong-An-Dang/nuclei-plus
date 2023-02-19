@@ -18,7 +18,7 @@ public class HunterBot extends HunterVo {
     private String secret;
 
     public HunterBot() {
-        if (NucleiConfig.getProperty("nuclei.fofa.api") == null || NucleiConfig.getProperty("nuclei.fofa.api").strip().equals("")) {
+        if (NucleiConfig.getProperty("nuclei.hunter.api") == null || NucleiConfig.getProperty("nuclei.hunter.api").strip().equals("")) {
             apiUrl = "https://hunter.qianxin.com/openApi/search";
         } else {
             apiUrl = NucleiConfig.getProperty("nuclei.hunter.api");
@@ -45,19 +45,17 @@ public class HunterBot extends HunterVo {
         return url;
     }
 
-    public JSONArray get(String url) {
+    public JSONArray get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            JSONObject jsonObject = JSON.parseObject(response.body().string());
-            // log.debug(jsonObject.toJSONString());
-            return jsonObject.getJSONObject("data").getJSONArray("arr");
-        } catch (IOException e) {
-            log.debug(e.getMessage());
+        Response response = client.newCall(request).execute();
+        JSONObject jsonObject = JSON.parseObject(response.body().string());
+        if (!jsonObject.getString("code").equals("200")){
+            log.error(jsonObject.toJSONString());
             return null;
         }
+        return jsonObject.getJSONObject("data").getJSONArray("arr");
     }
 
     @Override
@@ -71,7 +69,7 @@ public class HunterBot extends HunterVo {
                 '}';
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         HunterBot hunterBot = new HunterBot();
         JSONArray jsonArray = hunterBot.get(hunterBot.packageUrl("5Y2O6aG6"));
         log.debug(jsonArray.toJSONString());
