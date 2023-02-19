@@ -234,6 +234,9 @@ public class TemplatesPanel extends JPanel {
 
     private JPopupMenu createTablePopMenu() {
         JPopupMenu popupMenu = new JPopupMenu();
+
+        popupMenu.add(new JMenuItem("已选中PoC模板数：" + templatesTable.getSelectedRowCount()));
+        popupMenu.addSeparator();
         popupMenu.add(new AbstractAction("追加选中模板到活动配置") {
             @Override
             public void actionPerformed(ActionEvent e) {

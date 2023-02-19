@@ -32,7 +32,6 @@ public class NucleiFrame extends JFrame {
     public static JTabbedPane frameTabbedPane;
     public static JButton activeBtn;
 
-    public static String reportDir = NucleiConfig.getProperty("nuclei.report.path");
     public static String templatesDir = NucleiConfig.getProperty("nuclei.templates.path");
     public static GlobalConfigModel globalConfigModel = new GlobalConfigModel();
 
@@ -413,6 +412,20 @@ public class NucleiFrame extends JFrame {
             }
         });
 
+
+        JButton saveBtn = new JButton(new FlatSVGIcon("icons/menu-saveall.svg"));
+        saveBtn.setToolTipText("保存项目中所有配置");
+        saveBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    settingsPanel.save();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
         activeBtn = new JButton(new FlatSVGIcon("icons/active.svg"));
         activeBtn.setSelected(true);
         activeBtn.setText("当前活动配置：Default");
@@ -430,6 +443,7 @@ public class NucleiFrame extends JFrame {
         toolBar.add(asBtn);
         toolBar.add(runGroupBtn);
         toolBar.addSeparator();
+        toolBar.add(saveBtn);
         toolBar.add(activeBtn);
 
         toolBar.add(Box.createGlue());

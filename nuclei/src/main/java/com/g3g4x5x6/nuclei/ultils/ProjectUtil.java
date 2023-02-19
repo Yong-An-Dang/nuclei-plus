@@ -20,6 +20,16 @@ public class ProjectUtil {
         return Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "report").toString();
     }
 
+    @SneakyThrows
+    public static String configDir(){
+        String projectName = NucleiConfig.projectName;
+        if (!Files.exists(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config")))
+            Files.createDirectories(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config"));
+        return Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config").toString();
+    }
+
+
+
     public static void newProject(String projectName) throws IOException {
         NucleiConfig.projectName = projectName;
         String newPath = NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName;

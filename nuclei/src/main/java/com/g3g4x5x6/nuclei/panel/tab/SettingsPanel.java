@@ -12,11 +12,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
 
 import static com.formdev.flatlaf.FlatClientProperties.*;
+import static com.g3g4x5x6.nuclei.ultils.CommonUtil.getConfigPanels;
 
 
 @Slf4j
@@ -137,5 +139,12 @@ public class SettingsPanel extends JPanel {
         }
 
         return popupMenu;
+    }
+
+    public void save() throws IOException {
+        LinkedHashMap<String, ConfigAllPanel> configPanels = getConfigPanels();
+        for (ConfigAllPanel panel : configPanels.values()){
+            panel.saveConfigToYaml();
+        }
     }
 }

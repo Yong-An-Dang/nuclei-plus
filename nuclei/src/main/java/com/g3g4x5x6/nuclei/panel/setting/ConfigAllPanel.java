@@ -1,12 +1,17 @@
 package com.g3g4x5x6.nuclei.panel.setting;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Map;
 
 
@@ -67,8 +72,11 @@ public class ConfigAllPanel extends JPanel {
         return config;
     }
 
-    public void saveConfigToYaml(){
+    public void saveConfigToYaml() throws IOException {
         Map<String, Object> config = getNucleiConfig();
-
+        if (config != null) {
+            Yaml yaml = new Yaml();
+            yaml.dump(config, new FileWriter(String.valueOf(Path.of(ProjectUtil.configDir(), title + ".yaml"))));
+        }
     }
 }
