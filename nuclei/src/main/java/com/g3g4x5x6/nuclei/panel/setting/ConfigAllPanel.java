@@ -1,6 +1,7 @@
 package com.g3g4x5x6.nuclei.panel.setting;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,8 @@ import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -65,7 +68,7 @@ public class ConfigAllPanel extends JPanel {
     }
 
     public Map<String, Object> getNucleiConfig() {
-        Yaml yaml = new Yaml(new SafeConstructor());
+        Yaml yaml = new Yaml();
         Map<String, Object> config = yaml.load(configPanel.getConfig());
         config.put("templates", configTemplatePanel.getTemplates());
         config.put("workflows", configWorkflowPanel.getWorkflows());
@@ -78,5 +81,24 @@ public class ConfigAllPanel extends JPanel {
             Yaml yaml = new Yaml();
             yaml.dump(config, new FileWriter(String.valueOf(Path.of(ProjectUtil.configDir(), title + ".yaml"))));
         }
+    }
+
+    public void loadConfigFromYaml(String title){
+        LinkedHashMap config = CommonUtil.getMapFromYaml(String.valueOf(Path.of(ProjectUtil.configDir(), title + ".yaml")));
+        if (config == null){
+            config = new LinkedHashMap();
+        }
+        // 加载 Templates
+        for( String line : (ArrayList<String>)config.get("templates")){
+            configTemplatePanel.addTemplates(line);
+        }
+        // 加载 Workflows
+        for( String line : (ArrayList<String>)config.get("workflows")){
+            configWorkflowPanel.addWorkflows(line);
+        }
+        config.remove("templates");
+        config.remove("workflows");
+        // 加载 其他配置
+        configPanel.reload(config);
     }
 }

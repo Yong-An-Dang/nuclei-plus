@@ -27,6 +27,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 @Slf4j
@@ -242,4 +245,25 @@ public class ConfigNucleiPanel extends JPanel implements SearchListener {
             replaceDialog.setVisible(true);
         }
     };
+
+    public void reload(LinkedHashMap<String, String> config){
+        String[] lines = textArea.getText().split("\n");
+        for (int i = 0; i < lines.length; i++){
+            // 遍历 key 和 value
+            for (Map.Entry<String, String> entry : config.entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                if (lines[i].strip().startsWith(key))
+                    lines[i] = key + ": " + value;
+                else
+                    if (lines[i].strip().startsWith("#" + key))
+                        lines[i] = key + ": " + value;
+
+            }
+        }
+        textArea.setText("");
+        for (String line : lines){
+            textArea.append(line + "\n");
+        }
+    }
 }

@@ -139,7 +139,10 @@ public class CommonUtil {
         NucleiFrame.frameTabbedPane.setSelectedIndex(1);
     }
 
-    private static LinkedHashMap getMapFromYaml(String path) {
+    @SneakyThrows
+    public static LinkedHashMap getMapFromYaml(String path) {
+        if (!Files.exists(Path.of(path)))
+            Files.createFile(Path.of(path));
         LinkedHashMap yamlMap;
         InputStream inputStream = null;
         try {

@@ -76,8 +76,8 @@ public class SettingsPanel extends JPanel {
 
         customComponents();
 
-        // add Tab
-        tabbedPane.addTab("Default", new FlatSVGIcon("icons/output.svg"), configAllPanel);
+        // 加载配置
+        load();
 
         this.add(tabbedPane, BorderLayout.CENTER);
     }
@@ -139,7 +139,7 @@ public class SettingsPanel extends JPanel {
         this.activeConfigAllPanel = activeConfigAllPanel;
     }
 
-    private JPopupMenu createPopupMenu(){
+    private JPopupMenu createPopupMenu() {
         JPopupMenu popupMenu = new JPopupMenu();
         LinkedHashMap<String, Object> groupMap = CommonUtil.loadGroupByMap();
         if (groupMap != null) {
@@ -150,7 +150,7 @@ public class SettingsPanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         log.debug("应用选中分组");
                         ArrayList<String> list = (ArrayList<String>) groupMap.get(key);
-                        for (String pocPath : list){
+                        for (String pocPath : list) {
                             if (pocPath.contains("workflow")) {
                                 NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addWorkflows(pocPath);
                             } else {
@@ -168,8 +168,15 @@ public class SettingsPanel extends JPanel {
 
     public void save() throws IOException {
         LinkedHashMap<String, ConfigAllPanel> configPanels = getConfigPanels();
-        for (ConfigAllPanel panel : configPanels.values()){
+        for (ConfigAllPanel panel : configPanels.values()) {
             panel.saveConfigToYaml();
         }
+    }
+
+    public void load() {
+        tabbedPane.removeAll();
+        ConfigAllPanel tmpPanel = new ConfigAllPanel();
+        tmpPanel.loadConfigFromYaml("Default");
+        tabbedPane.addTab("Default", new FlatSVGIcon("icons/output.svg"), tmpPanel);
     }
 }
