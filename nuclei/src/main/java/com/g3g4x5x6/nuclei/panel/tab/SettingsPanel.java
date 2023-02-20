@@ -37,24 +37,49 @@ public class SettingsPanel extends JPanel {
     private void initTabbedPane() {
         tabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 
-        initClosableTabs();
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem closeTabMenuItem = new JMenuItem("删除配置");
+        closeTabMenuItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int tabIndex = tabbedPane.getSelectedIndex();
+                if (tabIndex != 0) {
+                    tabbedPane.removeTabAt(tabIndex);
+                    // TODO 删除配置
+                }
+            }
+        });
+        JMenuItem resetTabMenuItem = new JMenuItem("重置配置");
+        resetTabMenuItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int tabIndex = tabbedPane.getSelectedIndex();
+                // TODO 读取重置为最新保存的配置
+            }
+        });
+
+        popupMenu.add(resetTabMenuItem);
+        popupMenu.addSeparator();
+        popupMenu.add(closeTabMenuItem);
+
+        tabbedPane.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    int tabIndex = tabbedPane.getSelectedIndex();
+                    if (tabIndex != -1) {
+                        popupMenu.show(tabbedPane, e.getX(), e.getY());
+                    }
+                }
+            }
+        });
+
         customComponents();
 
         // add Tab
         tabbedPane.addTab("Default", new FlatSVGIcon("icons/output.svg"), configAllPanel);
 
         this.add(tabbedPane, BorderLayout.CENTER);
-    }
-
-    private void initClosableTabs() {
-        tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSABLE, true);
-        tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_TOOLTIPTEXT, "Close");
-        tabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_CALLBACK,
-                (BiConsumer<JTabbedPane, Integer>) (tabPane, tabIndex) -> {
-                    if (tabIndex >= 1) {
-                        tabbedPane.removeTabAt(tabIndex);
-                    }
-                });
     }
 
     private void customComponents() {

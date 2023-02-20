@@ -47,6 +47,7 @@ public class DefaultTrayIcon extends TrayIcon {
                     dialog.setLocation(e.getX(), (int) (e.getY() - size.getHeight()));
                     dialog.setVisible(true);
 
+                    log.debug("X:" + e.getX() + ":" + "Y:" + e.getY());
                     // 显示弹出菜单 popupMenu
                     popupMenu.show(dialog, 0, 0);
                 }
