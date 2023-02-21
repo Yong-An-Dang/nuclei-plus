@@ -12,7 +12,7 @@ Functional enhancement based on nuclei
 
 #### Todo
 - [x] Support system tray
-- [ ] Support project management
+- [x] Support project management
 - [x] Support configuration management
 - [x] Support template management
 - [x] Support template editing
