@@ -253,10 +253,10 @@ public class ConfigNucleiPanel extends JPanel implements SearchListener {
             for (Map.Entry<String, String> entry : config.entrySet()) {
                 String key = entry.getKey();
                 Object value = entry.getValue();
-                if (lines[i].strip().startsWith(key))
+                if (lines[i].strip().startsWith(key + ":"))
                     lines[i] = key + ": " + value;
                 else
-                    if (lines[i].strip().startsWith("#" + key))
+                    if (lines[i].strip().startsWith("#" + key + ":"))
                         lines[i] = key + ": " + value;
 
             }

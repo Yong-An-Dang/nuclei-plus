@@ -89,16 +89,22 @@ public class ConfigAllPanel extends JPanel {
             config = new LinkedHashMap();
         }
         // 加载 Templates
-        for( String line : (ArrayList<String>)config.get("templates")){
-            configTemplatePanel.addTemplates(line);
+        if (config.get("templates") != null){
+            for( String line : (ArrayList<String>)config.get("templates")){
+                configTemplatePanel.addTemplates(line);
+            }
         }
+
         // 加载 Workflows
-        for( String line : (ArrayList<String>)config.get("workflows")){
-            configWorkflowPanel.addWorkflows(line);
+        if (config.get("workflows") != null){
+            for( String line : (ArrayList<String>)config.get("workflows")){
+                configWorkflowPanel.addWorkflows(line);
+            }
         }
         config.remove("templates");
         config.remove("workflows");
         // 加载 其他配置
-        configPanel.reload(config);
+        if (config.entrySet() != null)
+            configPanel.reload(config);
     }
 }

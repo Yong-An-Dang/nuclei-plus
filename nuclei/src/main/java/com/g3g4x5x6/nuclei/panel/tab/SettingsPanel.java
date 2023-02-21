@@ -5,6 +5,9 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.panel.setting.*;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
+import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -13,9 +16,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 import static com.formdev.flatlaf.FlatClientProperties.*;
 import static com.g3g4x5x6.nuclei.ultils.CommonUtil.getConfigPanels;
@@ -173,10 +179,24 @@ public class SettingsPanel extends JPanel {
         }
     }
 
+    @SneakyThrows
     public void load() {
         tabbedPane.removeAll();
-        ConfigAllPanel tmpPanel = new ConfigAllPanel();
-        tmpPanel.loadConfigFromYaml("Default");
-        tabbedPane.addTab("Default", new FlatSVGIcon("icons/output.svg"), tmpPanel);
+
+        try (Stream<Path> stream = Files.walk(Path.of(NucleiConfig.getWorkPath(), "projects", NucleiConfig.projectName, "config"))) {
+            stream.filter(file -> !Files.isDirectory(file) && file.toString().endsWith(".yaml"))
+                    .forEach(file -> {
+                        ConfigAllPanel tmpPanel = new ConfigAllPanel();
+                        if (file.getFileName().toString().equals("Default")) {
+                            tmpPanel.setTitle("Default");
+                            tmpPanel.loadConfigFromYaml(tmpPanel.getTitle());
+                            tabbedPane.addTab("Default", new FlatSVGIcon("icons/output.svg"), tmpPanel);
+                        } else {
+                            tmpPanel.setTitle(file.getFileName().toString().replace(".yaml", ""));
+                            tmpPanel.loadConfigFromYaml(tmpPanel.getTitle());
+                            tabbedPane.addTab(tmpPanel.getTitle(), new FlatSVGIcon("icons/output.svg"), tmpPanel);
+                        }
+                    });
+        }
     }
 }
