@@ -473,7 +473,7 @@ public class NucleiFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 JPopupMenu popupMenu = CommonUtil.getConfigPopupMenu();
-                popupMenu.show(NucleiFrame.this, e.getX(), e.getY());
+                popupMenu.show(activeBtn, e.getX(), e.getY());
             }
         });
 
