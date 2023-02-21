@@ -154,7 +154,8 @@ public class StartupFrame extends JFrame {
                 if (defaultBtn.isSelected()) {
                     projectName = "default";
                     if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/default"))){
-                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/default"));
+                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/default"));                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
+                        CommonUtil.createProjectStruct(projectName);
                     }
                 }
                 if (newBtn.isSelected()) {

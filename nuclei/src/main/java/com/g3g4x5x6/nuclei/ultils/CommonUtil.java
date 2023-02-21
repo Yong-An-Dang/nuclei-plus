@@ -171,9 +171,11 @@ public class CommonUtil {
             Files.copy(nucleiIn, Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName, "/", projectName + ".properties"));
 
             // 创建项目子配置目录
-            Files.createDirectories(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config"));
+            if (!Files.exists(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config")))
+                Files.createDirectories(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config"));
             // 创建默认子配置
-            Files.createFile(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config", "Default.yaml"));
+            if (!Files.exists(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config", "Default.yaml")))
+                Files.createFile(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config", "Default.yaml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

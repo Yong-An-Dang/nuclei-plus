@@ -345,7 +345,7 @@ public class NucleiFrame extends JFrame {
 
 //        JButton executeBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
         JButton executeBtn = new JButton(new FlatSVGIcon("icons/runAll.svg"));
-        executeBtn.setToolTipText("默认新建终端运行（右键可选择已有终端运行）");
+        executeBtn.setToolTipText("默认新建终端执行活动配置（右键可选择已有终端执行）");
         executeBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
