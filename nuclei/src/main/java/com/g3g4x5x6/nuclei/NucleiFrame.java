@@ -7,6 +7,7 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.search.SearchTabbedPanel;
+import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
 import com.g3g4x5x6.nuclei.ultils.*;
@@ -23,6 +24,7 @@ import java.io.*;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -400,9 +402,22 @@ public class NucleiFrame extends JFrame {
         ntBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // nuclei -nt, -new-templates          run only new templates added in latest nuclei-templates release
+                if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+                    // 创建终端执行任务
+                    ConsolePanel consolePanel = runningPanel.createConsole();
+
+                    ExecUtils.runNewTemplates(consolePanel);
+
+                    // 跳转至运行终端
+                    NucleiFrame.frameTabbedPane.setSelectedIndex(3);
+                    RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
+                } else {
+                    JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                    CommonUtil.goToTarget();
+                }
             }
         });
-
 
         JButton asBtn = new JButton(new FlatSVGIcon("icons/runWithCoverage.svg"));
         asBtn.setToolTipText("使用 wappalyzer 技术检测到标签映射的自动 Web 扫描");
@@ -410,21 +425,33 @@ public class NucleiFrame extends JFrame {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
+                // nuclei -as, -automatic-scan         automatic web scan using wappalyzer technology detection to tags mapping
+                if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+                    // 创建终端执行任务
+                    ConsolePanel consolePanel = runningPanel.createConsole();
 
+                    ExecUtils.runAutomaticScan(consolePanel);
+
+                    // 跳转至运行终端
+                    NucleiFrame.frameTabbedPane.setSelectedIndex(3);
+                    RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
+                } else {
+                    JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                    CommonUtil.goToTarget();
+                }
             }
         });
-
 
         JButton runGroupBtn = new JButton(new FlatSVGIcon("icons/profile.svg"));
         runGroupBtn.setToolTipText("使用选中分组模板扫描目标");
-        runGroupBtn.addActionListener(new AbstractAction() {
-            @SneakyThrows
+        runGroupBtn.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-
+            public void mouseClicked(MouseEvent e) {
+                // 使用选中分组模板扫描目标
+                JPopupMenu popupMenu = createPopupMenu();
+                popupMenu.show(runGroupBtn, e.getX(), e.getY());
             }
         });
-
 
         JButton saveBtn = new JButton(new FlatSVGIcon("icons/menu-saveall.svg"));
         saveBtn.setToolTipText("保存项目中所有配置");
@@ -558,5 +585,49 @@ public class NucleiFrame extends JFrame {
 
     public RunningPanel getRunningPanel() {
         return runningPanel;
+    }
+
+    private JPopupMenu createPopupMenu(){
+
+        JPopupMenu popupMenu = new JPopupMenu();
+        LinkedHashMap<String, Object> groupMap = CommonUtil.loadGroupByMap();
+        if (groupMap != null) {
+            for (String key : groupMap.keySet()) {
+                JMenuItem tmpItem = new JMenuItem(key);
+                tmpItem.addActionListener(new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        log.debug("应用选中分组");
+                        ArrayList<String> list = (ArrayList<String>) groupMap.get(key);
+                        ArrayList<String> templates = new ArrayList<>();
+                        ArrayList<String> workflows = new ArrayList<>();
+                        for (String pocPath : list) {
+                            if (pocPath.contains("workflow")) {
+                                workflows.add(pocPath);
+                            } else {
+                                templates.add(pocPath);
+                            }
+                        }
+                        //
+                        if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+                            // 创建终端执行任务
+                            ConsolePanel consolePanel = runningPanel.createConsole();
+
+                            ExecUtils.runGroupBy(consolePanel, templates, workflows);
+
+                            // 跳转至运行终端
+                            NucleiFrame.frameTabbedPane.setSelectedIndex(3);
+                            RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
+                        } else {
+                            JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                            CommonUtil.goToTarget();
+                        }
+
+                    }
+                });
+                popupMenu.add(tmpItem);
+            }
+        }
+        return popupMenu;
     }
 }

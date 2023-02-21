@@ -245,9 +245,9 @@ public class TemplatesPanel extends JPanel {
                     int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
                     String savePath = templates.get(num).get("path");
                     if (savePath.contains("workflow")) {
-                        NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addWorkflows(savePath);
+                        NucleiApp.nuclei.settingsPanel.getActiveConfigAllPanel().addWorkflows(savePath);
                     } else {
-                        NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addTemplates(savePath);
+                        NucleiApp.nuclei.settingsPanel.getActiveConfigAllPanel().addTemplates(savePath);
                     }
                 }
             }

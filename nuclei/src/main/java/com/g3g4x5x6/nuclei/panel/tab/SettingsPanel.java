@@ -30,7 +30,7 @@ import static com.g3g4x5x6.nuclei.ultils.CommonUtil.getConfigPanels;
 @Slf4j
 public class SettingsPanel extends JPanel {
     public static JTabbedPane tabbedPane;
-    public ConfigAllPanel activeConfigAllPanel;
+    private ConfigAllPanel activeConfigAllPanel;
 
     public SettingsPanel() {
         this.setLayout(new BorderLayout());
@@ -39,6 +39,10 @@ public class SettingsPanel extends JPanel {
 
         // 加载配置
         load();
+    }
+
+    public ConfigAllPanel getActiveConfigAllPanel() {
+        return activeConfigAllPanel;
     }
 
     private void initTabbedPane() {
@@ -211,6 +215,10 @@ public class SettingsPanel extends JPanel {
                             tabbedPane.addTab(tmpPanel.getTitle(), new FlatSVGIcon("icons/output.svg"), tmpPanel);
                         }
                     });
+        }finally {
+            // 配置为当前活动目录，默认 Default
+            if (activeConfigAllPanel == null)
+                setActiveConfigPanel((ConfigAllPanel) tabbedPane.getComponentAt(0));
         }
     }
 }

@@ -20,6 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class CommonUtil {
     }
 
     public static Map<String, Object> getNucleiConfigObject() {
-        return NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.getNucleiConfig();
+        return NucleiApp.nuclei.settingsPanel.getActiveConfigAllPanel().getNucleiConfig();
     }
 
     public static String[] getTargets() {
@@ -180,4 +181,5 @@ public class CommonUtil {
             e.printStackTrace();
         }
     }
+
 }
