@@ -1,7 +1,7 @@
 package com.g3g4x5x6;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import com.g3g4x5x6.nuclei.NucleiFrame;
+import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.SneakyThrows;
@@ -14,8 +14,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -163,7 +161,7 @@ public class StartupFrame extends JFrame {
                     projectName = newTextField.getText().strip();
                     if (!projectName.equals("")) {
                         Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
-                        createProjectProperties(projectName);
+                        CommonUtil.createProjectStruct(projectName);
                     } else {
                         DialogUtil.warn("新建项目不能为空");
                     }
@@ -203,19 +201,9 @@ public class StartupFrame extends JFrame {
 
         // 项目配置文件不存在则创建
         if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName, "/", projectName + ".properties")))
-            createProjectProperties(projectName);
+            CommonUtil.createProjectStruct(projectName);
 
         return true;
-    }
-
-    private void createProjectProperties(String projectName) {
-        try {
-            InputStream nucleiIn = NucleiFrame.class.getClassLoader().getResourceAsStream("project.properties");
-            assert nucleiIn != null;
-            Files.copy(nucleiIn, Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName, "/", projectName + ".properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void next(String projectName) {

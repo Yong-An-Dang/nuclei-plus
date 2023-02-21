@@ -11,7 +11,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.util.LinkedList;
 
 
 @Slf4j
@@ -40,7 +39,7 @@ public class FofaBot extends FofaVo {
         qbase64 = "5Y2O6aG65L%2Bh5a6J";
         fields = "ip,host,port,title,domain,icp,city";
         page = "1";
-        size = "1000";
+        size = "100";
         full = String.valueOf(false);
     }
 

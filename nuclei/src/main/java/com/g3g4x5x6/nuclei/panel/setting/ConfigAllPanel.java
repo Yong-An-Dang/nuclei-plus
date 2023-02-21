@@ -90,6 +90,7 @@ public class ConfigAllPanel extends JPanel {
         }
         // 加载 Templates
         if (config.get("templates") != null){
+            configTemplatePanel.getTextArea().setText("");
             for( String line : (ArrayList<String>)config.get("templates")){
                 configTemplatePanel.addTemplates(line);
             }
@@ -97,6 +98,7 @@ public class ConfigAllPanel extends JPanel {
 
         // 加载 Workflows
         if (config.get("workflows") != null){
+            configWorkflowPanel.getTextArea().setText("");
             for( String line : (ArrayList<String>)config.get("workflows")){
                 configWorkflowPanel.addWorkflows(line);
             }

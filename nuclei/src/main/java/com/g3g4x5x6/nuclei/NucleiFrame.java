@@ -21,6 +21,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -132,6 +134,7 @@ public class NucleiFrame extends JFrame {
         JMenuItem newProjectItem = new JMenuItem("新建项目");
         newProjectItem.setIcon(new FlatSVGIcon("icons/newFolder.svg"));
         newProjectItem.addActionListener(new AbstractAction() {
+            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
                 String projectName = DialogUtil.input(NucleiFrame.this, "请输出项目名称（目录）");
@@ -139,6 +142,14 @@ public class NucleiFrame extends JFrame {
                 if (projectName != null) {
                     if (projectName.strip().equals(""))
                         DialogUtil.warn("【项目名称（目录）】不能为空");
+                    else {
+                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
+                        CommonUtil.createProjectStruct(projectName);
+
+                        NucleiApp.nuclei.dispose();
+                        NucleiConfig.projectName = projectName;
+                        NucleiApp.createGUI();
+                    }
                 }
             }
         });
@@ -149,7 +160,6 @@ public class NucleiFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 log.debug("打开项目");
-
             }
         });
 
@@ -244,7 +254,10 @@ public class NucleiFrame extends JFrame {
                     tmpItem.addActionListener(new AbstractAction() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            // TODO 打开已有项目
+                            // 打开已有项目
+                            NucleiApp.nuclei.dispose();
+                            NucleiConfig.projectName = project.getName();
+                            NucleiApp.createGUI();
                         }
                     });
                     openProjectMenu.add(tmpItem);

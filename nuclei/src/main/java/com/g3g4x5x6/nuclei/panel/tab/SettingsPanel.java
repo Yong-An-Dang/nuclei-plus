@@ -30,14 +30,15 @@ import static com.g3g4x5x6.nuclei.ultils.CommonUtil.getConfigPanels;
 @Slf4j
 public class SettingsPanel extends JPanel {
     public static JTabbedPane tabbedPane;
-
-    public ConfigAllPanel configAllPanel = new ConfigAllPanel();
-    public ConfigAllPanel activeConfigAllPanel = configAllPanel;
+    public ConfigAllPanel activeConfigAllPanel;
 
     public SettingsPanel() {
         this.setLayout(new BorderLayout());
 
         initTabbedPane();
+
+        // 加载配置
+        load();
     }
 
     private void initTabbedPane() {
@@ -50,17 +51,29 @@ public class SettingsPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int tabIndex = tabbedPane.getSelectedIndex();
                 if (tabIndex != 0) {
-                    tabbedPane.removeTabAt(tabIndex);
-                    // TODO 删除配置
+                    if (DialogUtil.yesOrNo(tabbedPane, "是否确认删除该配置？") == JOptionPane.YES_OPTION){
+                        // 删除配置
+                        String configName = tabbedPane.getTitleAt(tabIndex);
+                        try {
+                            Files.delete(Path.of(NucleiConfig.getWorkPath(), "projects", NucleiConfig.projectName, "config", configName + ".yaml"));
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                        // 移除面板
+                        tabbedPane.removeTabAt(tabIndex);
+                    }
                 }
             }
         });
         JMenuItem resetTabMenuItem = new JMenuItem("重置配置");
+        resetTabMenuItem.setToolTipText("重置选中的配置为最新保存的状态");
         resetTabMenuItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //重置为最新保存的配置
                 int tabIndex = tabbedPane.getSelectedIndex();
-                // TODO 读取重置为最新保存的配置
+                ConfigAllPanel tmpPanel = (ConfigAllPanel) tabbedPane.getComponentAt(tabIndex);
+                tmpPanel.loadConfigFromYaml(tabbedPane.getTitleAt(tabIndex));
             }
         });
 
@@ -81,9 +94,6 @@ public class SettingsPanel extends JPanel {
         });
 
         customComponents();
-
-        // 加载配置
-        load();
 
         this.add(tabbedPane, BorderLayout.CENTER);
     }
@@ -129,7 +139,7 @@ public class SettingsPanel extends JPanel {
         trailMenuBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                log.debug(String.valueOf(configAllPanel.getNucleiConfig()));
+                log.debug(String.valueOf(activeConfigAllPanel.getNucleiConfig()));
             }
         });
 
@@ -155,12 +165,16 @@ public class SettingsPanel extends JPanel {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         log.debug("应用选中分组");
+                        if (NucleiApp.nuclei.settingsPanel.activeConfigAllPanel == null){
+                            // 配置为当前活动目录，默认 Default
+                            setActiveConfigPanel((ConfigAllPanel) tabbedPane.getComponentAt(0));
+                        }
                         ArrayList<String> list = (ArrayList<String>) groupMap.get(key);
                         for (String pocPath : list) {
                             if (pocPath.contains("workflow")) {
-                                NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addWorkflows(pocPath);
+                                activeConfigAllPanel.addWorkflows(pocPath);
                             } else {
-                                NucleiApp.nuclei.settingsPanel.activeConfigAllPanel.addTemplates(pocPath);
+                                activeConfigAllPanel.addTemplates(pocPath);
                             }
                         }
                     }

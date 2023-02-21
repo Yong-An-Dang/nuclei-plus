@@ -163,4 +163,19 @@ public class CommonUtil {
         LinkedHashMap yamlMap = getMapFromYaml(String.valueOf(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml")));
         return yamlMap;
     }
+
+    public static void createProjectStruct(String projectName) {
+        try {
+            InputStream nucleiIn = NucleiFrame.class.getClassLoader().getResourceAsStream("project.properties");
+            assert nucleiIn != null;
+            Files.copy(nucleiIn, Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName, "/", projectName + ".properties"));
+
+            // 创建项目子配置目录
+            Files.createDirectories(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config"));
+            // 创建默认子配置
+            Files.createFile(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config", "Default.yaml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
