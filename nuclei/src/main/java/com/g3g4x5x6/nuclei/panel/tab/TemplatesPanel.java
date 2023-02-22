@@ -282,6 +282,12 @@ public class TemplatesPanel extends JPanel {
 
         JMenuItem manageGroupItem = new JMenuItem("管理分组");
         manageGroupItem.setIcon(new FlatSVGIcon("icons/GroupByPackage.svg"));
+        manageGroupItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DialogUtil.info("敬请期待！！！");
+            }
+        });
 
         JMenuItem createItem = new JMenuItem("新建分组");
         createItem.setIcon(new FlatSVGIcon("icons/addFolder.svg"));

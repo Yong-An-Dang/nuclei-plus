@@ -10,14 +10,14 @@ Nuclei is used to send requests across targets based on a template, leading to z
 #### Intro
 Functional enhancement based on nuclei
 
-#### Todo
+#### Support
 - [x] Support system tray
 - [x] Support project management
 - [x] Support configuration management
 - [x] Support template management
 - [x] Support template editing
-- [ ] Support internationalization, default `zh`
-- [ ] Support multiple network space engine interface search
+- [x] Support internationalization, default `zh`
+- [x] Support multiple network space engine interface search
 
 #### Build
 ```shell

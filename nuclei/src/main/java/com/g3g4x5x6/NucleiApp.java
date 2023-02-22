@@ -4,7 +4,6 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.DefaultTrayIcon;
 import com.g3g4x5x6.nuclei.NucleiFrame;
-import com.g3g4x5x6.nuclei.panel.dialog.WaitDialog;
 import com.g3g4x5x6.nuclei.ultils.CheckUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Objects;
 
 import static java.awt.Frame.NORMAL;
@@ -58,6 +58,9 @@ public class NucleiApp {
     }
 
     public static void createGUI() {
+        // TO Debug
+//        Locale.setDefault(Locale.US);
+
         // 启动程序
         nuclei = new NucleiFrame();
         nuclei.setTitle(NucleiConfig.getProperty("nuclei.title") + " [" + NucleiConfig.projectName + "]");

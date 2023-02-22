@@ -52,18 +52,18 @@ public class NucleiFrame extends JFrame {
     public final StatusBar statusBar = new StatusBar();
 
     private JMenuBar menuBar;
-    private final JMenu fileMenu = new JMenu("开始");
-    private final JMenu settingsMenu = new JMenu("设置");
-    private final JMenu runMenu = new JMenu("运行");
-    private final JMenu pluginMenu = new JMenu("插件");
-    private final JMenu winMenu = new JMenu("窗口");
-    private final JMenu aboutMenu = new JMenu("关于");
+    private final JMenu fileMenu = new JMenu(L.M("bar.menu.open"));
+    private final JMenu settingsMenu = new JMenu(L.M("bar.menu.setting"));
+    private final JMenu runMenu = new JMenu(L.M("bar.menu.running"));
+    private final JMenu pluginMenu = new JMenu(L.M("bar.menu.plugin"));
+    private final JMenu winMenu = new JMenu(L.M("bar.menu.window"));
+    private final JMenu aboutMenu = new JMenu(L.M("bar.menu.about"));
 
     private final JPopupMenu trailPopupMenu = new JPopupMenu();
 
     public NucleiFrame() {
         this.setLayout(new BorderLayout());
-        this.setTitle(NucleiConfig.getProperty("nuclei.title"));
+        this.setTitle(L.M("app.title"));
         this.setSize(new Dimension(1200, 700));
         this.setPreferredSize(new Dimension(1200, 700));
         this.setLocationRelativeTo(null);
