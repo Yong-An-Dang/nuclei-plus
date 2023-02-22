@@ -4,9 +4,11 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.extras.components.FlatButton;
 import com.formdev.flatlaf.extras.components.FlatToggleButton;
 import com.g3g4x5x6.NucleiApp;
+import com.g3g4x5x6.nuclei.action.GroupByAction;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.dialog.EditorDialog;
+import com.g3g4x5x6.nuclei.panel.dialog.GroupDialog;
 import com.g3g4x5x6.nuclei.panel.search.SearchTabbedPanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
@@ -93,7 +95,7 @@ public class NucleiFrame extends JFrame {
 
         runMenu.add(new JMenuItem("敬请期待"));
         pluginMenu.add(new JMenuItem("敬请期待"));
-        winMenu.add(new JMenuItem("敬请期待"));
+        winMenu.add(new GroupByAction("自定义分组管理"));
 
         // 置顶图标按钮
         FlatToggleButton toggleButton = new FlatToggleButton();

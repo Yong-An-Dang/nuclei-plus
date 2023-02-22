@@ -7,6 +7,7 @@ import com.formdev.flatlaf.extras.components.FlatTriStateCheckBox;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
+import com.g3g4x5x6.nuclei.action.GroupByAction;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.dialog.GroupDialog;
 import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
@@ -283,14 +284,7 @@ public class TemplatesPanel extends JPanel {
 
         JMenuItem manageGroupItem = new JMenuItem("管理分组");
         manageGroupItem.setIcon(new FlatSVGIcon("icons/GroupByPackage.svg"));
-        manageGroupItem.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GroupDialog editorDialog = new GroupDialog(NucleiApp.nuclei);
-                editorDialog.setLocationRelativeTo(null);
-                editorDialog.setVisible(true);
-            }
-        });
+        manageGroupItem.addActionListener(new GroupByAction("自定义分组管理"));
 
         JMenuItem createItem = new JMenuItem("新建分组");
         createItem.setIcon(new FlatSVGIcon("icons/addFolder.svg"));
