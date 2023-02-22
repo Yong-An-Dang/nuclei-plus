@@ -47,6 +47,9 @@ public class NucleiApp {
     }
 
     public static void main(String[] args) {
+        // TO Debug
+        // Locale.setDefault(Locale.US);
+
         // 检查运行环境
         CheckUtil.checkEnv();
 
@@ -58,9 +61,6 @@ public class NucleiApp {
     }
 
     public static void createGUI() {
-        // TO Debug
-//        Locale.setDefault(Locale.US);
-
         // 启动程序
         nuclei = new NucleiFrame();
         nuclei.setTitle(NucleiConfig.getProperty("nuclei.title") + " [" + NucleiConfig.projectName + "]");
