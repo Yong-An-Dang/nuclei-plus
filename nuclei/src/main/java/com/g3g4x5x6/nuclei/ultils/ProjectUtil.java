@@ -13,7 +13,7 @@ import java.nio.file.Path;
 @Slf4j
 public class ProjectUtil {
     @SneakyThrows
-    public static String reportDir(){
+    public static String reportDir() {
         String projectName = NucleiConfig.projectName;
         if (!Files.exists(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "report")))
             Files.createDirectories(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "report"));
@@ -21,14 +21,16 @@ public class ProjectUtil {
     }
 
     @SneakyThrows
-    public static String configDir(){
+    public static String configDir() {
         String projectName = NucleiConfig.projectName;
         if (!Files.exists(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config")))
             Files.createDirectories(Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config"));
         return Path.of(NucleiConfig.getWorkPath(), "projects", projectName, "config").toString();
     }
 
-
+    public static String ConfigFilePath() {
+        return Path.of(NucleiConfig.getWorkPath(), "projects", NucleiConfig.projectName, NucleiConfig.projectName + ".properties").toString();
+    }
 
     public static void newProject(String projectName) throws IOException {
         NucleiConfig.projectName = projectName;

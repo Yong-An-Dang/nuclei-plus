@@ -209,14 +209,44 @@ public class StartupFrame extends JFrame {
         return true;
     }
 
+    private void showDisabledStatus(){
+        okBtn.setEnabled(false);
+        okBtn.setText("加载中...");
+
+        defaultBtn.setEnabled(false);
+        newBtn.setEnabled(false);
+        selectBtn.setEnabled(false);
+
+        newTextField.setEnabled(false);
+        projectsTable.setEnabled(false);
+
+    }
+
     private void next(String projectName) {
         NucleiConfig.projectName = projectName;
 
         // 启动主程序
-        SwingUtilities.invokeLater(NucleiApp::createGUI);
+//        SwingUtilities.invokeLater(NucleiApp::createGUI);
+        // 创建后台任务
+        SwingWorker<String, Object> task = new SwingWorker<String, Object>() {
+            @Override
+            protected String doInBackground() {
+                // 程序加载进度条
+                showDisabledStatus();
 
-        // 取消启动窗口
-        StartupFrame.this.dispose();
+                NucleiApp.createGUI();
+                return "OK";
+            }
+            @Override
+            protected void done() {
+                // 此方法将在后台任务完成后在事件调度线程中被回调
+                // 取消启动窗口
+                StartupFrame.this.dispose();
+            }
+        };
+
+        // 启动任务
+        task.execute();
     }
 
     public static void setup() {

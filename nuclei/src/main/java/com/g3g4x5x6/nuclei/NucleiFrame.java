@@ -6,6 +6,7 @@ import com.formdev.flatlaf.extras.components.FlatToggleButton;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.dialog.EditorDialog;
 import com.g3g4x5x6.nuclei.panel.search.SearchTabbedPanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
@@ -272,9 +273,26 @@ public class NucleiFrame extends JFrame {
         // settingsMenu
         JMenuItem globalItem = new JMenuItem("全局配置");
         globalItem.setToolTipText("程序全局配置");
+        globalItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EditorDialog editorDialog = new EditorDialog(null, "全局配置",
+                        Path.of(NucleiConfig.getConfigPath(), "nuclei.properties").toString());
+                editorDialog.setLocationRelativeTo(null);
+                editorDialog.setVisible(true);
+            }
+        });
 
         JMenuItem projectItem = new JMenuItem("项目配置");
         projectItem.setToolTipText("项目配置");
+        projectItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                EditorDialog editorDialog = new EditorDialog(null, "项目配置", ProjectUtil.ConfigFilePath());
+                editorDialog.setLocationRelativeTo(null);
+                editorDialog.setVisible(true);
+            }
+        });
 
         settingsMenu.add(globalItem);
         settingsMenu.addSeparator();

@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.DefaultTrayIcon;
 import com.g3g4x5x6.nuclei.NucleiFrame;
+import com.g3g4x5x6.nuclei.panel.dialog.WaitDialog;
 import com.g3g4x5x6.nuclei.ultils.CheckUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import lombok.extern.slf4j.Slf4j;
