@@ -30,7 +30,6 @@ public class GroupDialog extends JDialog {
     private final JTable templatesTable;
     private final DefaultTableModel tableModel;
     private JPopupMenu tablePopMenu;
-    private TableRowSorter<DefaultTableModel> sorter;
 
     public GroupDialog(JFrame frame){
         super(frame);
@@ -130,7 +129,7 @@ public class GroupDialog extends JDialog {
 
     private void renderTable(ArrayList<String> filePath){
         // 搜索功能
-        sorter = new TableRowSorter<>(tableModel);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
         templatesTable.setRowSorter(sorter);
 
         tableModel.setRowCount(0);

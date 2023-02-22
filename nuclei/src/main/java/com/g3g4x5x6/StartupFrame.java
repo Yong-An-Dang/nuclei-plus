@@ -210,6 +210,8 @@ public class StartupFrame extends JFrame {
     }
 
     private void showDisabledStatus(){
+        cancelBtn.setEnabled(false);
+
         okBtn.setEnabled(false);
         okBtn.setText("加载中...");
 
@@ -225,10 +227,8 @@ public class StartupFrame extends JFrame {
     private void next(String projectName) {
         NucleiConfig.projectName = projectName;
 
-        // 启动主程序
-//        SwingUtilities.invokeLater(NucleiApp::createGUI);
-        // 创建后台任务
-        SwingWorker<String, Object> task = new SwingWorker<String, Object>() {
+        // 创建后台任务，启动主程序
+        SwingWorker<String, Object> task = new SwingWorker<>() {
             @Override
             protected String doInBackground() {
                 // 程序加载进度条
@@ -237,6 +237,7 @@ public class StartupFrame extends JFrame {
                 NucleiApp.createGUI();
                 return "OK";
             }
+
             @Override
             protected void done() {
                 // 此方法将在后台任务完成后在事件调度线程中被回调
