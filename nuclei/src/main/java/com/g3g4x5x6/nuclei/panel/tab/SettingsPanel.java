@@ -2,11 +2,10 @@ package com.g3g4x5x6.nuclei.panel.tab;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
-import com.g3g4x5x6.nuclei.panel.setting.*;
+import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
-import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,10 +19,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
-import static com.formdev.flatlaf.FlatClientProperties.*;
+import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TRAILING_COMPONENT;
 import static com.g3g4x5x6.nuclei.ultils.CommonUtil.getConfigPanels;
 
 
@@ -221,4 +219,5 @@ public class SettingsPanel extends JPanel {
                 setActiveConfigPanel((ConfigAllPanel) tabbedPane.getComponentAt(0));
         }
     }
+
 }

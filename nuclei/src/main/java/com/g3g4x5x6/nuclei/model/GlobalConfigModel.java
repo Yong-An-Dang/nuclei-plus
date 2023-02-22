@@ -1,6 +1,5 @@
 package com.g3g4x5x6.nuclei.model;
 
-import com.g3g4x5x6.NucleiApp;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +8,12 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 
+@Deprecated
 @Slf4j
 @Data
 public class GlobalConfigModel {

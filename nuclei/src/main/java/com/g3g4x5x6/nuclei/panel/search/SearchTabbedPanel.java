@@ -1,13 +1,10 @@
 package com.g3g4x5x6.nuclei.panel.search;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.panel.search.fofa.Fofa;
 import com.g3g4x5x6.nuclei.panel.search.hunter.Hunter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import static com.formdev.flatlaf.FlatClientProperties.TABBED_PANE_TRAILING_COMPONENT;
 

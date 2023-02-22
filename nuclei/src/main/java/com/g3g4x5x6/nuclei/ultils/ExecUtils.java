@@ -2,14 +2,12 @@ package com.g3g4x5x6.nuclei.ultils;
 
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
-import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
-import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class ExecUtils {
     public static void runGlobalNucleiConfig(ConsolePanel consolePanel){

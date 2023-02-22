@@ -10,7 +10,6 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
-import com.g3g4x5x6.nuclei.ultils.Base64Utils;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
 import lombok.extern.slf4j.Slf4j;

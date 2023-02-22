@@ -7,7 +7,6 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.search.SearchTabbedPanel;
-import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
 import com.g3g4x5x6.nuclei.ultils.*;

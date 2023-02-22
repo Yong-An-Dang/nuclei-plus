@@ -2,11 +2,9 @@ package com.g3g4x5x6.nuclei.panel.setting;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import javax.swing.*;
 import java.awt.*;

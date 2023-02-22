@@ -8,6 +8,7 @@ import com.formdev.flatlaf.icons.FlatSearchIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
@@ -16,7 +17,6 @@ import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.SafeConstructor;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -28,7 +28,10 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -237,7 +240,7 @@ public class TemplatesPanel extends JPanel {
 
         popupMenu.add(new JMenuItem("已选中PoC模板数：" + templatesTable.getSelectedRowCount()));
         popupMenu.addSeparator();
-        popupMenu.add(new AbstractAction("追加选中模板到活动配置") {
+        popupMenu.add(new AbstractAction("<html>追加选中模板到<font style='color:green'>活动配置</font></html>") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 log.debug("追加选中模板到活动配置");
@@ -253,6 +256,27 @@ public class TemplatesPanel extends JPanel {
             }
         });
 
+        JMenu toGroupByMenu = new JMenu("<html>追加选中模板到<font style='color:blue'>配置</font></html>");
+        LinkedHashMap<String, ConfigAllPanel> configAllPanelLinkedHashMap = CommonUtil.getConfigPanels();
+        for (String title : configAllPanelLinkedHashMap.keySet()){
+            JMenuItem tmpItem = new JMenuItem(title);
+            tmpItem.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ConfigAllPanel configAllPanel = configAllPanelLinkedHashMap.get(title);
+                    for (int index : templatesTable.getSelectedRows()) {
+                        int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
+                        String savePath = templates.get(num).get("path");
+                        if (savePath.contains("workflow")) {
+                            configAllPanel.addWorkflows(savePath);
+                        } else {
+                            configAllPanel.addTemplates(savePath);
+                        }
+                    }
+                }
+            });
+            toGroupByMenu.add(tmpItem);
+        }
 
         JMenu groupByMenu = new JMenu("自定义分组管理");
 
@@ -371,6 +395,7 @@ public class TemplatesPanel extends JPanel {
             }
         });
 
+        popupMenu.add(toGroupByMenu);
         popupMenu.addSeparator();
         popupMenu.add(groupByMenu);
         popupMenu.addSeparator();

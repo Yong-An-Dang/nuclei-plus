@@ -1,7 +1,5 @@
 package com.g3g4x5x6.nuclei.panel.search.hunter;
 
-import com.g3g4x5x6.nuclei.ultils.Base64Utils;
-
 public class HunterVo {
     /**
      * 查询参数
