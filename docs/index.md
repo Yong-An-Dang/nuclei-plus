@@ -18,12 +18,12 @@ See [the security file](https://github.com/Yong-An-Dang/nuclei-plus/security/pol
 
 ## :material-checkbox-multiple-marked: 功能特点
 
-- [ ] 支持项目管理
-- [ ] 支持配置管理
-- [ ] 支持模板管理
-- [ ] 支持模板编辑
-- [ ] 支持国际化，默认 `zh`
-- [ ] 支持多种网络空间引擎接口搜索
+- [x] 支持项目管理
+- [x] 支持配置管理
+- [x] 支持模板管理
+- [x] 支持模板编辑
+- [x] 支持国际化，默认 `zh`
+- [x] 支持多种网络空间引擎接口搜索
 
 ## :fontawesome-brands-guilded: 项目构建
 
