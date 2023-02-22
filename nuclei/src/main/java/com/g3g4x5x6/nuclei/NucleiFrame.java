@@ -276,7 +276,7 @@ public class NucleiFrame extends JFrame {
         globalItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditorDialog editorDialog = new EditorDialog(null, "全局配置",
+                EditorDialog editorDialog = new EditorDialog(NucleiFrame.this, "全局配置",
                         Path.of(NucleiConfig.getConfigPath(), "nuclei.properties").toString());
                 editorDialog.setLocationRelativeTo(null);
                 editorDialog.setVisible(true);
@@ -288,7 +288,7 @@ public class NucleiFrame extends JFrame {
         projectItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditorDialog editorDialog = new EditorDialog(null, "项目配置", ProjectUtil.ConfigFilePath());
+                EditorDialog editorDialog = new EditorDialog(NucleiFrame.this, "项目配置", ProjectUtil.ConfigFilePath());
                 editorDialog.setLocationRelativeTo(null);
                 editorDialog.setVisible(true);
             }
