@@ -91,6 +91,10 @@ public class NucleiFrame extends JFrame {
         menuBar.add(winMenu);
         menuBar.add(aboutMenu);
 
+        runMenu.add(new JMenuItem("敬请期待"));
+        pluginMenu.add(new JMenuItem("敬请期待"));
+        winMenu.add(new JMenuItem("敬请期待"));
+
         // 置顶图标按钮
         FlatToggleButton toggleButton = new FlatToggleButton();
         toggleButton.setIcon(new FlatSVGIcon("icons/pinTab.svg"));

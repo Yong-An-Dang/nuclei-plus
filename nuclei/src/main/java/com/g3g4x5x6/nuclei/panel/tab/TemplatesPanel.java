@@ -8,6 +8,7 @@ import com.formdev.flatlaf.icons.FlatSearchIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.dialog.GroupDialog;
 import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
@@ -285,7 +286,9 @@ public class TemplatesPanel extends JPanel {
         manageGroupItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DialogUtil.info("敬请期待！！！");
+                GroupDialog editorDialog = new GroupDialog(NucleiApp.nuclei);
+                editorDialog.setLocationRelativeTo(null);
+                editorDialog.setVisible(true);
             }
         });
 
@@ -301,7 +304,7 @@ public class TemplatesPanel extends JPanel {
                         if (groupMap == null)
                             groupMap = new LinkedHashMap<>();
                         groupMap.put(groupName, new LinkedList<String>());
-                        saveGroupToYaml();
+                        CommonUtil.saveGroupToYaml(groupMap);
                     } else {
                         DialogUtil.warn("已存在该分组！");
                     }
@@ -328,7 +331,7 @@ public class TemplatesPanel extends JPanel {
                             list.add(savePath);
                         }
                         groupMap.put(key, list);
-                        saveGroupToYaml();
+                        CommonUtil.saveGroupToYaml(groupMap);
                     }
                 });
                 groupByMenu.add(tmpItem);
@@ -498,34 +501,6 @@ public class TemplatesPanel extends JPanel {
         refreshDataForTable();
     }
 
-    private LinkedHashMap<String, String> getTemplate(String path) {
-        LinkedHashMap<String, String> templateInfo = new LinkedHashMap<>();
-        Map map = getMapFromYaml(path);
-        if (map != null) {
-            JSONObject jsonObject = new JSONObject(map);
-            JSONObject info = jsonObject.getJSONObject("info");
-
-            templateInfo.put("path", path);
-            templateInfo.put("id", jsonObject.getString("id") == null ? "空" : jsonObject.getString("id"));
-            templateInfo.put("name", info.getString("name"));
-            templateInfo.put("severity", info.getString("severity"));
-            templateInfo.put("author", info.getString("author"));
-            templateInfo.put("description", info.getString("description"));
-            templateInfo.put("reference", info.getString("reference"));
-            templateInfo.put("tags", info.getString("tags"));
-        } else {
-            templateInfo.put("path", path);
-            templateInfo.put("id", "空");
-            templateInfo.put("name", "空");
-            templateInfo.put("severity", "空");
-            templateInfo.put("author", "空");
-            templateInfo.put("description", "空");
-            templateInfo.put("reference", "空");
-            templateInfo.put("tags", "空");
-        }
-        return templateInfo;
-    }
-
     private Map getMapFromYaml(String path) {
         Map template;
         InputStream inputStream = null;
@@ -566,7 +541,7 @@ public class TemplatesPanel extends JPanel {
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                 if (file.toString().endsWith(".yaml")) {
-                    templates.add(getTemplate(file.toString()));
+                    templates.add(CommonUtil.getTemplateInfoFromPath(file.toString()));
                 }
                 return FileVisitResult.CONTINUE;
             }
@@ -797,15 +772,5 @@ public class TemplatesPanel extends JPanel {
 
         config.put("target", CommonUtil.getTargets());
         return config;
-    }
-
-    @SneakyThrows
-    private void saveGroupToYaml() {
-        if (!Files.exists(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml")))
-            Files.createFile(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"));
-        if (groupMap != null) {
-            Yaml yaml = new Yaml();
-            yaml.dump(groupMap, new FileWriter(String.valueOf(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"))));
-        }
     }
 }

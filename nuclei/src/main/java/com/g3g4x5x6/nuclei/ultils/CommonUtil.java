@@ -1,5 +1,6 @@
 package com.g3g4x5x6.nuclei.ultils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
@@ -164,6 +165,16 @@ public class CommonUtil {
         return yamlMap;
     }
 
+    @SneakyThrows
+    public static void saveGroupToYaml(LinkedHashMap<String, Object> groupMap) {
+        if (!Files.exists(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml")))
+            Files.createFile(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"));
+        if (groupMap != null) {
+            Yaml yaml = new Yaml();
+            yaml.dump(groupMap, new FileWriter(String.valueOf(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"))));
+        }
+    }
+
     public static void createProjectStruct(String projectName) {
         try {
             InputStream nucleiIn = NucleiFrame.class.getClassLoader().getResourceAsStream("project.properties");
@@ -179,6 +190,36 @@ public class CommonUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public static LinkedHashMap<String, String> getTemplateInfoFromPath(String path) {
+        LinkedHashMap<String, String> templateInfo = new LinkedHashMap<>();
+        Map map = getMapFromYaml(path);
+        if (map != null) {
+            JSONObject jsonObject = new JSONObject(map);
+            JSONObject info = jsonObject.getJSONObject("info");
+
+            templateInfo.put("path", path);
+            templateInfo.put("id", jsonObject.getString("id") == null ? "空" : jsonObject.getString("id"));
+            templateInfo.put("name", info.getString("name"));
+            templateInfo.put("severity", info.getString("severity"));
+            templateInfo.put("author", info.getString("author"));
+            templateInfo.put("description", info.getString("description"));
+            templateInfo.put("reference", info.getString("reference"));
+            templateInfo.put("tags", info.getString("tags"));
+        } else {
+            templateInfo.put("path", path);
+            templateInfo.put("id", "空");
+            templateInfo.put("name", "空");
+            templateInfo.put("severity", "空");
+            templateInfo.put("author", "空");
+            templateInfo.put("description", "空");
+            templateInfo.put("reference", "空");
+            templateInfo.put("tags", "空");
+        }
+        return templateInfo;
     }
 
 }
