@@ -69,6 +69,19 @@ public class FofaBot extends FofaVo {
         return url;
     }
 
+    public String packageUrl(String qbase64, String page, int size) {
+        String url = apiUrl +
+                "?email=" + email +
+                "&key=" + secret +
+                "&qbase64=" + qbase64 +
+                "&fields=" + fields +
+                "&page=" + page +
+                "&size=" + size +
+                "&full=" + full;
+        log.debug("Query URL: " + url);
+        return url;
+    }
+
     public JSONArray get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
@@ -79,6 +92,18 @@ public class FofaBot extends FofaVo {
             return jsonObject.getJSONArray("results");
         }
     }
+
+    public int getSize(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            JSONObject jsonObject = JSON.parseObject(response.body().string());
+            return jsonObject.getInteger("size");
+        }
+    }
+
 
     @Override
     public String toString() {
