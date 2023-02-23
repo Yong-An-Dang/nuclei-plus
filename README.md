@@ -27,13 +27,14 @@ Functional enhancement based on nuclei
 #### Build
 
 ```shell
+# JDK11+
 mvn clean package -DskipTests
 ```
 
 #### Run
 
 ```shell
-# jdk11+
+# JDK11+
 java -jar nuclei-x.x.x.jar
 ```
 
