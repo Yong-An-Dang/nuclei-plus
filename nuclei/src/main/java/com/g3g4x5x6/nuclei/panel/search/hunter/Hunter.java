@@ -11,6 +11,7 @@ import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
+import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,6 +40,12 @@ public class Hunter extends JPanel {
     private JToolBar toolBar;
     private final JTextField inputField = new JTextField();
     private final JTextField searchField = new JTextField();
+    private JButton predBtn = new JButton("上一页");
+    private JButton nextBtn = new JButton("下一页");
+    private JButton pageLabel = new JButton("1");
+    private String page = "1";
+    private int size = 0; // 查询总数量
+
     // intentionBulb.svg intentionBulbGrey.svg
     private final JButton statusBtn = new JButton(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
 
@@ -76,17 +83,7 @@ public class Hunter extends JPanel {
         inputField.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSearchIcon());
         inputField.registerKeyboardAction(e -> {
             // 搜索动作
-            String qbase64 = Base64.encode(inputField.getText());
-            statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulb.svg"));
-            new Thread(() -> {
-                try {
-                    resetTableRows(hunterBot.get(hunterBot.packageUrl(qbase64)));
-                    statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
-                } catch (IOException ex) {
-                    log.error(ex.getMessage());
-                    statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
-                }
-            }).start();
+            search("1");
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), JComponent.WHEN_FOCUSED);
 
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Filter... & Enter");
@@ -100,13 +97,85 @@ public class Hunter extends JPanel {
 
         statusBtn.setToolTipText("搜素状态提示灯");
 
+        predBtn.setSelected(true);
+        predBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pageLabel.getText().equals("1"))
+                    predBtn.setEnabled(false);
+                else {
+                    page = String.valueOf(Integer.parseInt(page) - 1);
+                    search(page);
+                }
+            }
+        });
+
+        pageLabel.setEnabled(false);
+        pageLabel.setSelected(true);
+        pageLabel.setToolTipText("当前在第 " + page + " 页，双击跳转指定页数（不能超出API限制）");
+        pageLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    if (!inputField.getText().strip().equals("") && size > 100){
+                        int pages = size / 100 + 1;
+                        String page = DialogUtil.input(pageLabel, String.format("搜索结果总数量：%s，总页数：%s\n请输入跳转页数：", size, size / 100 + 1));
+                        if (page == null || Integer.parseInt(page) > pages)
+                            DialogUtil.warn("输入超出范围");
+                        else
+                            search(page);
+                    } else {
+                        DialogUtil.warn("请输入查询参数，并确保进行一次查询！！！");
+                    }
+                }
+            }
+        });
+
+        nextBtn.setSelected(true);
+        nextBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page = String.valueOf(Integer.parseInt(page) + 1);
+                search(page);
+                predBtn.setEnabled(true);
+            }
+        });
+
 
         toolBar.add(inputField);
         toolBar.addSeparator();
         toolBar.add(statusBtn);
+        toolBar.add(predBtn);
+        toolBar.add(pageLabel);
+        toolBar.add(nextBtn);
         toolBar.addSeparator();
         toolBar.add(searchField);
         this.add(toolBar, BorderLayout.NORTH);
+    }
+
+    private void search(String p) {
+        // 搜索动作
+        String qbase64 = Base64.encode(inputField.getText());
+        statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulb.svg"));
+        new Thread(() -> {
+            try {
+                JSONObject jsonObject = hunterBot.getData(hunterBot.packageUrl(qbase64, p));
+                size = jsonObject.getInteger("total");
+                JSONArray jsonArray = jsonObject.getJSONArray("arr");
+                if (jsonArray != null){
+                    resetTableRows(jsonArray);
+                    statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
+                    // 设置当前页
+                    page = p;
+                    pageLabel.setText(page);
+                } else {
+                    DialogUtil.warn("出现错误，返回为空，可能已超出查询限制！！！");
+                }
+            } catch (IOException ex) {
+                log.error(ex.getMessage());
+                statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
+            }
+        }).start();
     }
 
     private void initTable() {

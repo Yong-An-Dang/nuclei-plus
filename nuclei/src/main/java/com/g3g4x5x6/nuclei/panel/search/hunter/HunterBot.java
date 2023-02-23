@@ -45,6 +45,28 @@ public class HunterBot extends HunterVo {
         return url;
     }
 
+    public String packageUrl(String qbase64, String page) {
+        String url = apiUrl +
+                "?api-key=" + secret +
+                "&search=" + qbase64 +
+                "&page=" + page +
+                "&page_size=" + size +
+                "&is_web=" + 3;         // 资产类型，1代表”web资产“，2代表”非web资产“，3代表”全部“
+        log.debug("Query URL: " + url);
+        return url;
+    }
+
+    public String packageUrl(String qbase64, String page, int size) {
+        String url = apiUrl +
+                "?api-key=" + secret +
+                "&search=" + qbase64 +
+                "&page=" + page +
+                "&page_size=" + size +
+                "&is_web=" + 3;         // 资产类型，1代表”web资产“，2代表”非web资产“，3代表”全部“
+        log.debug("Query URL: " + url);
+        return url;
+    }
+
     public JSONArray get(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
@@ -56,6 +78,32 @@ public class HunterBot extends HunterVo {
             return null;
         }
         return jsonObject.getJSONObject("data").getJSONArray("arr");
+    }
+
+    public int getSize(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        Response response = client.newCall(request).execute();
+        JSONObject jsonObject = JSON.parseObject(response.body().string());
+        if (!jsonObject.getString("code").equals("200")){
+            log.error(jsonObject.toJSONString());
+            return 0;
+        }
+        return jsonObject.getJSONObject("data").getInteger("total");
+    }
+
+    public JSONObject getData(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        Response response = client.newCall(request).execute();
+        JSONObject jsonObject = JSON.parseObject(response.body().string());
+        if (!jsonObject.getString("code").equals("200")){
+            log.error(jsonObject.toJSONString());
+            return null;
+        }
+        return jsonObject.getJSONObject("data");
     }
 
     @Override

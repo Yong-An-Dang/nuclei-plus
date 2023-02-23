@@ -93,6 +93,16 @@ public class FofaBot extends FofaVo {
         }
     }
 
+    public JSONObject getData(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return JSON.parseObject(response.body().string());
+        }
+    }
+
     public int getSize(String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)

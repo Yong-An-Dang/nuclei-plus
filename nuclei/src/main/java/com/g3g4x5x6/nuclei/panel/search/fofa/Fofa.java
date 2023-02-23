@@ -2,6 +2,7 @@ package com.g3g4x5x6.nuclei.panel.search.fofa;
 
 import cn.hutool.core.codec.Base64;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
@@ -192,8 +193,9 @@ public class Fofa extends JPanel {
         statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulb.svg"));
         new Thread(() -> {
             try {
-                size = fofaBot.getSize(fofaBot.packageUrl(qbase64, p, 1));
-                JSONArray jsonArray = fofaBot.get(fofaBot.packageUrl(qbase64, p));
+                JSONObject jsonObject = fofaBot.getData(fofaBot.packageUrl(qbase64, p));
+                size = jsonObject.getInteger("size");
+                JSONArray jsonArray = jsonObject.getJSONArray("results");
                 if (jsonArray != null){
                     resetTableRows(jsonArray);
                     statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
