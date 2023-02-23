@@ -28,6 +28,11 @@ Functional enhancement based on nuclei
 
 ```shell
 # JDK11+
+
+# set a new version
+mvn versions:set -DnewVersion=7.0.0
+
+# package
 mvn clean package -DskipTests
 ```
 

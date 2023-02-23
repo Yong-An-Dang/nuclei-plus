@@ -5,7 +5,7 @@
     <parent>
         <artifactId>nuclei-plus</artifactId>
         <groupId>com.g3g4x5x6</groupId>
-        <version>7.0.0</version>
+        <version>6.6.9</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -106,13 +106,13 @@
         <dependency>
             <groupId>com.g3g4x5x6</groupId>
             <artifactId>typeahead</artifactId>
-            <version>7.0.0</version>
+            <version>6.6.9</version>
         </dependency>
 
         <dependency>
             <groupId>com.g3g4x5x6</groupId>
             <artifactId>terminal</artifactId>
-            <version>7.0.0</version>
+            <version>6.6.9</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

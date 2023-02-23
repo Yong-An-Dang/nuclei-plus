@@ -7,7 +7,7 @@
     <groupId>com.g3g4x5x6</groupId>
     <artifactId>nuclei-plus</artifactId>
     <packaging>pom</packaging>
-    <version>7.0.0</version>
+    <version>6.6.9</version>
     <modules>
         <module>nuclei</module>
         <module>terminal</module>
