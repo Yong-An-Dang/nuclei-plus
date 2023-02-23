@@ -38,6 +38,12 @@ public class Fofa extends JPanel {
     private JToolBar toolBar;
     private final JTextField inputField = new JTextField();
     private final JTextField searchField = new JTextField();
+    private JButton predBtn = new JButton("上一页");
+    private JButton nextBtn = new JButton("下一页");
+    private JButton pageLabel = new JButton("1");
+    private String page = "1";
+    private int size; // 查询总数量
+
     // intentionBulb.svg intentionBulbGrey.svg
     private final JButton statusBtn = new JButton(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
 
@@ -74,18 +80,7 @@ public class Fofa extends JPanel {
         inputField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Fofa Search... & Enter");
         inputField.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSearchIcon());
         inputField.registerKeyboardAction(e -> {
-            // 搜索动作
-            String qbase64 = Base64.encode(inputField.getText());
-            statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulb.svg"));
-            new Thread(() -> {
-                try {
-                    resetTableRows(fofaBot.get(fofaBot.packageUrl(qbase64)));
-                    statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
-                } catch (IOException ex) {
-                    log.error(ex.getMessage());
-                    statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
-                }
-            }).start();
+            search("1");
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), JComponent.WHEN_FOCUSED);
 
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Filter... & Enter");
@@ -99,10 +94,39 @@ public class Fofa extends JPanel {
 
         statusBtn.setToolTipText("搜素状态提示灯");
 
+        predBtn.setSelected(true);
+        predBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (pageLabel.getText().equals("1"))
+                    predBtn.setEnabled(false);
+                else {
+                    page = String.valueOf(Integer.parseInt(page) - 1);
+                    search(page);
+                }
+            }
+        });
+
+        pageLabel.setEnabled(false);
+        pageLabel.setSelected(true);
+        pageLabel.setToolTipText("当前在第 " + page + " 页");
+
+        nextBtn.setSelected(true);
+        nextBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                page = String.valueOf(Integer.parseInt(page) + 1);
+                search(page);
+                predBtn.setEnabled(true);
+            }
+        });
 
         toolBar.add(inputField);
         toolBar.addSeparator();
         toolBar.add(statusBtn);
+        toolBar.add(predBtn);
+        toolBar.add(pageLabel);
+        toolBar.add(nextBtn);
         toolBar.addSeparator();
         toolBar.add(searchField);
         this.add(toolBar, BorderLayout.NORTH);
@@ -142,6 +166,24 @@ public class Fofa extends JPanel {
             }
         });
         this.add(scrollPane, BorderLayout.CENTER);
+    }
+
+    private void search(String p){
+        // 搜索动作
+        String qbase64 = Base64.encode(inputField.getText());
+        statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulb.svg"));
+        new Thread(() -> {
+            try {
+                resetTableRows(fofaBot.get(fofaBot.packageUrl(qbase64, p)));
+                statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
+                // 设置当前页
+                page = p;
+                pageLabel.setText(page);
+            } catch (IOException ex) {
+                log.error(ex.getMessage());
+                statusBtn.setIcon(new FlatSVGIcon("icons/intentionBulbGrey.svg"));
+            }
+        }).start();
     }
 
     private void resetTableRows(JSONArray jsonArray) {
