@@ -1,6 +1,8 @@
 # 欢迎使用 `nuclei-plus`
 
-Nuclei 用于基于模板跨目标发送请求，从而实现零误报并提供对大量主机的快速扫描。 Nuclei 提供对各种协议的扫描，包括 TCP、DNS、HTTP、SSL、File、Whois、Websocket、Headless 等。凭借强大而灵活的模板，Nuclei 可用于对各种安全检查进行建模。
+`nuclei ` 用于基于模板跨目标发送请求，从而实现零误报并提供对大量主机的快速扫描。 `nuclei ` 提供对各种协议的扫描，包括 TCP、DNS、HTTP、SSL、File、Whois、Websocket、Headless 等。凭借强大而灵活的模板，`nuclei ` 可用于对各种安全检查进行建模。
+
+`nuclei-plus` 基于 `nuclei ` 之上实现的功能增强的GUI图形界面，并集成了模板管理、项目管理、配置管理和网络空间搜索引擎（Fofa、Hunter）等功能，从而提升 `nuclei ` 的使用体验。
 
 > 开源不易，且行且珍惜！
 
@@ -22,7 +24,7 @@ See [the security file](https://github.com/Yong-An-Dang/nuclei-plus/security/pol
 - [x] 支持配置管理
 - [x] 支持模板管理
 - [x] 支持模板编辑
-- [x] 支持国际化，默认 `zh`
+- [x] 支持国际化，默认 `zh_CN`
 - [x] 支持多种网络空间引擎接口搜索
 
 ## :fontawesome-brands-guilded: 项目构建
@@ -45,10 +47,10 @@ See [the security file](https://github.com/Yong-An-Dang/nuclei-plus/security/pol
 
 ## :material-download: 下载安装
 
-> 暂无发布版本
+> 暂无可安装版本
 
 1. 跨平台运行文件： `jar`
-1. Windows平台安装包：`exe`
+1. <del>Windows平台安装包：`exe`</del>
 1. 其他平台暂无安装包，请使用 `jar` 包，[去下载](https://github.com/Yong-An-Dang/nuclei-plus)
 
 
