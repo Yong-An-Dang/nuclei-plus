@@ -54,11 +54,6 @@ See [doc](https://yong-an-dang.github.io/nuclei-plus/)
 - [JFormDesigner/FlatLaf](https://github.com/JFormDesigner/FlatLaf)
 - more...
 
-#### Reference
-
-- [bit4woo/Fiora](https://github.com/bit4woo/Fiora)
-- more...
-
 #### [Thanks to `JetBrains` for their support](https://jb.gg/OpenSourceSupport)
 
 ![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
