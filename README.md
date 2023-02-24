@@ -21,7 +21,7 @@ Functional enhancement based on nuclei
 - [x] Support configuration management
 - [x] Support template management
 - [x] Support template editing
-- [x] Support internationalization, default `zh`
+- [x] Support internationalization, default `zh_CN`
 - [x] Support multiple network space engine interface search
 
 #### Build
