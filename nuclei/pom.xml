@@ -49,6 +49,16 @@
             <artifactId>autocomplete</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.jediterm</groupId>
+            <artifactId>jediterm-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jediterm</groupId>
+            <artifactId>jediterm-ui</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -104,24 +114,14 @@
         </dependency>
 
         <dependency>
-            <groupId>com.g3g4x5x6</groupId>
-            <artifactId>typeahead</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.g3g4x5x6</groupId>
-            <artifactId>terminal</artifactId>
-            <version>7.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
         </dependency>
     </dependencies>
 

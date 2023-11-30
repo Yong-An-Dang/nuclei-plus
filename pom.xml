@@ -10,8 +10,6 @@
     <version>7.0.0</version>
     <modules>
         <module>nuclei</module>
-        <module>terminal</module>
-        <module>typeahead</module>
     </modules>
 
     <properties>
@@ -29,10 +27,8 @@
         <rstaui-version>3.1.3</rstaui-version>
         <autocomplete-version>3.1.4</autocomplete-version>
 
-        <sshd-core-version>2.8.0</sshd-core-version>
-        <sshd-sftp-version>2.8.0</sshd-sftp-version>
-        <sshd-common-version>2.8.0</sshd-common-version>
-        <sshd-putty-version>2.8.0</sshd-putty-version>
+        <jediterm-core-version>3.20-SNAPSHOT</jediterm-core-version>
+        <jediterm-ui-version>3.20-SNAPSHOT</jediterm-ui-version>
 
         <slf4j-api-version>2.0.0-alpha5</slf4j-api-version>
         <slf4j-log4j12-version>2.0.0-alpha5</slf4j-log4j12-version>
@@ -46,19 +42,25 @@
 
         <snakeyaml-version>1.30</snakeyaml-version>
         <commons-io-version>2.11.0</commons-io-version>
-        <commons-net-version>3.7.2</commons-net-version>
-        <jSerialComm-version>2.7.0</jSerialComm-version>
 
         <junit-jupiter-version>RELEASE</junit-jupiter-version>
 
         <jcolor-version>5.5.1</jcolor-version>
-        <hutool-version>5.8.4</hutool-version>
+        <hutool-version>5.8.18</hutool-version>
 
         <lombok-version>1.18.24</lombok-version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io-version}</version>
+            </dependency>
+
             <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -119,6 +121,18 @@
             </dependency>
 
             <dependency>
+                <groupId>com.jediterm</groupId>
+                <artifactId>jediterm-core</artifactId>
+                <version>${jediterm-core-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jediterm</groupId>
+                <artifactId>jediterm-ui</artifactId>
+                <version>${jediterm-ui-version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j-api-version}</version>
@@ -167,13 +181,6 @@
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml-version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io-version}</version>
             </dependency>
 
             <dependency>

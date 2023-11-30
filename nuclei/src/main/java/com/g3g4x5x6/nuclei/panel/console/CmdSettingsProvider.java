@@ -1,5 +1,7 @@
 package com.g3g4x5x6.nuclei.panel.console;
 
+import com.g3g4x5x6.nuclei.ui.terminal.settings.ColorScheme;
+import com.g3g4x5x6.nuclei.ui.terminal.settings.DefaultColorPaletteImpl;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
 import com.jediterm.terminal.HyperlinkStyle;
 import com.jediterm.terminal.TerminalColor;
@@ -8,8 +10,6 @@ import com.jediterm.terminal.emulator.ColorPalette;
 import com.jediterm.terminal.model.TerminalTypeAheadSettings;
 import com.jediterm.terminal.ui.TerminalActionPresentation;
 import com.jediterm.terminal.ui.UIUtil;
-import com.jediterm.terminal.ui.settings.ColorScheme;
-import com.jediterm.terminal.ui.settings.DefaultColorPaletteImpl;
 import com.jediterm.terminal.ui.settings.SettingsProvider;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +33,16 @@ public class CmdSettingsProvider implements SettingsProvider {
         return Float.parseFloat(NucleiConfig.getProperty("nuclei.line.space"));
     }
 
+    @Override
+    public boolean shouldDisableLineSpacingForAlternateScreenBuffer() {
+        return SettingsProvider.super.shouldDisableLineSpacingForAlternateScreenBuffer();
+    }
+
+    @Override
+    public boolean shouldFillCharacterBackgroundIncludingLineSpacing() {
+        return SettingsProvider.super.shouldFillCharacterBackgroundIncludingLineSpacing();
+    }
+
     @SneakyThrows
     public Font getTerminalFont() {
         String fontName;
@@ -51,7 +61,7 @@ public class CmdSettingsProvider implements SettingsProvider {
     @SneakyThrows
     public Font getTerminalChineseFont(){
         if (chineseFont == null){
-            chineseFont = Font.createFont(Font.PLAIN, Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("fonts/" + "NotoSansSC-Regular.otf")));
+            chineseFont = Font.createFont(Font.PLAIN, Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("fonts/Noto_Sans_SC/" + "NotoSansSC-Regular.otf")));
 //            chineseFont = new Font("宋体", Font.PLAIN, (int) this.getTerminalFontSize());
         }
         return chineseFont.deriveFont(Font.PLAIN, (int) this.getTerminalFontSize());
@@ -92,8 +102,9 @@ public class CmdSettingsProvider implements SettingsProvider {
         return new TextStyle(TerminalColor.rgb(200, 200, 200), TerminalColor.rgb(255, 255, 0));
     }
 
+    @Override
     public TextStyle getHyperlinkColor() {
-        return new TextStyle(TerminalColor.awt(Color.BLUE), TerminalColor.WHITE);
+        return null;
     }
 
     public HyperlinkStyle.HighlightMode getHyperlinkHighlightingMode() {
@@ -163,6 +174,11 @@ public class CmdSettingsProvider implements SettingsProvider {
     @NotNull
     public TerminalTypeAheadSettings getTypeAheadSettings() {
         return DefaultConsoleTypeAheadSettings.DEFAULT;
+    }
+
+    @Override
+    public boolean sendArrowKeysInAlternativeMode() {
+        return false;
     }
 
     @NotNull
