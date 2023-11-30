@@ -91,14 +91,14 @@ public class EditorPanel extends JPanel implements SearchListener {
     @SneakyThrows
     private String getTextFromSavePath() {
         StringBuilder str = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(savePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(savePath, StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 str.append(line);
                 str.append("\n");
             }
         } catch (IOException ioException) {
-            ioException.printStackTrace();
+            System.out.println(ioException.getMessage());
             DialogUtil.error(ioException.getMessage());
         }
         return str.toString();
