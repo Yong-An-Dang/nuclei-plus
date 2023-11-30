@@ -2,7 +2,6 @@ package com.g3g4x5x6.nuclei.panel.console;
 
 import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
-import com.jediterm.terminal.Questioner;
 import com.jediterm.terminal.TtyConnector;
 import com.jediterm.terminal.ui.JediTermWidget;
 import com.jediterm.terminal.ui.UIUtil;
@@ -60,7 +59,7 @@ public class ConsolePanel extends JPanel {
                 String path = envs.get("Path") + ";" + Path.of(RunningPanel.nucleiPath);
                 envs = new HashMap<>(System.getenv());
                 envs.put("Path", path);
-                command = new String[]{"powershell.exe"};
+                command = new String[]{NucleiConfig.getProperty("nuclei.terminal.shell")};
             } else {
                 command = new String[]{"/bin/bash", "--login"};
                 envs = new HashMap<>(System.getenv());
@@ -81,11 +80,6 @@ public class ConsolePanel extends JPanel {
         public NucleiProcessTtyConnector(@NotNull PtyProcess process, @NotNull Charset charset) {
             super(process, charset);
             this.myProcess = process;
-        }
-
-        @Override
-        public boolean init(Questioner q) {
-            return true;
         }
 
         public void resize(@NotNull Dimension termWinSize) {

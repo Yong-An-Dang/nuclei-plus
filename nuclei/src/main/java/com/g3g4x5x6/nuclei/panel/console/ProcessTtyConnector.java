@@ -1,6 +1,5 @@
 package com.g3g4x5x6.nuclei.panel.console;
 
-import com.jediterm.terminal.Questioner;
 import com.jediterm.terminal.TtyConnector;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -92,10 +91,6 @@ public abstract class ProcessTtyConnector implements TtyConnector {
     @Deprecated
     protected Dimension getPendingPixelSize() {
         return new Dimension(0, 0);
-    }
-
-    public boolean init(Questioner q) {
-        return this.isConnected();
     }
 
     public void close() {
