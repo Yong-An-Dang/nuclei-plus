@@ -44,7 +44,6 @@
         <pty4j-version>0.11.4</pty4j-version>
         <annotations-version>RELEASE</annotations-version>
 
-        <tightvnc-jviewer-version>2.8.3</tightvnc-jviewer-version>
         <snakeyaml-version>1.30</snakeyaml-version>
         <commons-io-version>2.11.0</commons-io-version>
         <commons-net-version>3.7.2</commons-net-version>
@@ -119,34 +118,6 @@
                 <version>${autocomplete-version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.sshd/sshd-core -->
-            <dependency>
-                <groupId>org.apache.sshd</groupId>
-                <artifactId>sshd-core</artifactId>
-                <version>${sshd-core-version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.sshd/sshd-sftp -->
-            <dependency>
-                <groupId>org.apache.sshd</groupId>
-                <artifactId>sshd-sftp</artifactId>
-                <version>${sshd-sftp-version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.sshd/sshd-common -->
-            <dependency>
-                <groupId>org.apache.sshd</groupId>
-                <artifactId>sshd-common</artifactId>
-                <version>${sshd-common-version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/org.apache.sshd/sshd-putty -->
-            <dependency>
-                <groupId>org.apache.sshd</groupId>
-                <artifactId>sshd-putty</artifactId>
-                <version>${sshd-putty-version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -191,12 +162,6 @@
                 <version>${annotations-version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.g3g4x5x6</groupId>
-                <artifactId>tightvnc-jviewer</artifactId>
-                <version>${tightvnc-jviewer-version}</version>
-            </dependency>
-
             <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
             <dependency>
                 <groupId>org.yaml</groupId>
@@ -209,21 +174,6 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons-io-version}</version>
-            </dependency>
-
-            <!-- Supported protocols include: Echo, Finger, FTP, NNTP, NTP, POP3(S), SMTP(S), Telnet, Whois  -->
-            <!-- https://mvnrepository.com/artifact/commons-net/commons-net -->
-            <dependency>
-                <groupId>commons-net</groupId>
-                <artifactId>commons-net</artifactId>
-                <version>${commons-net-version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/com.fazecast/jSerialComm -->
-            <dependency>
-                <groupId>com.fazecast</groupId>
-                <artifactId>jSerialComm</artifactId>
-                <version>${jSerialComm-version}</version>
             </dependency>
 
             <dependency>
