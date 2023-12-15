@@ -1,3 +1,9 @@
+---
+title: "Java 中的国际化"
+date: 2023-12-15
+---
+
+
 # Java 中的国际化
 
 > 转载自：[Java中的国际化 ](https://www.cnblogs.com/jingmoxukong/p/5146027.html)
