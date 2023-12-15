@@ -37,7 +37,7 @@
         <jna-version>5.8.0</jna-version>
         <qqwry-java-version>0.8.0</qqwry-java-version>
 
-        <pty4j-version>0.11.4</pty4j-version>
+        <pty4j-version>0.12.13</pty4j-version>
         <annotations-version>RELEASE</annotations-version>
 
         <snakeyaml-version>2.2</snakeyaml-version>
