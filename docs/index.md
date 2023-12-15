@@ -71,15 +71,6 @@ See [the security file](https://github.com/Yong-An-Dang/nuclei-plus/security/pol
 
 
 
-
-
-## :octicons-project-16: 参考项目
-
-- [bit4woo/Fiora](https://github.com/bit4woo/Fiora)
-- more...
-
-
-
 ## :man_supervillain: 维护者
 
 [@G3G4X5X6](https://github.com/G3G4X5X6)
