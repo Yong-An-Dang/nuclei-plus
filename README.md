@@ -50,7 +50,7 @@ java -jar nuclei-x.x.x.jar
 
 #### Usage
 
-See [doc](https://yong-an-dang.github.io/nuclei-plus/)
+See [Document](https://yong-an-dang.github.io/nuclei-plus/)
 
 #### Dependency
 
