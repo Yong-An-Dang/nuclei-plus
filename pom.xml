@@ -30,7 +30,7 @@
         <jediterm-core-version>3.20-SNAPSHOT</jediterm-core-version>
         <jediterm-ui-version>3.20-SNAPSHOT</jediterm-ui-version>
 
-        <slf4j-api-version>2.0.0-alpha5</slf4j-api-version>
+        <slf4j-api-version>2.0.7</slf4j-api-version>
         <slf4j-reload4j-version>2.0.9</slf4j-reload4j-version>
 
         <poi-version>5.0.0</poi-version>
@@ -142,7 +142,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-reload4j</artifactId>
                 <version>${slf4j-reload4j-version}</version>
-                <scope>test</scope>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
             <dependency>
