@@ -3,7 +3,7 @@
   <parent>
     <artifactId>nuclei-plus</artifactId>
     <groupId>com.g3g4x5x6</groupId>
-    <version>7.0.0</version>
+    <version>7.1.2</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>nuclei</artifactId>
@@ -18,6 +18,18 @@
     </resources>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-reload4j</artifactId>
+      <version>2.0.9</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>reload4j</artifactId>
+          <groupId>ch.qos.reload4j</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

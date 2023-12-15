@@ -7,6 +7,7 @@ import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.panel.tab.SettingsPanel;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 
@@ -103,7 +104,7 @@ public class CommonUtil {
         if (!Files.exists(Path.of(savePath)))
             Files.createDirectories(new File(savePath).getParentFile().toPath());
 
-        Yaml yaml = new Yaml(new SafeConstructor());
+        Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         yaml.dump(config, new FileWriter(savePath));
         return new File(savePath).getCanonicalPath();
     }
@@ -191,7 +192,6 @@ public class CommonUtil {
             e.printStackTrace();
         }
     }
-
 
 
     public static LinkedHashMap<String, String> getTemplateInfoFromPath(String path) {
