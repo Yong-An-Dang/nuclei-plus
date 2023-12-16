@@ -8,7 +8,6 @@ import com.g3g4x5x6.nuclei.action.GroupByAction;
 import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.dialog.EditorDialog;
-import com.g3g4x5x6.nuclei.panel.dialog.GroupDialog;
 import com.g3g4x5x6.nuclei.panel.search.SearchTabbedPanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
@@ -95,23 +94,23 @@ public class NucleiFrame extends JFrame {
 
         runMenu.add(new JMenuItem("敬请期待"));
         pluginMenu.add(new JMenuItem("敬请期待"));
-        winMenu.add(new GroupByAction("自定义分组管理"));
+        winMenu.add(new GroupByAction(L.M("bar.menu.window.custom.group")));
 
         // 置顶图标按钮
         FlatToggleButton toggleButton = new FlatToggleButton();
         toggleButton.setIcon(new FlatSVGIcon("icons/pinTab.svg"));
         toggleButton.setButtonType(FlatButton.ButtonType.toolBarButton);
-        toggleButton.setToolTipText("窗口置顶");
+        toggleButton.setToolTipText(L.M("bar.menu.icon.tips.always.enable"));
         toggleButton.setFocusable(false);
         toggleButton.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (toggleButton.isSelected()) {
                     setAlwaysOnTop(true);
-                    toggleButton.setToolTipText("取消置顶");
+                    toggleButton.setToolTipText(L.M("bar.menu.icon.tips.always.disable"));
                 } else {
                     setAlwaysOnTop(false);
-                    toggleButton.setToolTipText("窗口置顶");
+                    toggleButton.setToolTipText(L.M("bar.menu.icon.tips.always.enable"));
                 }
             }
         });
@@ -122,7 +121,7 @@ public class NucleiFrame extends JFrame {
         closeBtn.setButtonType(FlatButton.ButtonType.toolBarButton);
         closeBtn.setFocusable(false);
         closeBtn.addActionListener(e -> {
-            int i = JOptionPane.showConfirmDialog(NucleiApp.nuclei, "是否确认退出程序？", "退出", JOptionPane.OK_CANCEL_OPTION);
+            int i = JOptionPane.showConfirmDialog(NucleiApp.nuclei, L.M("bar.menu.icon.quit.question"), L.M("bar.menu.icon.quit.title"), JOptionPane.OK_CANCEL_OPTION);
             if (i == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
@@ -139,7 +138,7 @@ public class NucleiFrame extends JFrame {
 
     private void initMenu() {
         // fileMenu
-        JMenuItem newProjectItem = new JMenuItem("新建项目");
+        JMenuItem newProjectItem = new JMenuItem(L.M("bar.menu.open.new"));
         newProjectItem.setIcon(new FlatSVGIcon("icons/newFolder.svg"));
         newProjectItem.addActionListener(new AbstractAction() {
             @SneakyThrows
@@ -162,7 +161,7 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenu openProjectMenu = new JMenu("打开项目");
+        JMenu openProjectMenu = new JMenu(L.M("bar.menu.open.open"));
         openProjectMenu.setIcon(new FlatSVGIcon("icons/menu-open.svg"));
         openProjectMenu.addActionListener(new AbstractAction() {
             @Override
@@ -171,7 +170,7 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem openSpaceItem = new JMenuItem("工作目录");
+        JMenuItem openSpaceItem = new JMenuItem(L.M("bar.menu.open.dir.workspace"));
         openSpaceItem.setIcon(new FlatSVGIcon("icons/moduleDirectory.svg"));
         openSpaceItem.addActionListener(new AbstractAction() {
             @Override
@@ -186,7 +185,7 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem openTemplateItem = new JMenuItem("模板目录");
+        JMenuItem openTemplateItem = new JMenuItem(L.M("bar.menu.open.dir.templates"));
         openTemplateItem.setIcon(new FlatSVGIcon("icons/moduleDirectory.svg"));
         openTemplateItem.addActionListener(new AbstractAction() {
             @Override
@@ -201,7 +200,7 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem openProjectDirItem = new JMenuItem("项目目录");
+        JMenuItem openProjectDirItem = new JMenuItem(L.M("bar.menu.open.dir.projects"));
         openProjectDirItem.setIcon(new FlatSVGIcon("icons/moduleDirectory.svg"));
         openProjectDirItem.addActionListener(new AbstractAction() {
             @Override
@@ -216,7 +215,7 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem openReportDirItem = new JMenuItem("报告目录");
+        JMenuItem openReportDirItem = new JMenuItem(L.M("bar.menu.open.dir.reports"));
         openReportDirItem.setIcon(new FlatSVGIcon("icons/moduleDirectory.svg"));
         openReportDirItem.addActionListener(new AbstractAction() {
             @Override
@@ -232,8 +231,7 @@ public class NucleiFrame extends JFrame {
         });
 
         // Quit
-        JMenuItem quitItem = new JMenuItem("退出程序");
-        quitItem.setToolTipText("退出程序");
+        JMenuItem quitItem = new JMenuItem(L.M("bar.menu.open.quit"));
         quitItem.setIcon(new FlatSVGIcon("icons/exit.svg"));
         quitItem.addActionListener(new AbstractAction() {
             @Override
@@ -270,15 +268,15 @@ public class NucleiFrame extends JFrame {
                     });
                     openProjectMenu.add(tmpItem);
                 }
-                if (openProjectMenu.getItemCount() == 0){
+                if (openProjectMenu.getItemCount() == 0) {
                     openProjectMenu.add(new JMenuItem("<空>"));
                 }
             }
         });
 
         // settingsMenu
-        JMenuItem globalItem = new JMenuItem("全局配置");
-        globalItem.setToolTipText("程序全局配置");
+        JMenuItem globalItem = new JMenuItem(L.M("bar.menu.setting.global"));
+        globalItem.setToolTipText(L.M("bar.menu.setting.global.tips"));
         globalItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -289,8 +287,8 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem projectItem = new JMenuItem("项目配置");
-        projectItem.setToolTipText("项目配置");
+        JMenuItem projectItem = new JMenuItem(L.M("bar.menu.setting.project"));
+        projectItem.setToolTipText(L.M("bar.menu.setting.project.tips"));
         projectItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -305,7 +303,7 @@ public class NucleiFrame extends JFrame {
         settingsMenu.add(projectItem);
 
         // help
-        JMenuItem helpItem = new JMenuItem("帮助 nuclei -h");
+        JMenuItem helpItem = new JMenuItem(L.M("bar.menu.about.help"));
         helpItem.setIcon(new FlatSVGIcon("icons/help.svg"));
         helpItem.addActionListener(new AbstractAction() {
             @Override
@@ -335,7 +333,7 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem supportItem = new JMenuItem("技术支持");
+        JMenuItem supportItem = new JMenuItem(L.M("bar.menu.about.support"));
         supportItem.setToolTipText("https://yong-an-dang.github.io/nuclei-plus/");
         supportItem.setIcon(new FlatSVGIcon("icons/cwmInvite.svg"));
         supportItem.addActionListener(new AbstractAction() {
@@ -346,7 +344,7 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem aboutItem = new JMenuItem("关于 nuclei-plus");
+        JMenuItem aboutItem = new JMenuItem(L.M("bar.menu.about.nuclei-plus"));
         aboutItem.setToolTipText("https://github.com/Yong-An-Dang/nuclei-plus");
         aboutItem.setIcon(new FlatSVGIcon("icons/cwmInvite.svg"));
         aboutItem.addActionListener(new AbstractAction() {
@@ -610,7 +608,7 @@ public class NucleiFrame extends JFrame {
         return runningPanel;
     }
 
-    private JPopupMenu createPopupMenu(){
+    private JPopupMenu createPopupMenu() {
 
         JPopupMenu popupMenu = new JPopupMenu();
         LinkedHashMap<String, Object> groupMap = CommonUtil.loadGroupByMap();
