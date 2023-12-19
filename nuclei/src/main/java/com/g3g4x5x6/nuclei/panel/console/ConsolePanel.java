@@ -53,7 +53,6 @@ public class ConsolePanel extends JPanel {
     private static @NotNull TtyConnector createTtyConnector() {
         try {
             Map<String, String> envs = System.getenv();
-            log.debug(envs.toString());
             String[] command;
             if (UIUtil.isWindows) {
                 String path = envs.get("Path") + ";" + Path.of(RunningPanel.nucleiPath);
@@ -61,10 +60,14 @@ public class ConsolePanel extends JPanel {
                 envs.put("Path", path);
                 command = new String[]{NucleiConfig.getProperty("nuclei.terminal.shell")};
             } else {
-                command = new String[]{"/bin/bash", "--login"};
+                String path = envs.get("PATH") + ";" + Path.of(RunningPanel.nucleiPath);
                 envs = new HashMap<>(System.getenv());
                 envs.put("TERM", "xterm-256color");
+                envs.put("PATH", path);
+                command = new String[]{"/bin/bash", "--login"};
+
             }
+            log.debug(envs.toString());
             PtyProcess process = new PtyProcessBuilder().setDirectory(NucleiConfig.getWorkPath()).setCommand(command).setEnvironment(envs).start();
 
             return new NucleiProcessTtyConnector(process, StandardCharsets.UTF_8);
