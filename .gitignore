@@ -31,3 +31,4 @@ terminal/buildNumber.properties
 nuclei/buildNumber.properties
 .idea
 .idea/workspace.xml
+/pom.xml.versionsBackup

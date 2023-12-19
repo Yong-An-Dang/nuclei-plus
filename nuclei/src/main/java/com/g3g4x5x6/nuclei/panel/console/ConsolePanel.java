@@ -64,7 +64,7 @@ public class ConsolePanel extends JPanel {
                 envs = new HashMap<>(System.getenv());
                 envs.put("TERM", "xterm-256color");
                 envs.put("PATH", path);
-                command = new String[]{"/bin/bash", "--login"};
+                command = new String[]{"/bin/bash"};
 
             }
             log.debug(envs.toString());
