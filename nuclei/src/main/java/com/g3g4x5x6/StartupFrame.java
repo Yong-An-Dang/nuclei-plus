@@ -19,6 +19,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 
 @Slf4j
@@ -242,7 +243,20 @@ public class StartupFrame extends JFrame {
             protected void done() {
                 // 此方法将在后台任务完成后在事件调度线程中被回调
                 // 取消启动窗口
-                StartupFrame.this.dispose();
+                try {
+                    String result = get();  // 获取 doInBackground 的返回值
+                    if ("OK".equals(result)) {
+                        log.debug("已执行：NucleiApp.createGUI();");
+                        StartupFrame.this.dispose();
+                        log.debug("已执行：StartupFrame.this.dispose();");
+                    }
+                } catch (InterruptedException e) {
+                    // 处理中断异常
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    // 处理执行异常
+                    e.printStackTrace();
+                }
             }
         };
 

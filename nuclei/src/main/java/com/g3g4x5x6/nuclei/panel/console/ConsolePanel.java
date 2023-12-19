@@ -60,7 +60,8 @@ public class ConsolePanel extends JPanel {
                 envs.put("Path", path);
                 command = new String[]{NucleiConfig.getProperty("nuclei.terminal.shell")};
             } else {
-                String path = envs.get("PATH") + ";" + Path.of(RunningPanel.nucleiPath);
+                // 注意拼接符
+                String path = envs.get("PATH") + ":" + Path.of(RunningPanel.nucleiPath);
                 envs = new HashMap<>(System.getenv());
                 envs.put("TERM", "xterm-256color");
                 envs.put("PATH", path);

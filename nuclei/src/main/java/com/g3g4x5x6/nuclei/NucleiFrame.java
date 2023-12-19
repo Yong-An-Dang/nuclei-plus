@@ -94,7 +94,8 @@ public class NucleiFrame extends JFrame {
 
         runMenu.add(new JMenuItem("敬请期待"));
         pluginMenu.add(new JMenuItem("敬请期待"));
-        winMenu.add(new GroupByAction(L.M("bar.menu.window.custom.group")));
+//        winMenu.add(new GroupByAction(L.M("bar.menu.window.custom.group")));
+        winMenu.add(new GroupByAction("自定义分组管理"));
 
         // 置顶图标按钮
         FlatToggleButton toggleButton = new FlatToggleButton();
