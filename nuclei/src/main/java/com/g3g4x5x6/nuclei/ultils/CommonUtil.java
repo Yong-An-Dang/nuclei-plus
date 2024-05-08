@@ -154,6 +154,7 @@ public class CommonUtil {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (Exception exception) {
+            // 自动跳过格式不正确的模板
             exception.printStackTrace();
         }
         return yamlMap;
