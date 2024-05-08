@@ -101,8 +101,7 @@ public class CommonUtil {
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
         String savePath = NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName + "/temp/config_" + format.format(new Date()) + ".yaml";
-        if (!Files.exists(Path.of(savePath)))
-            Files.createDirectories(new File(savePath).getParentFile().toPath());
+        if (!Files.exists(Path.of(savePath))) Files.createDirectories(new File(savePath).getParentFile().toPath());
 
         Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
         yaml.dump(config, new FileWriter(savePath));
@@ -143,18 +142,20 @@ public class CommonUtil {
 
     @SneakyThrows
     public static LinkedHashMap getMapFromYaml(String path) {
-        if (!Files.exists(Path.of(path)))
-            Files.createFile(Path.of(path));
-        LinkedHashMap yamlMap;
-        InputStream inputStream = null;
+        if (!Files.exists(Path.of(path))) Files.createFile(Path.of(path));
+
+        LinkedHashMap yamlMap = new LinkedHashMap<>();
+        InputStream inputStream;
         try {
             inputStream = new FileInputStream(path);
+            // 调基础工具类的方法
+            Yaml yaml = new Yaml();
+            yamlMap = yaml.loadAs(inputStream, LinkedHashMap.class);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
-        // 调基础工具类的方法
-        Yaml yaml = new Yaml();
-        yamlMap = yaml.loadAs(inputStream, LinkedHashMap.class);
         return yamlMap;
     }
 
@@ -197,7 +198,7 @@ public class CommonUtil {
     public static LinkedHashMap<String, String> getTemplateInfoFromPath(String path) {
         LinkedHashMap<String, String> templateInfo = new LinkedHashMap<>();
         Map map = getMapFromYaml(path);
-        if (map != null) {
+        if (map != null && !map.isEmpty()) {
             JSONObject jsonObject = new JSONObject(map);
             JSONObject info = jsonObject.getJSONObject("info");
 
