@@ -29,16 +29,11 @@ public abstract class ProcessTtyConnector implements TtyConnector {
         this.myProcess = process;
     }
 
-    @NotNull
-    public Process getProcess() {
-        return this.myProcess;
-    }
-
     public void resize(@NotNull Dimension termWinSize) {
         this.setPendingTermSize(termWinSize);
         if (this.isConnected()) {
             this.resizeImmediately();
-            this.setPendingTermSize((Dimension) null);
+            this.setPendingTermSize(null);
         }
 
     }

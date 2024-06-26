@@ -10,7 +10,7 @@ import com.jediterm.terminal.emulator.ColorPalette;
 import com.jediterm.terminal.model.TerminalTypeAheadSettings;
 import com.jediterm.terminal.ui.TerminalActionPresentation;
 import com.jediterm.terminal.ui.UIUtil;
-import com.jediterm.terminal.ui.settings.SettingsProvider;
+import com.jediterm.terminal.ui.settings.DefaultSettingsProvider;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,8 +19,7 @@ import java.awt.*;
 import java.util.Collections;
 import java.util.Objects;
 
-public class CmdSettingsProvider implements SettingsProvider {
-    private Font chineseFont;
+public class CmdSettingsProvider extends DefaultSettingsProvider {
 
     private final ColorScheme colorScheme = new ColorScheme(NucleiConfig.getProperty("nuclei.color.scheme"));
 
@@ -33,38 +32,10 @@ public class CmdSettingsProvider implements SettingsProvider {
         return Float.parseFloat(NucleiConfig.getProperty("nuclei.line.space"));
     }
 
-    @Override
-    public boolean shouldDisableLineSpacingForAlternateScreenBuffer() {
-        return SettingsProvider.super.shouldDisableLineSpacingForAlternateScreenBuffer();
-    }
-
-    @Override
-    public boolean shouldFillCharacterBackgroundIncludingLineSpacing() {
-        return SettingsProvider.super.shouldFillCharacterBackgroundIncludingLineSpacing();
-    }
-
     @SneakyThrows
     public Font getTerminalFont() {
-        String fontName;
-        if (UIUtil.isWindows) {
-            fontName = NucleiConfig.getProperty("nuclei.font");
-        } else if (UIUtil.isMac) {
-            fontName = "Menlo";
-        } else {
-            fontName = "Monospaced";
-        }
-        return new Font(fontName, Font.BOLD, (int) this.getTerminalFontSize());
-//        Font myFont = Font.createFont(Font.PLAIN, Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("fonts/" + "CascadiaCode.ttf")));
-//        return myFont.deriveFont(Font.PLAIN, (int) this.getTerminalFontSize());
-    }
-
-    @SneakyThrows
-    public Font getTerminalChineseFont(){
-        if (chineseFont == null){
-            chineseFont = Font.createFont(Font.PLAIN, Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("fonts/Noto_Sans_SC/" + "NotoSansSC-Regular.otf")));
-//            chineseFont = new Font("宋体", Font.PLAIN, (int) this.getTerminalFontSize());
-        }
-        return chineseFont.deriveFont(Font.PLAIN, (int) this.getTerminalFontSize());
+        Font myFont = Font.createFont(Font.PLAIN, Objects.requireNonNull(this.getClass().getClassLoader().getResourceAsStream("fonts/SarasaMono-TTF-1.0.13/" + "SarasaMonoSC-Regular.ttf")));
+        return myFont.deriveFont(Font.PLAIN, (int) this.getTerminalFontSize());
     }
 
     public float getTerminalFontSize() {
@@ -73,29 +44,11 @@ public class CmdSettingsProvider implements SettingsProvider {
 
     @Override
     public TextStyle getDefaultStyle() {
-        return new TextStyle(
-                TerminalColor.rgb(
-                        colorScheme.getForegroundColor().getRed(),
-                        colorScheme.getForegroundColor().getGreen(),
-                        colorScheme.getForegroundColor().getBlue()),
-                TerminalColor.rgb(
-                        colorScheme.getBackgroundColor().getRed(),
-                        colorScheme.getBackgroundColor().getGreen(),
-                        colorScheme.getBackgroundColor().getBlue())
-        );
+        return new TextStyle(TerminalColor.rgb(colorScheme.getForegroundColor().getRed(), colorScheme.getForegroundColor().getGreen(), colorScheme.getForegroundColor().getBlue()), TerminalColor.rgb(colorScheme.getBackgroundColor().getRed(), colorScheme.getBackgroundColor().getGreen(), colorScheme.getBackgroundColor().getBlue()));
     }
 
     public TextStyle getSelectionColor() {
-        return new TextStyle(
-                TerminalColor.rgb(
-                        colorScheme.getForegroundColor().getRed(),
-                        colorScheme.getForegroundColor().getGreen(),
-                        colorScheme.getForegroundColor().getBlue()),
-                TerminalColor.rgb(
-                        colorScheme.getSelectedColor().getRed(),
-                        colorScheme.getSelectedColor().getGreen(),
-                        colorScheme.getSelectedColor().getBlue())
-        );
+        return new TextStyle(TerminalColor.rgb(colorScheme.getForegroundColor().getRed(), colorScheme.getForegroundColor().getGreen(), colorScheme.getForegroundColor().getBlue()), TerminalColor.rgb(colorScheme.getSelectedColor().getRed(), colorScheme.getSelectedColor().getGreen(), colorScheme.getSelectedColor().getBlue()));
     }
 
     public TextStyle getFoundPatternColor() {
