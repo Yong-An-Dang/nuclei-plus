@@ -1,5 +1,6 @@
 package com.g3g4x5x6.nuclei.panel.tab;
 
+import cn.hutool.core.io.CharsetDetector;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
@@ -25,10 +26,7 @@ import org.fife.ui.rtextarea.SearchResult;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,6 +53,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
     private String title = "NewTemplate.yaml";
     private String tips = "Nuclei's Template";
     private String savePath = "";
+    private String encoding = "utf-8";
     private final String uuid = UUID.randomUUID().toString();
 
     private FlatSVGIcon icon = new FlatSVGIcon("icons/file-yaml.svg");
@@ -105,8 +104,11 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
 
     @SneakyThrows
     private String getTextFromSavePath() {
+        // 文件编码检测
+        encoding = CharsetDetector.detect(new File(savePath)).name();
+
         StringBuilder str = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new FileReader(savePath))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(savePath), encoding))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 str.append(line);
@@ -411,11 +413,11 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         this.icon = icon;
     }
 
-    public void setTextArea(String text){
+    public void setTextArea(String text) {
         this.textArea.setText(text);
     }
 
-    public void setSyntaxEditingStyle(String style){
+    public void setSyntaxEditingStyle(String style) {
         this.textArea.setSyntaxEditingStyle(style);
     }
 
@@ -449,8 +451,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
                 break;
             case REPLACE_ALL:
                 result = SearchEngine.replaceAll(textArea, context);
-                JOptionPane.showMessageDialog(null, result.getCount() +
-                        " occurrences replaced.");
+                JOptionPane.showMessageDialog(null, result.getCount() + " occurrences replaced.");
                 break;
         }
 
@@ -492,6 +493,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         private RSyntaxTextArea textArea = TextAreaUtils.createTextArea();
         private JToolBar toolBar = new JToolBar();
         private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
+
         public EditorPanel() {
             this.setLayout(new BorderLayout());
 
@@ -510,7 +512,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
             lineWrapBtn.addActionListener(e -> textArea.setLineWrap(lineWrapBtn.isSelected()));
         }
 
-        public String getText(){
+        public String getText() {
             return textArea.getText();
         }
     }
