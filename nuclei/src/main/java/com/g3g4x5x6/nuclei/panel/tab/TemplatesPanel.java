@@ -135,15 +135,7 @@ public class TemplatesPanel extends JPanel {
                 return false;
             }
         };
-        String[] columnNames = {
-                "#",
-                "templates_id",
-                "templates_name",
-                "templates_severity",
-                "templates_tags",
-                "templates_author",
-                "templates_description",
-                "templates_reference"};
+        String[] columnNames = {"#", "templates_id", "templates_name", "templates_severity", "templates_tags", "templates_author", "templates_description", "templates_reference"};
         tableModel.setColumnIdentifiers(columnNames);
         templatesTable.setModel(tableModel);
         refreshDataForTable();
@@ -230,11 +222,9 @@ public class TemplatesPanel extends JPanel {
         searchField.putClientProperty(FlatClientProperties.PLACEHOLDER_TEXT, "Search, Enter");
         searchField.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_ICON, new FlatSearchIcon());
         searchField.registerKeyboardAction(e -> {
-                    String searchKeyWord = searchField.getText().strip();
-                    sorter.setRowFilter(RowFilter.regexFilter(searchKeyWord));
-                },
-                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
-                JComponent.WHEN_FOCUSED);
+            String searchKeyWord = searchField.getText().strip();
+            sorter.setRowFilter(RowFilter.regexFilter(searchKeyWord));
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), JComponent.WHEN_FOCUSED);
     }
 
     private JPopupMenu createTablePopMenu() {
@@ -260,7 +250,7 @@ public class TemplatesPanel extends JPanel {
 
         JMenu toGroupByMenu = new JMenu("<html>追加选中模板到<font style='color:blue'>配置</font></html>");
         LinkedHashMap<String, ConfigAllPanel> configAllPanelLinkedHashMap = CommonUtil.getConfigPanels();
-        for (String title : configAllPanelLinkedHashMap.keySet()){
+        for (String title : configAllPanelLinkedHashMap.keySet()) {
             JMenuItem tmpItem = new JMenuItem(title);
             tmpItem.addActionListener(new AbstractAction() {
                 @Override
@@ -295,8 +285,7 @@ public class TemplatesPanel extends JPanel {
                 String groupName = DialogUtil.input(createItem, "请输入分组名称：");
                 if (groupName != null && !groupName.strip().equals("")) {
                     if (groupMap == null || groupMap.get(groupName.strip()) == null) {
-                        if (groupMap == null)
-                            groupMap = new LinkedHashMap<>();
+                        if (groupMap == null) groupMap = new LinkedHashMap<>();
                         groupMap.put(groupName, new LinkedList<String>());
                         CommonUtil.saveGroupToYaml(groupMap);
                     } else {
@@ -317,8 +306,7 @@ public class TemplatesPanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         log.debug("添加选择模板到选中分组中");
                         ArrayList<String> list = new ArrayList<>();
-                        if (groupMap.get(key) != null)
-                            list = (ArrayList<String>) groupMap.get(key);
+                        if (groupMap.get(key) != null) list = (ArrayList<String>) groupMap.get(key);
                         for (int index : templatesTable.getSelectedRows()) {
                             int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
                             String savePath = templates.get(num).get("path");
@@ -440,23 +428,19 @@ public class TemplatesPanel extends JPanel {
                 // Filter custom
                 String path = templateInfo.get("path");
                 if (customBtn.getState() == FlatTriStateCheckBox.State.INDETERMINATE) {
-                    if (!path.replace("\\", "/").startsWith(customPath))
-                        continue;
+                    if (!path.replace("\\", "/").startsWith(customPath)) continue;
                 }
                 if (!filterList.contains("custom")) {
-                    if (path.replace("\\", "/").startsWith(customPath))
-                        continue;
+                    if (path.replace("\\", "/").startsWith(customPath)) continue;
                 }
                 String tType = templateInfo.get("path").endsWith("workflow.yaml") ? "workflow" : "template";
                 // Filter template, workflow, custom
-                if (!filterList.contains(tType))
-                    continue;
+                if (!filterList.contains(tType)) continue;
                 String id = templateInfo.get("id");
                 String name = templateInfo.get("name");
                 String severity = templateInfo.get("severity");
                 // Filter Severity && workflow without severity
-                if (!filterList.contains(severity) && !tType.equalsIgnoreCase("workflow"))
-                    continue;
+                if (!filterList.contains(severity) && !tType.equalsIgnoreCase("workflow")) continue;
 
                 String author = templateInfo.get("author");
                 String description = templateInfo.get("description");
@@ -472,22 +456,14 @@ public class TemplatesPanel extends JPanel {
         filterList.clear();
 
         // 配置过滤器
-        if (infoBtn.isSelected())
-            filterList.add("info");
-        if (lowBtn.isSelected())
-            filterList.add("low");
-        if (mediumBtn.isSelected())
-            filterList.add("medium");
-        if (highBtn.isSelected())
-            filterList.add("high");
-        if (criticalBtn.isSelected())
-            filterList.add("critical");
-        if (templateBtn.isSelected())
-            filterList.add("template");
-        if (workflowBtn.isSelected())
-            filterList.add("workflow");
-        if (customBtn.isSelected())
-            filterList.add("custom");
+        if (infoBtn.isSelected()) filterList.add("info");
+        if (lowBtn.isSelected()) filterList.add("low");
+        if (mediumBtn.isSelected()) filterList.add("medium");
+        if (highBtn.isSelected()) filterList.add("high");
+        if (criticalBtn.isSelected()) filterList.add("critical");
+        if (templateBtn.isSelected()) filterList.add("template");
+        if (workflowBtn.isSelected()) filterList.add("workflow");
+        if (customBtn.isSelected()) filterList.add("custom");
 
         log.debug(filterList.toString());
 
@@ -638,8 +614,7 @@ public class TemplatesPanel extends JPanel {
                 log.debug(savePath);
             }
             savePath = savePath.strip();
-            if (clipboard == null)
-                clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
+            if (clipboard == null) clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
             Transferable transferable = new StringSelection(savePath);
             clipboard.setContents(transferable, null);
         }
@@ -674,8 +649,7 @@ public class TemplatesPanel extends JPanel {
                 // 配置对象
                 String configPath = CommonUtil.getNucleiConfigFile(getSelectedTemplateMap());
                 String command = "nuclei -config " + configPath + " -markdown-export " + ProjectUtil.reportDir();
-                if (clipboard == null)
-                    clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
+                if (clipboard == null) clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
                 Transferable transferable = new StringSelection(command);
                 clipboard.setContents(transferable, null);
 
@@ -699,8 +673,7 @@ public class TemplatesPanel extends JPanel {
                 String configPath = CommonUtil.getNucleiConfigFile(getSelectedTagMap());
                 // 复制命令到粘贴板
                 String command = "nuclei -config " + configPath + " -markdown-export " + ProjectUtil.reportDir();
-                if (clipboard == null)
-                    clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
+                if (clipboard == null) clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
                 Transferable transferable = new StringSelection(command);
                 clipboard.setContents(transferable, null);
                 // 跳转到命令行面板

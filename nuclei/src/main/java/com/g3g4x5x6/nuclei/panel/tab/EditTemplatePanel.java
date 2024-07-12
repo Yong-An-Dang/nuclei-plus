@@ -184,7 +184,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
                     try {
                         Files.write(Path.of(savePath), textArea.getText().getBytes(StandardCharsets.UTF_8));
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        log.error(ioException.getMessage());
                     }
                 }
                 NucleiFrame.frameTabbedPane.setTitleAt(NucleiFrame.frameTabbedPane.getSelectedIndex(), title);

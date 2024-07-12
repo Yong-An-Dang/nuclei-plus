@@ -3,13 +3,13 @@ package com.g3g4x5x6.nuclei.panel.console;
 import com.g3g4x5x6.nuclei.ui.terminal.settings.ColorScheme;
 import com.g3g4x5x6.nuclei.ui.terminal.settings.DefaultColorPaletteImpl;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.os.OsInfoUtil;
 import com.jediterm.terminal.HyperlinkStyle;
 import com.jediterm.terminal.TerminalColor;
 import com.jediterm.terminal.TextStyle;
 import com.jediterm.terminal.emulator.ColorPalette;
 import com.jediterm.terminal.model.TerminalTypeAheadSettings;
 import com.jediterm.terminal.ui.TerminalActionPresentation;
-import com.jediterm.terminal.ui.UIUtil;
 import com.jediterm.terminal.ui.settings.DefaultSettingsProvider;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -136,7 +136,7 @@ public class CmdSettingsProvider extends DefaultSettingsProvider {
 
     @NotNull
     public TerminalActionPresentation getNewSessionActionPresentation() {
-        return new TerminalActionPresentation("New Session", UIUtil.isMac ? KeyStroke.getKeyStroke(84, 256) : KeyStroke.getKeyStroke(84, 192));
+        return new TerminalActionPresentation("New Session", OsInfoUtil.isMacOS() ? KeyStroke.getKeyStroke(84, 256) : KeyStroke.getKeyStroke(84, 192));
     }
 
     @NotNull
@@ -146,19 +146,19 @@ public class CmdSettingsProvider extends DefaultSettingsProvider {
 
     @NotNull
     public TerminalActionPresentation getCopyActionPresentation() {
-        KeyStroke keyStroke = UIUtil.isMac ? KeyStroke.getKeyStroke(67, 256) : KeyStroke.getKeyStroke(67, 192);
+        KeyStroke keyStroke = OsInfoUtil.isMacOS() ? KeyStroke.getKeyStroke(67, 256) : KeyStroke.getKeyStroke(67, 192);
         return new TerminalActionPresentation("Copy", keyStroke);
     }
 
     @NotNull
     public TerminalActionPresentation getPasteActionPresentation() {
-        KeyStroke keyStroke = UIUtil.isMac ? KeyStroke.getKeyStroke(86, 256) : KeyStroke.getKeyStroke(86, 192);
+        KeyStroke keyStroke = OsInfoUtil.isMacOS() ? KeyStroke.getKeyStroke(86, 256) : KeyStroke.getKeyStroke(86, 192);
         return new TerminalActionPresentation("Paste", keyStroke);
     }
 
     @NotNull
     public TerminalActionPresentation getClearBufferActionPresentation() {
-        return new TerminalActionPresentation("Clear Buffer", UIUtil.isMac ? KeyStroke.getKeyStroke(75, 256) : KeyStroke.getKeyStroke(76, 128));
+        return new TerminalActionPresentation("Clear Buffer", OsInfoUtil.isMacOS() ? KeyStroke.getKeyStroke(75, 256) : KeyStroke.getKeyStroke(76, 128));
     }
 
     @NotNull
@@ -173,22 +173,22 @@ public class CmdSettingsProvider extends DefaultSettingsProvider {
 
     @NotNull
     public TerminalActionPresentation getLineUpActionPresentation() {
-        return new TerminalActionPresentation("Line Up", UIUtil.isMac ? KeyStroke.getKeyStroke(38, 256) : KeyStroke.getKeyStroke(38, 128));
+        return new TerminalActionPresentation("Line Up", OsInfoUtil.isMacOS() ? KeyStroke.getKeyStroke(38, 256) : KeyStroke.getKeyStroke(38, 128));
     }
 
     @NotNull
     public TerminalActionPresentation getLineDownActionPresentation() {
-        return new TerminalActionPresentation("Line Down", UIUtil.isMac ? KeyStroke.getKeyStroke(40, 256) : KeyStroke.getKeyStroke(40, 128));
+        return new TerminalActionPresentation("Line Down", OsInfoUtil.isMacOS() ? KeyStroke.getKeyStroke(40, 256) : KeyStroke.getKeyStroke(40, 128));
     }
 
     @NotNull
     public TerminalActionPresentation getCloseSessionActionPresentation() {
-        return new TerminalActionPresentation("Close Session", UIUtil.isMac ? KeyStroke.getKeyStroke(87, 256) : KeyStroke.getKeyStroke(87, 192));
+        return new TerminalActionPresentation("Close Session", OsInfoUtil.isMacOS() ? KeyStroke.getKeyStroke(87, 256) : KeyStroke.getKeyStroke(87, 192));
     }
 
     @NotNull
     public TerminalActionPresentation getFindActionPresentation() {
-        return new TerminalActionPresentation("Find", UIUtil.isMac ? KeyStroke.getKeyStroke(70, 256) : KeyStroke.getKeyStroke(70, 128));
+        return new TerminalActionPresentation("Find", OsInfoUtil.isMacOS() ? KeyStroke.getKeyStroke(70, 256) : KeyStroke.getKeyStroke(70, 128));
     }
 
     @NotNull

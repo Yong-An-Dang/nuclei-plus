@@ -2,9 +2,9 @@ package com.g3g4x5x6.nuclei.panel.console;
 
 import com.g3g4x5x6.nuclei.panel.tab.RunningPanel;
 import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.os.OsInfoUtil;
 import com.jediterm.terminal.TtyConnector;
 import com.jediterm.terminal.ui.JediTermWidget;
-import com.jediterm.terminal.ui.UIUtil;
 import com.pty4j.PtyProcess;
 import com.pty4j.PtyProcessBuilder;
 import com.pty4j.WinSize;
@@ -54,7 +54,7 @@ public class ConsolePanel extends JPanel {
         try {
             Map<String, String> envs = System.getenv();
             String[] command;
-            if (UIUtil.isWindows) {
+            if (OsInfoUtil.isWindows()) {
                 String path = envs.get("Path") + ";" + Path.of(RunningPanel.nucleiPath);
                 envs = new HashMap<>(System.getenv());
                 envs.put("Path", path);

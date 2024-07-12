@@ -19,6 +19,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 
@@ -285,6 +286,6 @@ public class StartupFrame extends JFrame {
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
-        UIManager.put("TextComponent.arc", 5);
+        UIManager.put(Optional.of("TextComponent.arc"), 5);
     }
 }
