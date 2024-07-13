@@ -47,14 +47,17 @@ public class NucleiApp {
     }
 
     public static void main(String[] args) {
-        // TO Debug
+        // For Debug
         // Locale.setDefault(Locale.US);
-
-        // 检查运行环境
-        CheckUtil.checkEnv();
 
         // 加载主题
         initFlatLaf();
+
+        // 初始化工作目录
+
+
+        // 检查运行环境
+        CheckUtil.checkEnv();
 
         // Setup
         StartupFrame.setup();

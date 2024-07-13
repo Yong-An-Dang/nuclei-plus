@@ -1,5 +1,6 @@
 package com.g3g4x5x6.nuclei.ultils;
 
+import com.g3g4x5x6.WorkPathSelectionDialog;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,6 +13,7 @@ import java.util.Properties;
 
 @Slf4j
 public class NucleiConfig {
+    public static Path initWorkPathFlagFilePath = Path.of(System.getProperties().getProperty("user.home"), ".nuclei-plus", ".init_work_path_flag");
     public static Properties properties = loadProperties();
     public static String projectName = "";
 
@@ -43,10 +45,7 @@ public class NucleiConfig {
     }
 
     public static String getProperty(String key) {
-        String[] vars = new String[]{
-                "{home}#" + getHomePath(),
-                "{workspace}#" + getWorkPath(),
-        };
+        String[] vars = new String[]{"{home}#" + getHomePath(), "{workspace}#" + getWorkPath(),};
         String value = properties.getProperty(key);
         for (String var : vars) {
             if (value.contains(var.split("#")[0])) {
@@ -61,15 +60,20 @@ public class NucleiConfig {
     }
 
     public static String getWorkPath() {
-        String work = Path.of(getHomePath() + "/.nuclei-plus/").toString();
-        File file = new File(work);
-        if (!file.exists()) {
-            if (!file.mkdir()) {
-                log.debug("文件夹创建失败：" + work);
+        String workPath = Path.of(getHomePath() + "/.nuclei-plus/").toString();
+        if (Files.exists(NucleiConfig.initWorkPathFlagFilePath)) {
+            try {
+                String tmpPath = Files.readString(NucleiConfig.initWorkPathFlagFilePath);
+                if (Files.exists(Path.of(tmpPath))) {
+                    workPath = tmpPath;
+                } else {
+                    log.info("自定义工作目录不存在，使用默认工作目录。");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        //log.debug(work);
-        return work;
+        return workPath;
     }
 
     public static String getConfigPath() {
@@ -83,8 +87,7 @@ public class NucleiConfig {
     public static void setProperty(String key, String value) {
         if (value.startsWith(getHomePath().replace("\\", "/")))
             NucleiConfig.properties.setProperty(key, "{home}" + value.replace(getHomePath().replace("\\", "/"), ""));
-        else
-            NucleiConfig.properties.setProperty(key, value);
+        else NucleiConfig.properties.setProperty(key, value);
     }
 
     public static void saveSettingsProperties() {

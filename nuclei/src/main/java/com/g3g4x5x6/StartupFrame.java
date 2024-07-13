@@ -87,10 +87,7 @@ public class StartupFrame extends JFrame {
         File projects = new File(NucleiConfig.getWorkPath() + "/projects");
         tableModel.setRowCount(0);
         for (File project : Objects.requireNonNull(projects.listFiles(File::isDirectory))) {
-            tableModel.addRow(new String[]{
-                    project.getName(),
-                    project.getAbsolutePath()
-            });
+            tableModel.addRow(new String[]{project.getName(), project.getAbsolutePath()});
         }
     }
 
@@ -157,8 +154,9 @@ public class StartupFrame extends JFrame {
 
                 if (defaultBtn.isSelected()) {
                     projectName = "default";
-                    if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/default"))){
-                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/default"));                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
+                    if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/default"))) {
+                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/default"));
+                        Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
                         CommonUtil.createProjectStruct(projectName);
                     }
                 }
@@ -183,8 +181,7 @@ public class StartupFrame extends JFrame {
         cancelBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (DialogUtil.yesOrNo(StartupFrame.this, "是否退出程序？") == JOptionPane.YES_OPTION)
-                    System.exit(0);
+                if (DialogUtil.yesOrNo(StartupFrame.this, "是否退出程序？") == JOptionPane.YES_OPTION) System.exit(0);
             }
         });
     }
@@ -201,8 +198,7 @@ public class StartupFrame extends JFrame {
 
     @SneakyThrows
     private boolean isExistProject(String projectName) {
-        if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName)))
-            return false;
+        if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName))) return false;
 
         // 项目配置文件不存在则创建
         if (!Files.exists(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName, "/", projectName + ".properties")))
@@ -211,7 +207,7 @@ public class StartupFrame extends JFrame {
         return true;
     }
 
-    private void showDisabledStatus(){
+    private void showDisabledStatus() {
         cancelBtn.setEnabled(false);
 
         okBtn.setEnabled(false);
@@ -267,6 +263,11 @@ public class StartupFrame extends JFrame {
 
     public static void setup() {
         StartupFrame frame = new StartupFrame();
+
+        if (!Files.exists(NucleiConfig.initWorkPathFlagFilePath)) {
+            WorkPathSelectionDialog dialog = new WorkPathSelectionDialog(frame);
+            dialog.setVisible(true);
+        }
         frame.pack();
         frame.setVisible(true);
     }
