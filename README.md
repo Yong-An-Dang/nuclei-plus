@@ -34,7 +34,7 @@ mvn install:install-file -Dfile=libs/jediterm-core-3.44-SNAPSHOT.jar -DgroupId=c
 mvn install:install-file -Dfile=libs/jediterm-ui-3.44-SNAPSHOT.jar -DgroupId=com.jediterm  -DartifactId=jediterm-ui -Dversion=3.44-SNAPSHOT -Dpackaging=jar
 
 # set a new version
-mvn versions:set -DnewVersion=7.1.7
+mvn versions:set -DnewVersion=7.2.0
 
 # package
 mvn clean package -DskipTests
