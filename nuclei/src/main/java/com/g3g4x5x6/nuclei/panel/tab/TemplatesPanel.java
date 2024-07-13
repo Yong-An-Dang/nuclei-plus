@@ -1,6 +1,5 @@
 package com.g3g4x5x6.nuclei.panel.tab;
 
-import com.alibaba.fastjson.JSONObject;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.extras.components.FlatTriStateCheckBox;
@@ -9,7 +8,6 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.action.GroupByAction;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
-import com.g3g4x5x6.nuclei.panel.dialog.GroupDialog;
 import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
@@ -48,6 +46,9 @@ public class TemplatesPanel extends JPanel {
 
     private final JButton openBtn = new JButton(new FlatSVGIcon("icons/menu-open.svg"));
     private final FlatTriStateCheckBox customBtn = new FlatTriStateCheckBox();
+
+    private final JButton uploadBtn = new JButton(new FlatSVGIcon("icons/upload.svg"));
+    private final JButton downloadBtn = new JButton(new FlatSVGIcon("icons/download.svg"));
 
     private final JButton filterBtn = new JButton(new FlatSVGIcon("icons/filter.svg"));
     private final JToggleButton infoBtn = new JToggleButton(new AccentColorIcon("#007AFF"));
@@ -107,7 +108,11 @@ public class TemplatesPanel extends JPanel {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
         toolBar.add(openBtn);
-        toolBar.add(customBtn);
+//        toolBar.add(customBtn);
+
+        toolBar.addSeparator();
+        toolBar.add(uploadBtn);
+        toolBar.add(downloadBtn);
 
         toolBar.addSeparator();
         toolBar.add(infoBtn);
@@ -168,6 +173,7 @@ public class TemplatesPanel extends JPanel {
     }
 
     private void initToolBarAction() {
+        openBtn.setToolTipText("加载指定目录下的模板");
         openBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -191,6 +197,9 @@ public class TemplatesPanel extends JPanel {
                 }
             }
         });
+
+        uploadBtn.setToolTipText("同步上传模板");
+        downloadBtn.setToolTipText("同步下载模板");
 
         filterBtn.setToolTipText("点击筛选");
         filterBtn.addActionListener(e -> filter());
