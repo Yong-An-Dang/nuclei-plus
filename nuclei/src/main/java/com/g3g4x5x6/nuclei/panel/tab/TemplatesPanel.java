@@ -2,7 +2,6 @@ package com.g3g4x5x6.nuclei.panel.tab;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.extras.components.FlatTriStateCheckBox;
 import com.formdev.flatlaf.icons.FlatSearchIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiFrame;
@@ -28,10 +27,7 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -44,9 +40,12 @@ public class TemplatesPanel extends JPanel {
     private final LinkedList<LinkedHashMap<String, String>> templates = new LinkedList<>();
     private final LinkedList<String> filterList = new LinkedList<>();
 
-    private final JButton openBtn = new JButton(new FlatSVGIcon("icons/menu-open.svg"));
-    private final FlatTriStateCheckBox customBtn = new FlatTriStateCheckBox();
+    private final JButton checkmarkListBtn = new JButton(new FlatSVGIcon("icons/checkmarkList.svg"));
+    private final JCheckBoxMenuItem officialCheckBox = new JCheckBoxMenuItem("官方模板");
+    private final JCheckBoxMenuItem customCheckBox = new JCheckBoxMenuItem("自选模板");
+    private final JCheckBoxMenuItem syncCheckBox = new JCheckBoxMenuItem("同步模板");
 
+    private final JButton openBtn = new JButton(new FlatSVGIcon("icons/menu-open.svg"));
     private final JButton uploadBtn = new JButton(new FlatSVGIcon("icons/upload.svg"));
     private final JButton downloadBtn = new JButton(new FlatSVGIcon("icons/download.svg"));
 
@@ -90,11 +89,6 @@ public class TemplatesPanel extends JPanel {
         workflowBtn.setSelected(true);
         workflowBtn.setToolTipText("Workflows");
 
-        // Source
-        customBtn.setSelected(true);
-        customBtn.setToolTipText("自定义模板");
-        customBtn.getState();
-
         // Filter
         filterList.add("info");
         filterList.add("low");
@@ -108,11 +102,13 @@ public class TemplatesPanel extends JPanel {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
         toolBar.add(openBtn);
-//        toolBar.add(customBtn);
 
         toolBar.addSeparator();
         toolBar.add(uploadBtn);
         toolBar.add(downloadBtn);
+
+        toolBar.addSeparator();
+        toolBar.add(checkmarkListBtn);
 
         toolBar.addSeparator();
         toolBar.add(infoBtn);
@@ -181,7 +177,7 @@ public class TemplatesPanel extends JPanel {
                 // 创建一个默认的文件选取器
                 JFileChooser fileChooser = new JFileChooser();
                 // 设置默认显示的文件夹为当前文件夹
-                fileChooser.setCurrentDirectory(new File(NucleiConfig.getProperty("nuclei.templates.custom.path")));
+                fileChooser.setCurrentDirectory(new File(NucleiConfig.getProperty("nuclei.templates.path.custom")));
                 // 设置文件选择的模式（只选文件、只选文件夹、文件和文件均可选）
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 // 设置是否允许多选
@@ -192,7 +188,7 @@ public class TemplatesPanel extends JPanel {
                 if (result == JFileChooser.APPROVE_OPTION) {
                     // 如果点击了"确定", 则获取选择的文件路径
                     File file = fileChooser.getSelectedFile();
-                    NucleiConfig.setProperty("nuclei.templates.custom.path", file.getAbsolutePath().replace("\\", "/"));
+                    NucleiConfig.setProperty("nuclei.templates.path.custom", file.getAbsolutePath().replace("\\", "/"));
                     NucleiConfig.saveSettingsProperties();
                     refreshDataForTable();
                 }
@@ -204,15 +200,32 @@ public class TemplatesPanel extends JPanel {
         downloadBtn.setToolTipText("同步下载模板");
         downloadBtn.setSelected(true);
 
-        filterBtn.setToolTipText("点击筛选");
-        filterBtn.addActionListener(e -> filter());
-
-        customBtn.addActionListener(new AbstractAction() {
+        officialCheckBox.setToolTipText("加载 nuclei 官方目录下的模板");
+        officialCheckBox.setSelected(true);
+        officialCheckBox.addItemListener(e -> refreshDataForTable());
+        customCheckBox.setToolTipText("加载自定义目录下的模板");
+        customCheckBox.setSelected(true);
+        customCheckBox.addItemListener(e -> refreshDataForTable());
+        syncCheckBox.setToolTipText("加载同步目录下的模板");
+        syncCheckBox.setSelected(true);
+        syncCheckBox.addItemListener(e -> refreshDataForTable());
+        //
+        JPopupMenu checkmarkListPopupMenu = new JPopupMenu();
+        checkmarkListPopupMenu.add(officialCheckBox);
+        checkmarkListPopupMenu.add(customCheckBox);
+        checkmarkListPopupMenu.add(syncCheckBox);
+        checkmarkListBtn.setToolTipText("选择模板加载来源");
+        checkmarkListBtn.setSelected(true);
+        checkmarkListBtn.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                openBtn.setEnabled(customBtn.isSelected());
+            public void mouseClicked(MouseEvent e) {
+                checkmarkListPopupMenu.show(e.getComponent(), e.getX(), e.getY());
             }
         });
+
+
+        filterBtn.setToolTipText("点击筛选");
+        filterBtn.addActionListener(e -> filter());
 
         refreshBtn.addActionListener(new AbstractAction() {
             @Override
@@ -224,10 +237,9 @@ public class TemplatesPanel extends JPanel {
 
                     // 清除旧列表
                     templates.clear();
-                    log.debug("Templates Count: " + templates.size());
                     // 展示列表内信息
                     refreshDataForTable();
-                    log.debug("Templates Count: " + templates.size());
+                    log.debug("Templates Count: {}", templates.size());
                 }).start();
             }
         });
@@ -433,20 +445,12 @@ public class TemplatesPanel extends JPanel {
                 e.printStackTrace();
             }
 
-            String customPath = NucleiConfig.getProperty("nuclei.templates.custom.path").replace("\\", "/");
+            String customPath = NucleiConfig.getProperty("nuclei.templates.path.custom").replace("\\", "/");
             int count = 0;
             for (LinkedHashMap<String, String> templateInfo : templates) {
                 count++;
-                // Filter custom
-                String path = templateInfo.get("path");
-                if (customBtn.getState() == FlatTriStateCheckBox.State.INDETERMINATE) {
-                    if (!path.replace("\\", "/").startsWith(customPath)) continue;
-                }
-                if (!filterList.contains("custom")) {
-                    if (path.replace("\\", "/").startsWith(customPath)) continue;
-                }
                 String tType = templateInfo.get("path").endsWith("workflow.yaml") ? "workflow" : "template";
-                // Filter template, workflow, custom
+                // Filter template, workflow
                 if (!filterList.contains(tType)) continue;
                 String id = templateInfo.get("id");
                 String name = templateInfo.get("name");
@@ -475,7 +479,6 @@ public class TemplatesPanel extends JPanel {
         if (criticalBtn.isSelected()) filterList.add("critical");
         if (templateBtn.isSelected()) filterList.add("template");
         if (workflowBtn.isSelected()) filterList.add("workflow");
-        if (customBtn.isSelected()) filterList.add("custom");
 
         log.debug(filterList.toString());
 
@@ -505,14 +508,20 @@ public class TemplatesPanel extends JPanel {
      */
     private int getAllTemplatesFromPath() throws IOException {
         // office template
-        if (Files.exists(Path.of(TemplatesPanel.defaultNucleiTemplatesPath))) {
+        if (Files.exists(Path.of(TemplatesPanel.defaultNucleiTemplatesPath)) && officialCheckBox.isSelected()) {
             walkFiles(TemplatesPanel.defaultNucleiTemplatesPath);
         }
 
         // custom template
-        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.custom.path")))) {
-            walkFiles(NucleiConfig.getProperty("nuclei.templates.custom.path"));
+        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.path.custom"))) && customCheckBox.isSelected()) {
+            walkFiles(NucleiConfig.getProperty("nuclei.templates.path.custom"));
         }
+
+        // sync template
+        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.path.sync"))) && syncCheckBox.isSelected()) {
+            walkFiles(NucleiConfig.getProperty("nuclei.templates.path.sync"));
+        }
+
 
         return templates.size();
     }
