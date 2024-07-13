@@ -44,6 +44,10 @@ public class NucleiConfig {
         return properties;
     }
 
+    public static void reloadProperties() {
+        NucleiConfig.properties = loadProperties();
+    }
+
     public static String getProperty(String key) {
         String[] vars = new String[]{"{home}#" + getHomePath(), "{workspace}#" + getWorkPath(),};
         String value = properties.getProperty(key);

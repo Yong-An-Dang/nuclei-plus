@@ -170,7 +170,8 @@ public class EditorPanel extends JPanel implements SearchListener {
                         ioException.printStackTrace();
                     }
                 }
-                log.debug("保存配置：" + savePath);
+                NucleiConfig.reloadProperties();
+                log.debug("保存配置：{}", savePath);
             }
         });
 
@@ -331,8 +332,7 @@ public class EditorPanel extends JPanel implements SearchListener {
                 break;
             case REPLACE_ALL:
                 result = SearchEngine.replaceAll(textArea, context);
-                JOptionPane.showMessageDialog(null, result.getCount() +
-                        " occurrences replaced.");
+                JOptionPane.showMessageDialog(null, result.getCount() + " occurrences replaced.");
                 break;
         }
 

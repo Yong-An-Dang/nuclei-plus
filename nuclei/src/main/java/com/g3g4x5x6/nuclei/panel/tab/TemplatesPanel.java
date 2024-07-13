@@ -9,10 +9,7 @@ import com.g3g4x5x6.nuclei.action.GroupByAction;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.ui.icon.AccentColorIcon;
-import com.g3g4x5x6.nuclei.ultils.CommonUtil;
-import com.g3g4x5x6.nuclei.ultils.DialogUtil;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
-import com.g3g4x5x6.nuclei.ultils.ProjectUtil;
+import com.g3g4x5x6.nuclei.ultils.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
@@ -197,8 +194,22 @@ public class TemplatesPanel extends JPanel {
 
         uploadBtn.setToolTipText("同步上传模板");
         uploadBtn.setSelected(true);
+        uploadBtn.addActionListener(new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SyncUtil.upload();
+            }
+        });
         downloadBtn.setToolTipText("同步下载模板");
         downloadBtn.setSelected(true);
+        downloadBtn.addActionListener(new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SyncUtil.download();
+            }
+        });
 
         officialCheckBox.setToolTipText("加载 nuclei 官方目录下的模板");
         officialCheckBox.setSelected(true);
