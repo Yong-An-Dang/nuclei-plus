@@ -299,14 +299,9 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem syncItem = new JMenuItem("同步配置");
-        syncItem.setToolTipText("设置模板同步配置");
-
         settingsMenu.add(globalItem);
         settingsMenu.addSeparator();
         settingsMenu.add(projectItem);
-        settingsMenu.addSeparator();
-        settingsMenu.add(syncItem);
 
         // help
         JMenuItem helpItem = new JMenuItem(L.M("bar.menu.about.help"));
