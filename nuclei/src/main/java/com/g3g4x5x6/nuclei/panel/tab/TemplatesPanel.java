@@ -174,6 +174,7 @@ public class TemplatesPanel extends JPanel {
 
     private void initToolBarAction() {
         openBtn.setToolTipText("加载指定目录下的模板");
+        openBtn.setSelected(true);
         openBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -199,7 +200,9 @@ public class TemplatesPanel extends JPanel {
         });
 
         uploadBtn.setToolTipText("同步上传模板");
+        uploadBtn.setSelected(true);
         downloadBtn.setToolTipText("同步下载模板");
+        downloadBtn.setSelected(true);
 
         filterBtn.setToolTipText("点击筛选");
         filterBtn.addActionListener(e -> filter());
