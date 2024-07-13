@@ -32,3 +32,6 @@ nuclei/buildNumber.properties
 .idea
 .idea/workspace.xml
 /pom.xml.versionsBackup
+/doc/json-server/node_modules/*
+/doc/json-server/package.json
+/doc/json-server/package-lock.json
