@@ -23,13 +23,13 @@
         <flatlaf-extras-version>2.0.1</flatlaf-extras-version>
         <flatlaf-intellij-themes-version>1.5</flatlaf-intellij-themes-version>
 
-        <rsyntaxtextarea-version>3.1.5</rsyntaxtextarea-version>
-        <rstaui-version>3.1.3</rstaui-version>
-        <autocomplete-version>3.1.4</autocomplete-version>
+        <rsyntaxtextarea-version>3.5.0</rsyntaxtextarea-version>
+        <rstaui-version>3.3.1</rstaui-version>
+        <autocomplete-version>3.3.1</autocomplete-version>
 
         <jediterm-core-version>3.44-SNAPSHOT</jediterm-core-version>
         <jediterm-ui-version>3.44-SNAPSHOT</jediterm-ui-version>
-        <kotlin-stdlib-version>1.9.22</kotlin-stdlib-version>
+        <kotlin-stdlib-version>2.0.0</kotlin-stdlib-version>
 
         <slf4j-api-version>2.0.7</slf4j-api-version>
         <slf4j-reload4j-version>2.0.9</slf4j-reload4j-version>
@@ -133,6 +133,11 @@
                 <version>${jediterm-ui-version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>${kotlin-stdlib-version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-common -->
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
