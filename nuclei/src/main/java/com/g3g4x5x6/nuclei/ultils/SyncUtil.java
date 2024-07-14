@@ -15,7 +15,7 @@ import java.util.*;
 public class SyncUtil {
     private static final String syncTemplatePath = NucleiConfig.getProperty("nuclei.templates.sync.path");
 
-    private static final SyncTemplateClient client = FeignClientConfiguration.createClient("http://127.0.0.1:4523/m1/4821097-4475877-default");
+    private static final SyncTemplateClient client = FeignClientConfiguration.createClient(NucleiConfig.getProperty("nuclei.templates.sync.url"));
 
 
     public static void upload() {
@@ -32,7 +32,7 @@ public class SyncUtil {
             uploadRequest.setCount(templates.subList(fromIndex, toIndex).size());
             uploadRequest.setTemplates(templates.subList(fromIndex, toIndex));
 
-            ApiResponse uploadResponse = client.upload("xxxxxxxxxxxxxxxx", uploadRequest);
+            ApiResponse uploadResponse = client.upload(NucleiConfig.getProperty("nuclei.templates.sync.auth.value"), uploadRequest);
             log.info("Code: {}, Reason: {}", uploadResponse.getCode(), uploadResponse.getReason());
 
             if (toIndex == total) break;
@@ -65,7 +65,7 @@ public class SyncUtil {
             downloadRequest.setPageSize(pageSize);
             downloadRequest.setCurrentPage(curPage);
 
-            ApiResponse downloadResponse = client.download("xxxxxxxxxxxxxxxx", downloadRequest);
+            ApiResponse downloadResponse = client.download(NucleiConfig.getProperty("nuclei.templates.sync.auth.value"), downloadRequest);
             log.info("Code: {}, Reason: {}", downloadResponse.getCode(), downloadResponse.getReason());
 
             downloadResponse.getTemplates().forEach(SyncUtil::createOrUpdate);
