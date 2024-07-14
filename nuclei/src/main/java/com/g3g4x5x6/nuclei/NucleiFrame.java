@@ -42,7 +42,7 @@ public class NucleiFrame extends JFrame {
 
     // look to the master,follow the master,walk with the master,see through the master,become the master.
     // 寻找大师，追随大师，与师偕行，领悟大师，成为大师
-    private final JLabel mottoLabel = new JLabel("寻找大师，追随大师，成为大师，超越大师");
+    private final JLabel mottoLabel = new JLabel(L.M("bar.tool.motto"));
 
     public final TemplatesPanel templatesPanel = new TemplatesPanel();
     public final StringTargetPanel targetPanel = new StringTargetPanel();

@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.DosFileAttributeView;
+import java.nio.file.attribute.DosFileAttributes;
 import java.util.Objects;
 
 
@@ -101,8 +103,10 @@ public class WorkPathSelectionDialog extends JDialog {
         try {
             Files.createDirectories(NucleiConfig.initWorkPathFlagFilePath.getParent());
             Files.writeString(NucleiConfig.initWorkPathFlagFilePath, path, StandardOpenOption.CREATE);
+
+            DosFileAttributeView attributeView = Files.getFileAttributeView(Path.of(path), DosFileAttributeView.class);
+            attributeView.setHidden(true);
         } catch (IOException e) {
-            e.printStackTrace();
             log.debug(e.getMessage());
             log.debug(path);
             return false;

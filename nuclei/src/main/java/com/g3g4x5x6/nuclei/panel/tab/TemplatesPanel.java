@@ -451,12 +451,11 @@ public class TemplatesPanel extends JPanel {
             try {
                 // 初始化列表并输出列表大小
                 int templateCount = getAllTemplatesFromPath();
-                log.debug("Templates Count: " + templateCount);
+                log.debug("Templates Count: {}", templateCount);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            String customPath = NucleiConfig.getProperty("nuclei.templates.path.custom").replace("\\", "/");
             int count = 0;
             for (LinkedHashMap<String, String> templateInfo : templates) {
                 count++;
