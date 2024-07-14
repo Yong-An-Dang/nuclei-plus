@@ -198,7 +198,12 @@ public class TemplatesPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                SyncUtil.upload();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SyncUtil.upload();
+                    }
+                }).start();
             }
         });
         downloadBtn.setToolTipText("同步下载模板");
@@ -207,7 +212,12 @@ public class TemplatesPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                SyncUtil.download();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SyncUtil.download();
+                    }
+                }).start();
             }
         });
 
@@ -218,7 +228,7 @@ public class TemplatesPanel extends JPanel {
         customCheckBox.setSelected(true);
         customCheckBox.addItemListener(e -> refreshDataForTable());
         syncCheckBox.setToolTipText("加载同步目录下的模板");
-        syncCheckBox.setSelected(true);
+        syncCheckBox.setSelected(false);
         syncCheckBox.addItemListener(e -> refreshDataForTable());
         //
         JPopupMenu checkmarkListPopupMenu = new JPopupMenu();

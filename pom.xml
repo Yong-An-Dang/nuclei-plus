@@ -17,7 +17,6 @@
         <maven.compiler.target>11</maven.compiler.target>
 
         <fastjson-version>1.2.83</fastjson-version>
-        <guava-version>30.1.1-jre</guava-version>
 
         <flatlaf-version>2.0.1</flatlaf-version>
         <flatlaf-extras-version>2.0.1</flatlaf-extras-version>
@@ -47,13 +46,31 @@
         <junit-jupiter-version>RELEASE</junit-jupiter-version>
 
         <jcolor-version>5.5.1</jcolor-version>
-        <hutool-version>5.8.23</hutool-version>
+        <hutool-version>5.8.25</hutool-version>
 
         <lombok-version>1.18.24</lombok-version>
+
+        <feign-core-version>13.3</feign-core-version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.github.openfeign</groupId>
+                <artifactId>feign-core</artifactId>
+                <version>${feign-core-version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.openfeign</groupId>
+                <artifactId>feign-jackson</artifactId>
+                <version>${feign-core-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.github.openfeign</groupId>
+                <artifactId>feign-okhttp</artifactId>
+                <version>${feign-core-version}</version>
+            </dependency>
 
             <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
             <dependency>
@@ -74,13 +91,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson-version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava-version}</version>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
@@ -219,6 +229,10 @@
     </dependencyManagement>
 
     <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
         <repository>
             <id>jetbrains-intellij-dependencies</id>
             <url>https://packages.jetbrains.team/maven/p/ij/intellij-dependencies</url>
