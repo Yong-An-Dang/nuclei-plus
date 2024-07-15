@@ -94,7 +94,7 @@ public class TemplatesPanel extends JPanel {
         filterList.add("critical");
         filterList.add("template");
         filterList.add("workflow");
-        filterList.add("custom");
+        filterList.add("<空>");
 
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);

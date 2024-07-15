@@ -202,15 +202,24 @@ public class CommonUtil {
         if (map != null && !map.isEmpty()) {
             JSONObject jsonObject = new JSONObject(map);
             JSONObject info = jsonObject.getJSONObject("info");
+            if (info == null) {
+                info = new JSONObject();
+                info.put("name", "<空>");
+                info.put("severity", "<空>");
+                info.put("author", "<空>");
+                info.put("description", "<空>");
+                info.put("reference", "<空>");
+                info.put("tags", "<空>");
+            }
 
             templateInfo.put("path", path);
-            templateInfo.put("id", jsonObject.getString("id") == null ? "空" : jsonObject.getString("id"));
-            templateInfo.put("name", info.getString("name"));
-            templateInfo.put("severity", info.getString("severity"));
-            templateInfo.put("author", info.getString("author"));
-            templateInfo.put("description", info.getString("description"));
-            templateInfo.put("reference", info.getString("reference"));
-            templateInfo.put("tags", info.getString("tags"));
+            templateInfo.put("id", jsonObject.getString("id") == null ? "<空>" : jsonObject.getString("id"));
+            templateInfo.put("name", info.getString("name") == null ? "<空>" : info.getString("name"));
+            templateInfo.put("severity", info.getString("severity") == null ? "<空>" : info.getString("severity"));
+            templateInfo.put("author", info.getString("author") == null ? "<空>" : info.getString("author"));
+            templateInfo.put("description", info.getString("description") == null ? "<空>" : info.getString("description"));
+            templateInfo.put("reference", info.getString("reference") == null ? "<空>" : info.getString("reference"));
+            templateInfo.put("tags", info.getString("tags") == null ? "<空>" : info.getString("tags"));
         } else {
             templateInfo.put("path", path);
             templateInfo.put("id", "空");
