@@ -28,7 +28,7 @@ public class NucleiConfig {
                 assert nucleiIn != null;
                 Files.copy(nucleiIn, Path.of(NucleiConfig.getPropertiesPath()));
             } catch (IOException e) {
-                e.printStackTrace();
+                e.fillInStackTrace();
             }
         }
 
@@ -73,7 +73,7 @@ public class NucleiConfig {
                     log.info("自定义工作目录不存在，使用默认工作目录。");
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                e.fillInStackTrace();
             }
         }
         return workPath;
@@ -97,9 +97,9 @@ public class NucleiConfig {
         try {
             StringBuilder settingsText = new StringBuilder();
             BufferedReader reader = new BufferedReader(new FileReader(getPropertiesPath()));
-            String line = "";
+            String line;
             while ((line = reader.readLine()) != null) {
-                if (!line.startsWith("#") && !line.strip().equals("")) {
+                if (!line.startsWith("#") && !line.isBlank()) {
                     String key = line.strip().split("=")[0];
                     line = key + "=" + (NucleiConfig.properties.getProperty(key) != null ? NucleiConfig.properties.getProperty(key) : line.strip().split("=")[1]);
                 }

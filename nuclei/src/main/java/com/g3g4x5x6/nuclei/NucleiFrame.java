@@ -148,7 +148,7 @@ public class NucleiFrame extends JFrame {
                 String projectName = DialogUtil.input(NucleiFrame.this, "请输出项目名称（目录）");
                 log.debug(projectName);
                 if (projectName != null) {
-                    if (projectName.strip().equals(""))
+                    if (projectName.isBlank())
                         DialogUtil.warn("【项目名称（目录）】不能为空");
                     else {
                         Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
@@ -180,7 +180,7 @@ public class NucleiFrame extends JFrame {
                     try {
                         Desktop.getDesktop().open(new File(NucleiConfig.getWorkPath()));
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        ioException.fillInStackTrace();
                     }
                 }).start();
             }
@@ -195,7 +195,7 @@ public class NucleiFrame extends JFrame {
                     try {
                         Desktop.getDesktop().open(new File(NucleiConfig.getProperty("nuclei.templates.path")));
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        ioException.fillInStackTrace();
                     }
                 }).start();
             }
@@ -210,7 +210,7 @@ public class NucleiFrame extends JFrame {
                     try {
                         Desktop.getDesktop().open(new File(NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName));
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        ioException.fillInStackTrace();
                     }
                 }).start();
             }
@@ -225,7 +225,7 @@ public class NucleiFrame extends JFrame {
                     try {
                         Desktop.getDesktop().open(new File(ProjectUtil.reportDir()));
                     } catch (IOException ioException) {
-                        ioException.printStackTrace();
+                        ioException.fillInStackTrace();
                     }
                 }).start();
             }
@@ -325,7 +325,7 @@ public class NucleiFrame extends JFrame {
                         stringBuilder.append(line).append("\n");
                     }
                 } catch (Exception exception) {
-                    exception.printStackTrace();
+                    exception.fillInStackTrace();
                 }
                 editPanel.setTextArea(stringBuilder.toString());
 
@@ -373,7 +373,7 @@ public class NucleiFrame extends JFrame {
         executeBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                log.debug("GlobalConfigModel: \n" + globalConfigModel.toString());
+                log.debug("GlobalConfigModel: \n{}", globalConfigModel.toString());
 
                 if (e.getButton() == 3) {
                     JPopupMenu popupMenu = new JPopupMenu();
@@ -631,7 +631,7 @@ public class NucleiFrame extends JFrame {
                             }
                         }
                         //
-                        if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+                        if (!NucleiApp.nuclei.targetPanel.getTargetText().isBlank()) {
                             // 创建终端执行任务
                             ConsolePanel consolePanel = runningPanel.createConsole();
 
