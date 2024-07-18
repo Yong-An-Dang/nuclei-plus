@@ -86,7 +86,7 @@ public class SyncUtil {
         System.out.println("Template content: " + template.getContent());
 
         String dir = template.getDir();
-        String content = template.getContent();
+        String content = Base64Utils.base64Decode(template.getContent());
 
         Yaml yaml = new Yaml();
         Map templateInfo = yaml.loadAs(content, Map.class);
@@ -112,7 +112,7 @@ public class SyncUtil {
                     // 在这里可以对每个文件进行处理
                     Template template = new Template();
                     template.setDir(dir);
-                    template.setContent(content);
+                    template.setContent(Base64Utils.base64Encode(content));
                     templates.add(template);
                     //
                     return FileVisitResult.CONTINUE;
