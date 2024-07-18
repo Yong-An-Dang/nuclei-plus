@@ -307,30 +307,10 @@ public class NucleiFrame extends JFrame {
         JMenuItem helpItem = new JMenuItem(L.M("bar.menu.about.help"));
         helpItem.setIcon(new FlatSVGIcon("icons/help.svg"));
         helpItem.addActionListener(new AbstractAction() {
+            @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditTemplatePanel editPanel = new EditTemplatePanel();
-                editPanel.setTitle("nuclei -h");
-                editPanel.setIcon(new FlatSVGIcon("icons/help.svg"));
-                editPanel.setSyntaxEditingStyle(RSyntaxTextArea.SYNTAX_STYLE_UNIX_SHELL);
-
-                InputStream helpIn = NucleiFrame.class.getClassLoader().getResourceAsStream("help/help_all.txt");
-                assert helpIn != null;
-                BufferedReader in = new BufferedReader(new InputStreamReader(helpIn));
-
-                StringBuilder stringBuilder = new StringBuilder();
-                String line;
-                try {
-                    while ((line = in.readLine()) != null) {
-                        stringBuilder.append(line).append("\n");
-                    }
-                } catch (Exception exception) {
-                    exception.fillInStackTrace();
-                }
-                editPanel.setTextArea(stringBuilder.toString());
-
-                frameTabbedPane.addTab(editPanel.getTitle(), editPanel.getIcon(), editPanel);
-                frameTabbedPane.setSelectedIndex(frameTabbedPane.getTabCount() - 1);
+                Desktop.getDesktop().browse(new URI("https://docs.projectdiscovery.io/tools/nuclei/overview"));
             }
         });
 
