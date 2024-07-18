@@ -306,6 +306,7 @@ public class NucleiFrame extends JFrame {
         // help
         JMenuItem helpItem = new JMenuItem(L.M("bar.menu.about.help"));
         helpItem.setIcon(new FlatSVGIcon("icons/help.svg"));
+        helpItem.setToolTipText("Nuclei官方首页");
         helpItem.addActionListener(new AbstractAction() {
             @SneakyThrows
             @Override
