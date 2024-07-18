@@ -1,7 +1,6 @@
-package com.g3g4x5x6.nuclei.ultils;
+package com.g3g4x5x6.nuclei;
 
-import com.g3g4x5x6.WorkPathSelectionDialog;
-import com.g3g4x5x6.nuclei.NucleiFrame;
+import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -68,7 +67,7 @@ public class NucleiConfig {
         if (Files.exists(NucleiConfig.initWorkPathFlagFilePath)) {
             try {
                 String tmpPath = Files.readString(NucleiConfig.initWorkPathFlagFilePath);
-                if (Files.exists(Path.of(tmpPath))) {
+                if (!tmpPath.isEmpty() && Files.exists(Path.of(tmpPath))) {
                     workPath = tmpPath;
                 } else {
                     log.info("自定义工作目录不存在，使用默认工作目录。");

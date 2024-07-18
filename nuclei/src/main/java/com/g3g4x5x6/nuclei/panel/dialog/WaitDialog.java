@@ -1,7 +1,7 @@
 package com.g3g4x5x6.nuclei.panel.dialog;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.NucleiConfig;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;

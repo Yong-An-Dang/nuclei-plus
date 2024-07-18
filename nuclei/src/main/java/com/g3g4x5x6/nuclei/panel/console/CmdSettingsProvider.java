@@ -2,7 +2,7 @@ package com.g3g4x5x6.nuclei.panel.console;
 
 import com.g3g4x5x6.nuclei.ui.terminal.settings.ColorScheme;
 import com.g3g4x5x6.nuclei.ui.terminal.settings.DefaultColorPaletteImpl;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.os.OsInfoUtil;
 import com.jediterm.terminal.HyperlinkStyle;
 import com.jediterm.terminal.TerminalColor;

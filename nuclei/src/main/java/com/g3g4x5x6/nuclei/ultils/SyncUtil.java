@@ -1,5 +1,6 @@
 package com.g3g4x5x6.nuclei.ultils;
 
+import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.sync.FeignClientConfiguration;
 import com.g3g4x5x6.nuclei.sync.SyncTemplateClient;
 import com.g3g4x5x6.nuclei.sync.models.*;

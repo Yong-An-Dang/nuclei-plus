@@ -3,7 +3,7 @@ package com.g3g4x5x6.nuclei.panel.tab;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.TextAreaUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;

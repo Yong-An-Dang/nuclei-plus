@@ -5,7 +5,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.DefaultTrayIcon;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.CheckUtil;
-import com.g3g4x5x6.nuclei.ultils.NucleiConfig;
+import com.g3g4x5x6.nuclei.NucleiConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Locale;
 import java.util.Objects;
 
 import static java.awt.Frame.NORMAL;
@@ -50,14 +49,11 @@ public class NucleiApp {
         // For Debug
         // Locale.setDefault(Locale.US);
 
-        // 加载主题
-        initFlatLaf();
-
-        // 初始化工作目录
-
-
         // 检查运行环境
         CheckUtil.checkEnv();
+
+        // 加载主题
+        initFlatLaf();
 
         // Setup
         StartupFrame.setup();
