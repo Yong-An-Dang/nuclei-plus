@@ -265,6 +265,11 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         textArea.setCodeFoldingEnabled(true);
         textArea.setSyntaxEditingStyle("text/yaml");
 
+        AutoCompletion ac = new AutoCompletion(new NucleiYamlCompletionProvider());
+        ac.setAutoActivationEnabled(true);  // 找到唯一符合的关键字，将直接自动完成
+        ac.setTriggerKey(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
+        ac.install(textArea);
+
         InputMap im = textArea.getInputMap();
         ActionMap am = textArea.getActionMap();
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0), "decreaseFontSize");
@@ -293,12 +298,6 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         // developer ensures the RSTA Theme always matches the LookAndFeel as
         // far as light/dark is concerned, this property can be omitted.
         System.setProperty(MatchedBracketPopup.PROPERTY_CONSIDER_TEXTAREA_BACKGROUND, "true");
-
-        AutoCompletion ac = new AutoCompletion(new NucleiYamlCompletionProvider());
-        ac.install(textArea);
-        // TODO 快捷键与自动激活作为一个用户设置，二选一
-//        ac.setAutoActivationEnabled(true);  // 找到唯一符合的关键字，将直接自动完成
-        ac.setTriggerKey(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
 
         return textArea;
     }

@@ -14,7 +14,6 @@ import com.g3g4x5x6.nuclei.ui.StatusBar;
 import com.g3g4x5x6.nuclei.ultils.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
 import javax.swing.*;
 import java.awt.*;
@@ -303,18 +302,6 @@ public class NucleiFrame extends JFrame {
         settingsMenu.addSeparator();
         settingsMenu.add(projectItem);
 
-        // help
-        JMenuItem helpItem = new JMenuItem(L.M("bar.menu.about.help"));
-        helpItem.setIcon(new FlatSVGIcon("icons/help.svg"));
-        helpItem.setToolTipText("Nuclei官方首页");
-        helpItem.addActionListener(new AbstractAction() {
-            @SneakyThrows
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Desktop.getDesktop().browse(new URI("https://docs.projectdiscovery.io/tools/nuclei/overview"));
-            }
-        });
-
         JMenuItem supportItem = new JMenuItem(L.M("bar.menu.about.support"));
         supportItem.setToolTipText("https://yong-an-dang.github.io/nuclei-plus/");
         supportItem.setIcon(new FlatSVGIcon("icons/cwmInvite.svg"));
@@ -337,10 +324,22 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        aboutMenu.add(helpItem);
-        aboutMenu.addSeparator();
+        // help
+        JMenuItem helpItem = new JMenuItem(L.M("bar.menu.about.help"));
+        helpItem.setIcon(new FlatSVGIcon("icons/cwmInvite.svg"));
+        helpItem.setToolTipText("Nuclei官方首页");
+        helpItem.addActionListener(new AbstractAction() {
+            @SneakyThrows
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Desktop.getDesktop().browse(new URI("https://docs.projectdiscovery.io/tools/nuclei/overview"));
+            }
+        });
+
         aboutMenu.add(supportItem);
         aboutMenu.add(aboutItem);
+        aboutMenu.addSeparator();
+        aboutMenu.add(helpItem);
 
     }
 
@@ -365,7 +364,7 @@ public class NucleiFrame extends JFrame {
                         tempItem.addActionListener(new AbstractAction() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                log.debug("Execute in " + title);
+                                log.debug("Execute in {}", title);
                                 if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
                                     ExecUtils.runGlobalNucleiConfig(consolePanels.get(title));
 
@@ -382,7 +381,7 @@ public class NucleiFrame extends JFrame {
                     }
                     popupMenu.show(executeBtn, e.getX(), e.getY());
                 } else {
-                    if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+                    if (!NucleiApp.nuclei.targetPanel.getTargetText().isBlank()) {
                         // 创建终端执行任务
                         ConsolePanel consolePanel = runningPanel.createConsole();
 
@@ -406,7 +405,7 @@ public class NucleiFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // nuclei -nt, -new-templates          run only new templates added in latest nuclei-templates release
-                if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+                if (!NucleiApp.nuclei.targetPanel.getTargetText().isBlank()) {
                     // 创建终端执行任务
                     ConsolePanel consolePanel = runningPanel.createConsole();
 
@@ -429,7 +428,7 @@ public class NucleiFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // nuclei -as, -automatic-scan         automatic web scan using wappalyzer technology detection to tags mapping
-                if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+                if (!NucleiApp.nuclei.targetPanel.getTargetText().isBlank()) {
                     // 创建终端执行任务
                     ConsolePanel consolePanel = runningPanel.createConsole();
 
