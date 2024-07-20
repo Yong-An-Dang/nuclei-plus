@@ -55,7 +55,7 @@ public class RunningPanel extends JPanel {
             }
         });
 
-        JButton refreshBtn = new JButton(new FlatSVGIcon("icons/refresh.svg"));
+        JButton refreshBtn = new JButton(new FlatSVGIcon("icons/rerun.svg"));
         refreshBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

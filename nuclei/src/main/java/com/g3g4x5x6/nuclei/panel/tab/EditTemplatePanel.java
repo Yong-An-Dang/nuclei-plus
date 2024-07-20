@@ -7,6 +7,9 @@ import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.NucleiYamlCompletionProvider;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.panel.dialog.CopyToTemplateDialog;
+import com.g3g4x5x6.nuclei.panel.dialog.RunningDialog;
+import com.g3g4x5x6.nuclei.panel.template.CopyToTemplatePanel;
 import com.g3g4x5x6.nuclei.ultils.*;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -47,9 +50,12 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
     private final JButton executeBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
     private final JButton startDebuggerBtn = new JButton(new FlatSVGIcon("icons/startDebugger.svg"));
     private final JButton targetBtn = new JButton(new FlatSVGIcon("icons/targetTest.svg"));
-    private final JButton terminalBtn = new JButton(new FlatSVGIcon("icons/OpenTerminal_13x13.svg"));
+    private final JButton terminalBtn = new JButton(new FlatSVGIcon("icons/scalaConsole.svg"));
+    private final JButton aiBtn = new JButton(new FlatSVGIcon("icons/openai.svg"));
 
-    private final RunningDialog runningDialog = new RunningDialog();
+    // 创建并显示对话框
+    private final CopyToTemplateDialog aiDialog = new CopyToTemplateDialog(NucleiApp.nuclei);
+    private final RunningDialog runningDialog = new RunningDialog(NucleiApp.nuclei);
     private final EditorPanel editorPanel = new EditorPanel();
     private String title = "NewTemplate.yaml";
     private String tips = "Nuclei's Template";
@@ -71,17 +77,16 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         toolBar.add(newBtn);
         toolBar.add(openBtn);
         toolBar.add(saveBtn);
-        toolBar.addSeparator();
         toolBar.add(lineWrapBtn);
-        toolBar.addSeparator();
         toolBar.add(searchBtn);
         toolBar.add(replaceBtn);
         toolBar.addSeparator();
         toolBar.add(executeBtn);
         toolBar.add(startDebuggerBtn);
         toolBar.add(targetBtn);
-        toolBar.addSeparator();
         toolBar.add(terminalBtn);
+        toolBar.addSeparator();
+        toolBar.add(aiBtn);
         initToolBarAction();
 
         this.textArea = createTextArea();
@@ -230,6 +235,14 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 runningDialog.setVisible(true);
+            }
+        });
+
+        aiBtn.setToolTipText("");
+        aiBtn.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                aiDialog.setVisible(true);
             }
         });
 
@@ -467,25 +480,6 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         } else {
             text = "Text not found";
             DialogUtil.warn(text);
-        }
-    }
-
-    private static class RunningDialog extends JDialog {
-        private ConsolePanel console = new ConsolePanel();
-
-        public RunningDialog() {
-            super(NucleiApp.nuclei);
-            this.setTitle("测试运行......");
-            this.setLayout(new BorderLayout());
-            this.setSize(new Dimension(1000, 600));
-            this.setPreferredSize(new Dimension(1000, 600));
-            this.setMinimumSize(new Dimension(900, 500));
-            this.setLocationRelativeTo(null);
-            this.add(console, BorderLayout.CENTER);
-        }
-
-        public void runCommand(String command) {
-            console.write(command);
         }
     }
 
