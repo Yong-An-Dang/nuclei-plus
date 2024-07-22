@@ -90,9 +90,11 @@ plugins:
       minify_css: true
 
   - git-revision-date-localized:
-      enable_creation_date: true
       type: datetime
-      enabled: true
+      timezone: Asia/Shanghai
+      enable_creation_date: true
+      exclude:
+        - comments.md
 
   - git-committers:
       enabled: true
