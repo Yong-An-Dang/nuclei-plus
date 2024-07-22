@@ -1,11 +1,11 @@
-package com.g3g4x5x6.nuclei.sync.models;
+package com.g3g4x5x6.nuclei.http.models.sync;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Filter {
+public class SyncFilter {
     private String dir;
     private String id;
     private String name;

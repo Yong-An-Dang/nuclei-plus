@@ -1,4 +1,4 @@
-package com.g3g4x5x6.nuclei.sync.models;
+package com.g3g4x5x6.nuclei.http.models.sync;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +8,10 @@ import java.util.List;
 
 @Getter
 @Setter
-public class UploadRequest {
+public class SyncUploadRequest {
     private String action;
     private int count;
-    private List<Template> templates;
+    private List<SyncTemplate> templates;
 
     // Getters and Setters
 }

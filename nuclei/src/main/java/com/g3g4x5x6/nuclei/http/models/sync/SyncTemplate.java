@@ -1,11 +1,11 @@
-package com.g3g4x5x6.nuclei.sync.models;
+package com.g3g4x5x6.nuclei.http.models.sync;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Template {
+public class SyncTemplate {
     private String dir;
     private String content;
 

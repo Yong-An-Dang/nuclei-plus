@@ -1,9 +1,9 @@
 package com.g3g4x5x6.nuclei.ultils;
 
 import com.g3g4x5x6.nuclei.NucleiConfig;
-import com.g3g4x5x6.nuclei.sync.FeignClientConfiguration;
-import com.g3g4x5x6.nuclei.sync.SyncTemplateClient;
-import com.g3g4x5x6.nuclei.sync.models.*;
+import com.g3g4x5x6.nuclei.http.FeignClientConfiguration;
+import com.g3g4x5x6.nuclei.http.FeignClient;
+import com.g3g4x5x6.nuclei.http.models.sync.*;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
 
@@ -16,7 +16,7 @@ import java.util.*;
 public class SyncUtil {
     private static final String syncTemplatePath = NucleiConfig.getProperty("nuclei.templates.sync.path");
 
-    private static final SyncTemplateClient client = FeignClientConfiguration.createClient(NucleiConfig.getProperty("nuclei.templates.sync.url"));
+    private static final FeignClient client = FeignClientConfiguration.createClient(NucleiConfig.getProperty("nuclei.templates.sync.url"));
 
 
     public static void upload() {
@@ -24,16 +24,16 @@ public class SyncUtil {
 
         int fromIndex = 0;
         int toIndex = 3;
-        LinkedList<Template> templates = getAllSyncTemplates();
+        LinkedList<SyncTemplate> templates = getAllSyncTemplates();
         int total = templates.size();
         while (true) {
             // Upload example
-            UploadRequest uploadRequest = new UploadRequest();
+            SyncUploadRequest uploadRequest = new SyncUploadRequest();
             uploadRequest.setAction("upload");
             uploadRequest.setCount(templates.subList(fromIndex, toIndex).size());
             uploadRequest.setTemplates(templates.subList(fromIndex, toIndex));
 
-            ApiResponse uploadResponse = client.upload(NucleiConfig.getProperty("nuclei.templates.sync.auth.value"), uploadRequest);
+            SyncApiResponse uploadResponse = client.upload(NucleiConfig.getProperty("nuclei.templates.sync.auth.value"), uploadRequest);
             log.info("Code: {}, Reason: {}", uploadResponse.getCode(), uploadResponse.getReason());
 
             if (toIndex == total) break;
@@ -53,9 +53,9 @@ public class SyncUtil {
         int curPage = 1;
         while (true) {
             // Download example
-            DownloadRequest downloadRequest = new DownloadRequest();
+            SyncDownloadRequest downloadRequest = new SyncDownloadRequest();
             downloadRequest.setAction("download");
-            Filter filter = new Filter();
+            SyncFilter filter = new SyncFilter();
             filter.setDir("");
             filter.setId("");
             filter.setName("");
@@ -66,7 +66,7 @@ public class SyncUtil {
             downloadRequest.setPageSize(pageSize);
             downloadRequest.setCurrentPage(curPage);
 
-            ApiResponse downloadResponse = client.download(NucleiConfig.getProperty("nuclei.templates.sync.auth.value"), downloadRequest);
+            SyncApiResponse downloadResponse = client.download(NucleiConfig.getProperty("nuclei.templates.sync.auth.value"), downloadRequest);
             log.info("Code: {}, Reason: {}", downloadResponse.getCode(), downloadResponse.getReason());
 
             downloadResponse.getTemplates().forEach(SyncUtil::createOrUpdate);
@@ -82,7 +82,7 @@ public class SyncUtil {
         }
     }
 
-    private static void createOrUpdate(Template template) {
+    private static void createOrUpdate(SyncTemplate template) {
         System.out.println("Template content: " + template.getContent());
 
         String dir = template.getDir();
@@ -100,8 +100,8 @@ public class SyncUtil {
         }
     }
 
-    private static LinkedList<Template> getAllSyncTemplates() {
-        LinkedList<Template> templates = new LinkedList<>();
+    private static LinkedList<SyncTemplate> getAllSyncTemplates() {
+        LinkedList<SyncTemplate> templates = new LinkedList<>();
 
         try {
             Files.walkFileTree(Paths.get(syncTemplatePath), new SimpleFileVisitor<Path>() {
@@ -110,7 +110,7 @@ public class SyncUtil {
                     String dir = file.toString().replace("\\", "/").replace(syncTemplatePath, "");
                     String content = Files.readString(file);
                     // 在这里可以对每个文件进行处理
-                    Template template = new Template();
+                    SyncTemplate template = new SyncTemplate();
                     template.setDir(dir);
                     template.setContent(Base64Utils.base64Encode(content));
                     templates.add(template);
