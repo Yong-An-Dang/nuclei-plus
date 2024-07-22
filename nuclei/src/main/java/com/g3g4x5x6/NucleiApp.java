@@ -7,6 +7,7 @@ import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.CheckUtil;
 import com.g3g4x5x6.nuclei.NucleiConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,6 +25,8 @@ import static java.awt.Frame.NORMAL;
 @Slf4j
 public class NucleiApp {
     public static NucleiFrame nuclei;
+    public static SystemTray tray;
+    public static DefaultTrayIcon trayIcon;
 
     static {
         // Fixed: 初次启动无法找到配置文件的BUG
@@ -31,7 +34,7 @@ public class NucleiApp {
         if (!Files.exists(Path.of(configPath, "nuclei.properties"))) {
             try {
                 // 创建目录
-                if (!Files.exists(Path.of(configPath))){
+                if (!Files.exists(Path.of(configPath))) {
                     Files.createDirectories(Path.of(configPath));
                 }
 
@@ -40,7 +43,7 @@ public class NucleiApp {
                 assert nucleiIn != null;
                 Files.copy(nucleiIn, Path.of(configPath, "nuclei.properties"));
             } catch (IOException e) {
-                e.printStackTrace();
+                e.fillInStackTrace();
             }
         }
     }
@@ -93,7 +96,7 @@ public class NucleiApp {
 
     private static void initFlatLaf() {
         try {
-            if (NucleiConfig.getProperty("nuclei.theme").equals(""))
+            if (NucleiConfig.getProperty("nuclei.theme").isEmpty())
                 UIManager.setLookAndFeel(new FlatLightLaf());
             else
                 UIManager.setLookAndFeel(NucleiConfig.getProperty("nuclei.theme"));
@@ -109,17 +112,20 @@ public class NucleiApp {
          */
         if (SystemTray.isSupported()) {
             // 获取当前平台的系统托盘
-            SystemTray tray = SystemTray.getSystemTray();
+            tray = SystemTray.getSystemTray();
             // 加载一个图片用于托盘图标的显示
             Image image = null;
             try {
                 image = ImageIO.read(Objects.requireNonNull(NucleiApp.class.getClassLoader().getResource("icon.png")));
             } catch (IOException e) {
-                e.printStackTrace();
+                e.fillInStackTrace();
             }
 
             // 创建右键图标时的弹出菜单：JPopupMenu
             JPopupMenu popupMenu = new JPopupMenu();
+
+            JMenuItem projectMenuItem = new JMenuItem("当前项目：" + NucleiConfig.projectName);
+            projectMenuItem.setIcon(new FlatSVGIcon("icons/project.svg"));
 
             JMenuItem openMenuItem = new JMenuItem("打开");
             openMenuItem.setIcon(new FlatSVGIcon("icons/start.svg"));
@@ -139,46 +145,54 @@ public class NucleiApp {
                 }
             });
 
+            popupMenu.add(projectMenuItem);
+            popupMenu.addSeparator();
             popupMenu.add(openMenuItem);
             popupMenu.add(exitMenuItem);
 
             // 创建一个托盘图标
             assert image != null;
-            DefaultTrayIcon trayIcon = new DefaultTrayIcon(image, "点击打开 nuclei-plus", popupMenu);
-
-            // 托盘图标自适应尺寸
-            trayIcon.setImageAutoSize(true);
-            trayIcon.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    switch (e.getButton()) {
-                        case MouseEvent.BUTTON1: {
-                            System.out.println("托盘图标被鼠标左键被点击");
-                            openApp();
-                            break;
-                        }
-                        case MouseEvent.BUTTON2: {
-                            System.out.println("托盘图标被鼠标中键被点击");
-                            break;
-                        }
-                        case MouseEvent.BUTTON3: {
-                            System.out.println("托盘图标被鼠标右键被点击，X:" + e.getX() + " <=> Y:" + e.getY());
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                }
-            });
+            trayIcon = getDefaultTrayIcon(image, popupMenu);
 
             // 添加托盘图标到系统托盘
             try {
                 tray.add(trayIcon);
             } catch (AWTException e) {
-                e.printStackTrace();
+                e.fillInStackTrace();
             }
         }
+    }
+
+    private static @NotNull DefaultTrayIcon getDefaultTrayIcon(Image image, JPopupMenu popupMenu) {
+        DefaultTrayIcon trayIcon = new DefaultTrayIcon(image, "点击打开 nuclei-plus", popupMenu);
+        trayIcon.setToolTip("项目：" + NucleiConfig.projectName);
+
+        // 托盘图标自适应尺寸
+        trayIcon.setImageAutoSize(true);
+        trayIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                switch (e.getButton()) {
+                    case MouseEvent.BUTTON1: {
+                        System.out.println("托盘图标被鼠标左键被点击");
+                        openApp();
+                        break;
+                    }
+                    case MouseEvent.BUTTON2: {
+                        System.out.println("托盘图标被鼠标中键被点击");
+                        break;
+                    }
+                    case MouseEvent.BUTTON3: {
+                        System.out.println("托盘图标被鼠标右键被点击，X:" + e.getX() + " <=> Y:" + e.getY());
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            }
+        });
+        return trayIcon;
     }
 
     private static void openApp() {

@@ -262,6 +262,7 @@ public class NucleiFrame extends JFrame {
                         public void actionPerformed(ActionEvent e) {
                             // 打开已有项目
                             NucleiApp.nuclei.dispose();
+                            NucleiApp.tray.remove(NucleiApp.trayIcon);
                             NucleiConfig.projectName = project.getName();
                             NucleiApp.createGUI();
                         }
