@@ -28,6 +28,7 @@ site_description: >-
 # Repository
 repo_name: Yong-An-Dang/nuclei-plus
 repo_url: https://github.com/Yong-An-Dang/nuclei-plus
+edit_uri: edit/master/docs/
 
 # Copyright
 copyright: Copyright &copy; 2016 - 2022 G3G4X5X6
@@ -83,19 +84,20 @@ plugins:
   - blog
   - search:
       separator: '[\s\u200b\-]'
-  # - redirects:
-  #     redirect_maps:
-  #       changelog/insiders.md: insiders/changelog.md
-  #       conventions.md: philosophy.md
-  #       reference/abbreviations.md: reference/tooltips.md
-  #       reference/meta-tags.md: reference/index.md
-  #       reference/variables.md: https://mkdocs-macros-plugin.readthedocs.io/
-  #       sponsorship.md: insiders/index.md
-  #       upgrading.md: upgrade.md
   - minify:
       minify_html: true
       minify_js: true
       minify_css: true
+
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: datetime
+      enabled: true
+
+  - git-committers:
+      enabled: true
+      repository: Yong-An-Dang/nuclei-plus
+      branch: master
 
 # Customization
 extra:
@@ -156,19 +158,18 @@ markdown_extensions:
 
 # Page tree
 nav:
-  - 主页: 
-    - index.md
-    - 项目背景: background.md
+  - 主页:
+      - index.md
+      - 项目背景: background.md
   - 指南:
-    - guide/index.md
-    - 安装: guide/install.md
-    - 基础: guide/basic.md
-    - 进阶: guide/advance.md
-    - 高级: guide/premium.md
-
+      - guide/index.md
+      - 安装: guide/install.md
+      - 基础: guide/basic.md
+      - 进阶: guide/advance.md
+      - 高级: guide/premium.md
 
   - 博客:
-    - blog/index.md
-    - 2023:
-      - blog/posts/internationalization.md
+      - blog/index.md
+      - 2023:
+          - blog/posts/internationalization.md
     #   - blog/posts/pass.md
