@@ -107,7 +107,7 @@ public class SyncUtil {
             Files.walkFileTree(Paths.get(syncTemplatePath), new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    String dir = file.toString().replace("\\", "/").replace(syncTemplatePath, "");
+                    String dir = file.getParent().toString().replace("\\", "/").replace(syncTemplatePath.replace("\\", "/"), "");
                     String content = Files.readString(file);
                     // 在这里可以对每个文件进行处理
                     SyncTemplate template = new SyncTemplate();
