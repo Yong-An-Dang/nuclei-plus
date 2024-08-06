@@ -1,6 +1,8 @@
 package com.g3g4x5x6.nuclei.http;
 
 
+import com.g3g4x5x6.nuclei.http.models.chat.ChatApiRequest;
+import com.g3g4x5x6.nuclei.http.models.chat.ChatApiResponse;
 import com.g3g4x5x6.nuclei.http.models.sync.SyncApiResponse;
 import com.g3g4x5x6.nuclei.http.models.sync.SyncDownloadRequest;
 import com.g3g4x5x6.nuclei.http.models.sync.SyncUploadRequest;
@@ -17,4 +19,8 @@ public interface FeignClient {
     @RequestLine("POST /sync")
     @Headers("X-Sync-Token: {token}")
     SyncApiResponse download(@Param("token") String token, SyncDownloadRequest request);
+
+    @RequestLine("POST /openai/chat")
+    @Headers("X-Sync-Token: {token}")
+    ChatApiResponse openaiChat(@Param("token") String token, ChatApiRequest request);
 }
