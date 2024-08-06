@@ -6,11 +6,11 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.NucleiYamlCompletionProvider;
-import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.dialog.CopyToTemplateDialog;
 import com.g3g4x5x6.nuclei.panel.dialog.RunningDialog;
-import com.g3g4x5x6.nuclei.panel.template.CopyToTemplatePanel;
 import com.g3g4x5x6.nuclei.ultils.*;
+
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
@@ -38,6 +38,7 @@ import java.util.UUID;
 
 import static com.formdev.flatlaf.util.SystemInfo.isWindows;
 
+@Getter
 @Slf4j
 public class EditTemplatePanel extends JPanel implements SearchListener {
     private static final String tempDir = NucleiConfig.getProperty("nuclei.temp.path");
@@ -54,7 +55,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
     private final JButton aiBtn = new JButton(new FlatSVGIcon("icons/openai.svg"));
 
     // 创建并显示对话框
-    private final CopyToTemplateDialog aiDialog = new CopyToTemplateDialog(NucleiApp.nuclei);
+    private CopyToTemplateDialog aiDialog = new CopyToTemplateDialog();
     private final RunningDialog runningDialog = new RunningDialog(NucleiApp.nuclei);
     private final EditorPanel editorPanel = new EditorPanel();
     private String title = "NewTemplate.yaml";
@@ -64,10 +65,9 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
     private final String uuid = UUID.randomUUID().toString();
 
     private FlatSVGIcon icon = new FlatSVGIcon("icons/file-yaml.svg");
-    private final RSyntaxTextArea textArea;
+    private RSyntaxTextArea textArea;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
-
 
     public EditTemplatePanel() {
         this.setLayout(new BorderLayout());
@@ -114,7 +114,8 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         encoding = CharsetDetector.detect(new File(savePath)).name();
 
         StringBuilder str = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(savePath), encoding))) {
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(savePath), encoding))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 str.append(line);
@@ -156,10 +157,12 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         });
         searchBtn.setToolTipText("搜索......");
         searchBtn.addActionListener(showFindDialogAction);
-        searchBtn.registerKeyboardAction(showFindDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        searchBtn.registerKeyboardAction(showFindDialogAction,
+                KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
         replaceBtn.setToolTipText("替换......");
         replaceBtn.addActionListener(showReplaceDialogAction);
-        replaceBtn.registerKeyboardAction(showReplaceDialogAction, KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        replaceBtn.registerKeyboardAction(showReplaceDialogAction,
+                KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         lineWrapBtn.addChangeListener(e -> {
             textArea.setLineWrap(lineWrapBtn.isSelected());
@@ -279,7 +282,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
         textArea.setSyntaxEditingStyle("text/yaml");
 
         AutoCompletion ac = new AutoCompletion(new NucleiYamlCompletionProvider());
-        ac.setAutoActivationEnabled(true);  // 找到唯一符合的关键字，将直接自动完成
+        ac.setAutoActivationEnabled(true); // 找到唯一符合的关键字，将直接自动完成
         ac.setTriggerKey(KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_DOWN_MASK));
         ac.install(textArea);
 
@@ -307,7 +310,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
 
         // Since this demo allows the LookAndFeel and RSyntaxTextArea Theme to
         // be toggled independently of one another, we set this property to
-        // true so matched bracket popups look good.  In an app where the
+        // true so matched bracket popups look good. In an app where the
         // developer ensures the RSTA Theme always matches the LookAndFeel as
         // far as light/dark is concerned, this property can be omitted.
         System.setProperty(MatchedBracketPopup.PROPERTY_CONSIDER_TEXTAREA_BACKGROUND, "true");
@@ -348,7 +351,8 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
                 Files.write(Path.of(targetFile), targets.getBytes(StandardCharsets.UTF_8));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
-                JOptionPane.showMessageDialog(NucleiApp.nuclei, ioException.getMessage(), "异常", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(NucleiApp.nuclei, ioException.getMessage(), "异常",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
             // 判断是模板还是工作流
@@ -366,7 +370,8 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
                 Files.write(Path.of(tempFile), text.getBytes(StandardCharsets.UTF_8));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
-                JOptionPane.showMessageDialog(NucleiApp.nuclei, ioException.getMessage(), "异常", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(NucleiApp.nuclei, ioException.getMessage(), "异常",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
             // 执行命令

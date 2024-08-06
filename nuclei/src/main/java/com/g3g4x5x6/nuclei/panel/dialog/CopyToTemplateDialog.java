@@ -6,13 +6,15 @@ import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.panel.template.CopyToTemplatePanel;
 
 import javax.swing.*;
+
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+
 import java.awt.*;
 
 public class CopyToTemplateDialog extends JDialog {
 
-
-    public CopyToTemplateDialog(JFrame parent) {
-        super(parent);
+    public CopyToTemplateDialog() {
+        super(NucleiApp.nuclei);
         this.setTitle("HTTP流 -> PoC模板");
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(1000, 600));
@@ -23,11 +25,12 @@ public class CopyToTemplateDialog extends JDialog {
         this.add(new CopyToTemplatePanel());
     }
 
-
     public static void main(String[] args) {
         try {
-            if (NucleiConfig.getProperty("nuclei.theme").isEmpty()) UIManager.setLookAndFeel(new FlatLightLaf());
-            else UIManager.setLookAndFeel(NucleiConfig.getProperty("nuclei.theme"));
+            if (NucleiConfig.getProperty("nuclei.theme").isEmpty())
+                UIManager.setLookAndFeel(new FlatLightLaf());
+            else
+                UIManager.setLookAndFeel(NucleiConfig.getProperty("nuclei.theme"));
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
