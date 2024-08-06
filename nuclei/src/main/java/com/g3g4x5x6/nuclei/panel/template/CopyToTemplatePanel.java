@@ -15,6 +15,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.g3g4x5x6.nuclei.ultils.TextAreaUtils.createTextArea;
 
@@ -72,6 +74,7 @@ public class CopyToTemplatePanel extends JPanel {
                     @Override
                     protected Void doInBackground() throws Exception {
                         generatorStatusLabel.setVisible(false);
+                        compileBtn.setEnabled(false);
                         // 设置进度条
                         progressBar.setIndeterminate(true);
                         progressBar.setStringPainted(true);
@@ -80,13 +83,13 @@ public class CopyToTemplatePanel extends JPanel {
                         // 调用ChatGPT
                         String resp = ChatUtil.chat(textArea.getText());
                         progressBar.setVisible(false);
+                        compileBtn.setEnabled(true);
                         // 输出结果
                         log.debug(resp);
                         // 复制到剪贴板
-                        ClipboardUtil.setStr(resp);
+                        ClipboardUtil.setStr(getGenerateTemplate(resp).strip());
                         generatorStatusLabel.setText("生成成功，已复制到粘贴板");
                         generatorStatusLabel.setVisible(true);
-
                         return null;
                     }
                 };
@@ -103,6 +106,20 @@ public class CopyToTemplatePanel extends JPanel {
         toolBar.add(progressBar);
         toolBar.add(generatorStatusLabel);
         toolBar.add(Box.createGlue());
+    }
+
+    private String getGenerateTemplate(String genString) {
+        String templateString = "";
+
+        Pattern pattern = Pattern.compile(".*?```yaml(.*?)```.*?", Pattern.DOTALL | Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(genString);
+        if (matcher.find()) {
+            templateString = matcher.group(1);
+        } else {
+            log.error("未匹配 PoC 模板信息");
+
+        }
+        return templateString;
     }
 
     @SneakyThrows
