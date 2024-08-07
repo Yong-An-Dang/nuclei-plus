@@ -1,6 +1,5 @@
 package com.g3g4x5x6.nuclei.http;
 
-
 import com.g3g4x5x6.nuclei.http.models.chat.ChatApiRequest;
 import com.g3g4x5x6.nuclei.http.models.chat.ChatApiResponse;
 import com.g3g4x5x6.nuclei.http.models.sync.SyncApiResponse;
@@ -12,15 +11,15 @@ import feign.RequestLine;
 
 public interface FeignClient {
 
-    @RequestLine("POST /sync")
-    @Headers("X-Sync-Token: {token}")
+    @RequestLine("POST /template/sync")
+    @Headers("X-Access-Token: {token}")
     SyncApiResponse upload(@Param("token") String token, SyncUploadRequest request);
 
-    @RequestLine("POST /sync")
-    @Headers("X-Sync-Token: {token}")
+    @RequestLine("POST /template/sync")
+    @Headers("X-Access-Token: {token}")
     SyncApiResponse download(@Param("token") String token, SyncDownloadRequest request);
 
     @RequestLine("POST /openai/chat")
-    @Headers("X-Sync-Token: {token}")
+    @Headers("X-Access-Token: {token}")
     ChatApiResponse openaiChat(@Param("token") String token, ChatApiRequest request);
 }

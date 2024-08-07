@@ -15,8 +15,8 @@ import java.util.*;
 public class SyncUtil {
     private static final String syncTemplatePath = NucleiConfig.getProperty("nuclei.templates.sync.path");
 
-    private static final FeignClient client = FeignClientConfiguration.createClient(NucleiConfig.getProperty("nuclei.templates.sync.url"));
-
+    private static final FeignClient client = FeignClientConfiguration
+            .createClient(NucleiConfig.getProperty("nuclei.cloud.server.url"));
 
     public static void upload() {
         log.info("上传所有同步模板 From: {}", syncTemplatePath);
@@ -32,15 +32,19 @@ public class SyncUtil {
             uploadRequest.setCount(templates.subList(fromIndex, toIndex).size());
             uploadRequest.setTemplates(templates.subList(fromIndex, toIndex));
 
-            SyncApiResponse uploadResponse = client.upload(NucleiConfig.getProperty("nuclei.templates.sync.auth.value"), uploadRequest);
+            SyncApiResponse uploadResponse = client.upload(NucleiConfig.getProperty("nuclei.cloud.server.token"),
+                    uploadRequest);
             log.info("Code: {}, Reason: {}", uploadResponse.getCode(), uploadResponse.getReason());
 
-            if (toIndex == total) break;
+            if (toIndex == total)
+                break;
             //
             fromIndex += 3;
             toIndex += 3;
-            if (fromIndex > total) fromIndex = total;
-            if (toIndex > total) toIndex = total;
+            if (fromIndex > total)
+                fromIndex = total;
+            if (toIndex > total)
+                toIndex = total;
         }
 
     }
@@ -65,7 +69,8 @@ public class SyncUtil {
             downloadRequest.setPageSize(pageSize);
             downloadRequest.setCurrentPage(curPage);
 
-            SyncApiResponse downloadResponse = client.download(NucleiConfig.getProperty("nuclei.templates.sync.auth.value"), downloadRequest);
+            SyncApiResponse downloadResponse = client
+                    .download(NucleiConfig.getProperty("nuclei.cloud.server.token"), downloadRequest);
             log.info("Code: {}, Reason: {}", downloadResponse.getCode(), downloadResponse.getReason());
 
             downloadResponse.getTemplates().forEach(SyncUtil::createOrUpdate);
@@ -106,7 +111,8 @@ public class SyncUtil {
             Files.walkFileTree(Paths.get(syncTemplatePath), new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    String dir = file.getParent().toString().replace("\\", "/").replace(syncTemplatePath.replace("\\", "/"), "");
+                    String dir = file.getParent().toString().replace("\\", "/")
+                            .replace(syncTemplatePath.replace("\\", "/"), "");
                     String content = Files.readString(file);
                     // 在这里可以对每个文件进行处理
                     SyncTemplate template = new SyncTemplate();
@@ -123,4 +129,3 @@ public class SyncUtil {
         return templates;
     }
 }
-
