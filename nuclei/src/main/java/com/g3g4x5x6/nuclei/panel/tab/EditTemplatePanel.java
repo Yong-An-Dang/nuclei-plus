@@ -6,7 +6,7 @@ import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.NucleiYamlCompletionProvider;
-import com.g3g4x5x6.nuclei.panel.dialog.CopyToTemplateDialog;
+import com.g3g4x5x6.nuclei.panel.dialog.GenerateTemplateDialog;
 import com.g3g4x5x6.nuclei.panel.dialog.RunningDialog;
 import com.g3g4x5x6.nuclei.ultils.*;
 
@@ -55,7 +55,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
     private final JButton aiBtn = new JButton(new FlatSVGIcon("icons/openai.svg"));
 
     // 创建并显示对话框
-    private CopyToTemplateDialog aiDialog = new CopyToTemplateDialog();
+    private final GenerateTemplateDialog aiDialog = new GenerateTemplateDialog();
     private final RunningDialog runningDialog = new RunningDialog(NucleiApp.nuclei);
     private final EditorPanel editorPanel = new EditorPanel();
     private String title = "NewTemplate.yaml";
@@ -65,7 +65,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
     private final String uuid = UUID.randomUUID().toString();
 
     private FlatSVGIcon icon = new FlatSVGIcon("icons/file-yaml.svg");
-    private RSyntaxTextArea textArea;
+    private final RSyntaxTextArea textArea;
     private FindDialog findDialog;
     private ReplaceDialog replaceDialog;
 

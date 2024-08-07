@@ -1,9 +1,7 @@
 package com.g3g4x5x6.nuclei.panel.template;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.http.ChatUtil;
-import com.g3g4x5x6.nuclei.panel.tab.EditTemplatePanel;
 
 import cn.hutool.core.swing.clipboard.ClipboardUtil;
 import lombok.SneakyThrows;
@@ -15,22 +13,36 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.g3g4x5x6.nuclei.ultils.TextAreaUtils.createTextArea;
 
 @Slf4j
-public class CopyToTemplatePanel extends JPanel {
+public class GenerateTemplatePanel extends JPanel {
     private final JToolBar toolBar;
     private final RSyntaxTextArea textArea;
 
+    private final JToggleButton lineWrapBtn = new JToggleButton(new FlatSVGIcon("icons/toggleSoftWrap.svg"));
     private final JButton pasteBtn = new JButton(new FlatSVGIcon("icons/menu-paste.svg"));
     private final JButton compileBtn = new JButton(new FlatSVGIcon("icons/compile.svg"));
+    private final JButton cancelBtn = new JButton(new FlatSVGIcon("icons/stop.svg"));
+    private final JButton listBtn = new JButton(new FlatSVGIcon("icons/bulletList.svg"));
+    private final JPopupMenu historyPopup = new JPopupMenu();
     private final JProgressBar progressBar = new JProgressBar();
     private final JLabel generatorStatusLabel = new JLabel("已复制到粘贴板");
 
-    public CopyToTemplatePanel() {
+    private SwingWorker<Void, Void> worker;
+
+    private final HashMap<String, String> historyGenerateMap = new HashMap<>();
+    private boolean isGenerate = false;
+
+    public GenerateTemplatePanel() {
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(800, 900));
 
@@ -65,16 +77,24 @@ public class CopyToTemplatePanel extends JPanel {
     }
 
     private void initToolBar() {
+        lineWrapBtn.setToolTipText("编辑文本换行");
+        lineWrapBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textArea.setLineWrap(lineWrapBtn.isSelected());
+            }
+        });
         pasteBtn.setToolTipText("粘贴HTTP流");
         compileBtn.setToolTipText("生成PoC模板");
         compileBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                worker = new SwingWorker<Void, Void>() {
                     @Override
                     protected Void doInBackground() throws Exception {
                         generatorStatusLabel.setVisible(false);
                         compileBtn.setEnabled(false);
+                        cancelBtn.setEnabled(true);
                         // 设置进度条
                         progressBar.setIndeterminate(true);
                         progressBar.setStringPainted(true);
@@ -84,10 +104,16 @@ public class CopyToTemplatePanel extends JPanel {
                         String resp = ChatUtil.chat(textArea.getText());
                         progressBar.setVisible(false);
                         compileBtn.setEnabled(true);
+                        cancelBtn.setEnabled(false);
                         // 输出结果
                         log.debug(resp);
                         // 复制到剪贴板
                         ClipboardUtil.setStr(getGenerateTemplate(resp).strip());
+                        // 标志位
+                        isGenerate = true;
+                        // 添加历史记录
+                        addHistoryPopupMenuItem(resp);
+                        // 提示
                         generatorStatusLabel.setText("生成成功，已复制到粘贴板");
                         generatorStatusLabel.setVisible(true);
                         return null;
@@ -97,11 +123,46 @@ public class CopyToTemplatePanel extends JPanel {
             }
         });
 
+        cancelBtn.setEnabled(false);
+        cancelBtn.setToolTipText("取消正在执行的生成任务");
+        cancelBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 取消任务
+                worker.cancel(true);
+                // 任务提示
+                generatorStatusLabel.setText("已取消生成任务！");
+                generatorStatusLabel.setVisible(true);
+                // 重置组件状态
+                progressBar.setVisible(false);
+                compileBtn.setEnabled(true);
+                cancelBtn.setEnabled(false);
+            }
+        });
+
+        listBtn.setToolTipText("历史生成结果");
+        listBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (historyPopup.getComponentCount() == 0) {
+                    JPopupMenu jPopupMenu = new JPopupMenu();
+                    jPopupMenu.add(new JMenuItem("无生成历史记录"));
+                    jPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+                } else {
+                    historyPopup.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
+
         progressBar.setVisible(false);
         generatorStatusLabel.setVisible(false);
 
+        toolBar.add(lineWrapBtn);
         toolBar.add(pasteBtn);
+        toolBar.addSeparator();
         toolBar.add(compileBtn);
+        toolBar.add(cancelBtn);
+        toolBar.add(listBtn);
         toolBar.add(Box.createGlue());
         toolBar.add(progressBar);
         toolBar.add(generatorStatusLabel);
@@ -109,7 +170,7 @@ public class CopyToTemplatePanel extends JPanel {
     }
 
     private String getGenerateTemplate(String genString) {
-        String templateString = "";
+        String templateString;
 
         Pattern pattern = Pattern.compile(".*?```yaml(.*?)```.*?", Pattern.DOTALL | Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(genString);
@@ -117,9 +178,42 @@ public class CopyToTemplatePanel extends JPanel {
             templateString = matcher.group(1);
         } else {
             log.error("未匹配 PoC 模板信息");
+            templateString = genString;
 
         }
         return templateString;
+    }
+
+    /**
+     * 区分智能生成和规则生成（菜单项图标区分）
+     * 键：时间
+     * 值：生成内容
+     * 点击动作：复制模板内容到粘贴板
+     */
+    private void addHistoryPopupMenuItem(String genString) {
+        // 获取当前日期和时间
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        // 定义日期时间格式
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        // 格式化日期时间
+        String formattedDateTime = currentDateTime.format(formatter);
+        historyGenerateMap.put(formattedDateTime, genString);
+        // 插入菜单项
+        JMenuItem menuItem = new JMenuItem(formattedDateTime);
+        menuItem.setToolTipText(genString);
+        if (isGenerate) {
+            menuItem.setIcon(new FlatSVGIcon("icons/aiAssistantColored.svg"));
+        } else {
+            menuItem.setIcon(new FlatSVGIcon("icons/build.svg"));
+        }
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ClipboardUtil.setStr(getGenerateTemplate(genString).strip());
+                generatorStatusLabel.setText("复制历史生成：" + formattedDateTime);
+            }
+        });
+        historyPopup.insert(menuItem, 0);
     }
 
     @SneakyThrows
