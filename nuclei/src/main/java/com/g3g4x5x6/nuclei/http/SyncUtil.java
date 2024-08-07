@@ -13,7 +13,7 @@ import java.util.*;
 
 @Slf4j
 public class SyncUtil {
-    private static final String syncTemplatePath = NucleiConfig.getProperty("nuclei.templates.sync.path");
+    private static final String syncTemplatePath = NucleiConfig.getProperty("nuclei.templates.path.sync");
 
     private static final FeignClient client = FeignClientConfiguration
             .createClient(NucleiConfig.getProperty("nuclei.cloud.server.url"));
