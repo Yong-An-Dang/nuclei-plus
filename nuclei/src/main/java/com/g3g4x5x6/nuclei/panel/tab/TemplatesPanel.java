@@ -540,8 +540,8 @@ public class TemplatesPanel extends JPanel {
         }
 
         // sync template
-        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.sync.path"))) && syncCheckBox.isSelected()) {
-            walkFiles(NucleiConfig.getProperty("nuclei.templates.sync.path"));
+        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.path.sync"))) && syncCheckBox.isSelected()) {
+            walkFiles(NucleiConfig.getProperty("nuclei.templates.path.sync"));
         }
 
 
