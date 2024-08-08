@@ -5,7 +5,6 @@ import com.formdev.flatlaf.extras.components.FlatButton;
 import com.formdev.flatlaf.extras.components.FlatToggleButton;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.action.GroupByAction;
-import com.g3g4x5x6.nuclei.model.GlobalConfigModel;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.dialog.EditorDialog;
 import com.g3g4x5x6.nuclei.panel.search.SearchTabbedPanel;
@@ -35,11 +34,12 @@ import static com.formdev.flatlaf.FlatClientProperties.*;
 public class NucleiFrame extends JFrame {
     public static JTabbedPane frameTabbedPane;
     public static JButton activeBtn;
+    public static JProgressBar statusProgressBar = new JProgressBar();
 
     public static String templatesDir = NucleiConfig.getProperty("nuclei.templates.path");
-    public static GlobalConfigModel globalConfigModel = new GlobalConfigModel();
 
-    // look to the master,follow the master,walk with the master,see through the master,become the master.
+    // look to the master,follow the master,walk with the master,see through the
+    // master,become the master.
     // 寻找大师，追随大师，与师偕行，领悟大师，成为大师
     private final JLabel mottoLabel = new JLabel(L.M("bar.tool.motto"));
 
@@ -67,7 +67,9 @@ public class NucleiFrame extends JFrame {
         this.setSize(new Dimension(1200, 700));
         this.setPreferredSize(new Dimension(1200, 700));
         this.setLocationRelativeTo(null);
-        this.setIconImage(new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("icon.png"))).getImage());
+        this.setIconImage(
+                new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("icon.png")))
+                        .getImage());
 
         initMenuBar();
 
@@ -93,7 +95,7 @@ public class NucleiFrame extends JFrame {
 
         runMenu.add(new JMenuItem("敬请期待"));
         pluginMenu.add(new JMenuItem("敬请期待"));
-//        winMenu.add(new GroupByAction(L.M("bar.menu.window.custom.group")));
+        // winMenu.add(new GroupByAction(L.M("bar.menu.window.custom.group")));
         winMenu.add(new GroupByAction("自定义分组管理"));
 
         // 置顶图标按钮
@@ -121,7 +123,8 @@ public class NucleiFrame extends JFrame {
         closeBtn.setButtonType(FlatButton.ButtonType.toolBarButton);
         closeBtn.setFocusable(false);
         closeBtn.addActionListener(e -> {
-            int i = JOptionPane.showConfirmDialog(NucleiApp.nuclei, L.M("bar.menu.icon.quit.question"), L.M("bar.menu.icon.quit.title"), JOptionPane.OK_CANCEL_OPTION);
+            int i = JOptionPane.showConfirmDialog(NucleiApp.nuclei, L.M("bar.menu.icon.quit.question"),
+                    L.M("bar.menu.icon.quit.title"), JOptionPane.OK_CANCEL_OPTION);
             if (i == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
@@ -207,7 +210,8 @@ public class NucleiFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 new Thread(() -> {
                     try {
-                        Desktop.getDesktop().open(new File(NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName));
+                        Desktop.getDesktop()
+                                .open(new File(NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName));
                     } catch (IOException ioException) {
                         ioException.fillInStackTrace();
                     }
@@ -348,14 +352,12 @@ public class NucleiFrame extends JFrame {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
-//        JButton executeBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
+        // JButton executeBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
         JButton executeBtn = new JButton(new FlatSVGIcon("icons/runAll.svg"));
         executeBtn.setToolTipText("默认新建终端执行活动配置（右键可选择已有终端执行）");
         executeBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                log.debug("GlobalConfigModel: \n{}", globalConfigModel.toString());
-
                 if (e.getButton() == 3) {
                     JPopupMenu popupMenu = new JPopupMenu();
 
@@ -373,7 +375,8 @@ public class NucleiFrame extends JFrame {
                                     NucleiFrame.frameTabbedPane.setSelectedIndex(3);
                                     RunningPanel.tabbedPane.setSelectedComponent(consolePanels.get(title));
                                 } else {
-                                    JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                                    JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告",
+                                            JOptionPane.WARNING_MESSAGE);
                                     CommonUtil.goToTarget();
                                 }
                             }
@@ -405,7 +408,8 @@ public class NucleiFrame extends JFrame {
         ntBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // nuclei -nt, -new-templates          run only new templates added in latest nuclei-templates release
+                // nuclei -nt, -new-templates run only new templates added in latest
+                // nuclei-templates release
                 if (!NucleiApp.nuclei.targetPanel.getTargetText().isBlank()) {
                     // 创建终端执行任务
                     ConsolePanel consolePanel = runningPanel.createConsole();
@@ -428,7 +432,8 @@ public class NucleiFrame extends JFrame {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                // nuclei -as, -automatic-scan         automatic web scan using wappalyzer technology detection to tags mapping
+                // nuclei -as, -automatic-scan automatic web scan using wappalyzer technology
+                // detection to tags mapping
                 if (!NucleiApp.nuclei.targetPanel.getTargetText().isBlank()) {
                     // 创建终端执行任务
                     ConsolePanel consolePanel = runningPanel.createConsole();
@@ -491,6 +496,7 @@ public class NucleiFrame extends JFrame {
 
         toolBar.add(Box.createGlue());
         toolBar.add(new JLabel(""));
+        toolBar.add(statusProgressBar);
         toolBar.add(Box.createGlue());
         toolBar.add(mottoLabel);
         toolBar.add(Box.createGlue());
@@ -622,7 +628,8 @@ public class NucleiFrame extends JFrame {
                             NucleiFrame.frameTabbedPane.setSelectedIndex(3);
                             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
                         } else {
-                            JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告",
+                                    JOptionPane.WARNING_MESSAGE);
                             CommonUtil.goToTarget();
                         }
 
@@ -632,5 +639,16 @@ public class NucleiFrame extends JFrame {
             }
         }
         return popupMenu;
+    }
+
+    public static void setStatusProgressBar(String text) {
+        statusProgressBar.setString(text);
+        statusProgressBar.setIndeterminate(true);
+        statusProgressBar.setStringPainted(true);
+        statusProgressBar.setVisible(true);
+    }
+
+    public static void unsetStatusProgressBar() {
+        statusProgressBar.setVisible(false);
     }
 }

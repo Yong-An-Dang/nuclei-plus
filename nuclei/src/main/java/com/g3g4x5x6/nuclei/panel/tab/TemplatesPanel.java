@@ -135,7 +135,8 @@ public class TemplatesPanel extends JPanel {
                 return false;
             }
         };
-        String[] columnNames = {"#", "templates_id", "templates_name", "templates_severity", "templates_tags", "templates_author", "templates_description", "templates_reference"};
+        String[] columnNames = { "#", "templates_id", "templates_name", "templates_severity", "templates_tags",
+                "templates_author", "templates_description", "templates_reference" };
         tableModel.setColumnIdentifiers(columnNames);
         templatesTable.setModel(tableModel);
         refreshDataForTable();
@@ -246,7 +247,6 @@ public class TemplatesPanel extends JPanel {
             }
         });
 
-
         filterBtn.setToolTipText("点击筛选");
         filterBtn.addActionListener(e -> filter());
 
@@ -254,7 +254,8 @@ public class TemplatesPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new Thread(() -> {
-                    // nuclei -ut  [-ut, -update-templates         update nuclei-templates to latest released version]
+                    // nuclei -ut [-ut, -update-templates update nuclei-templates to latest released
+                    // version]
                     ConsolePanel consolePanel = (ConsolePanel) RunningPanel.tabbedPane.getSelectedComponent();
                     consolePanel.write("nuclei -ut\r");
 
@@ -332,7 +333,8 @@ public class TemplatesPanel extends JPanel {
                 String groupName = DialogUtil.input(createItem, "请输入分组名称：");
                 if (groupName != null && !groupName.strip().equals("")) {
                     if (groupMap == null || groupMap.get(groupName.strip()) == null) {
-                        if (groupMap == null) groupMap = new LinkedHashMap<>();
+                        if (groupMap == null)
+                            groupMap = new LinkedHashMap<>();
                         groupMap.put(groupName, new LinkedList<String>());
                         CommonUtil.saveGroupToYaml(groupMap);
                     } else {
@@ -353,7 +355,8 @@ public class TemplatesPanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         log.debug("添加选择模板到选中分组中");
                         ArrayList<String> list = new ArrayList<>();
-                        if (groupMap.get(key) != null) list = (ArrayList<String>) groupMap.get(key);
+                        if (groupMap.get(key) != null)
+                            list = (ArrayList<String>) groupMap.get(key);
                         for (int index : templatesTable.getSelectedRows()) {
                             int num = Integer.parseInt(templatesTable.getValueAt(index, 0).toString()) - 1;
                             String savePath = templates.get(num).get("path");
@@ -458,6 +461,7 @@ public class TemplatesPanel extends JPanel {
         sorter = new TableRowSorter<>(tableModel);
         templatesTable.setRowSorter(sorter);
         new Thread(() -> {
+            NucleiFrame.setStatusProgressBar("正在刷新模板列表，请稍后...");
             tableModel.setRowCount(0);
             templates.clear();
             try {
@@ -473,19 +477,23 @@ public class TemplatesPanel extends JPanel {
                 count++;
                 String tType = templateInfo.get("path").endsWith("workflow.yaml") ? "workflow" : "template";
                 // Filter template, workflow
-                if (!filterList.contains(tType)) continue;
+                if (!filterList.contains(tType))
+                    continue;
                 String id = templateInfo.get("id");
                 String name = templateInfo.get("name");
                 String severity = templateInfo.get("severity");
                 // Filter Severity && workflow without severity
-                if (!filterList.contains(severity) && !tType.equalsIgnoreCase("workflow")) continue;
+                if (!filterList.contains(severity) && !tType.equalsIgnoreCase("workflow"))
+                    continue;
 
                 String author = templateInfo.get("author");
                 String description = templateInfo.get("description");
                 String reference = templateInfo.get("reference");
                 String tags = templateInfo.get("tags");
-                tableModel.addRow(new String[]{String.valueOf(count), id, name, severity, tags, author, description, reference});
+                tableModel.addRow(new String[] { String.valueOf(count), id, name, severity, tags, author, description,
+                        reference });
             }
+            NucleiFrame.unsetStatusProgressBar();
         }).start();
     }
 
@@ -494,13 +502,20 @@ public class TemplatesPanel extends JPanel {
         filterList.clear();
 
         // 配置过滤器
-        if (infoBtn.isSelected()) filterList.add("info");
-        if (lowBtn.isSelected()) filterList.add("low");
-        if (mediumBtn.isSelected()) filterList.add("medium");
-        if (highBtn.isSelected()) filterList.add("high");
-        if (criticalBtn.isSelected()) filterList.add("critical");
-        if (templateBtn.isSelected()) filterList.add("template");
-        if (workflowBtn.isSelected()) filterList.add("workflow");
+        if (infoBtn.isSelected())
+            filterList.add("info");
+        if (lowBtn.isSelected())
+            filterList.add("low");
+        if (mediumBtn.isSelected())
+            filterList.add("medium");
+        if (highBtn.isSelected())
+            filterList.add("high");
+        if (criticalBtn.isSelected())
+            filterList.add("critical");
+        if (templateBtn.isSelected())
+            filterList.add("template");
+        if (workflowBtn.isSelected())
+            filterList.add("workflow");
 
         log.debug(filterList.toString());
 
@@ -535,15 +550,16 @@ public class TemplatesPanel extends JPanel {
         }
 
         // custom template
-        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.path.custom"))) && customCheckBox.isSelected()) {
+        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.path.custom")))
+                && customCheckBox.isSelected()) {
             walkFiles(NucleiConfig.getProperty("nuclei.templates.path.custom"));
         }
 
         // sync template
-        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.path.sync"))) && syncCheckBox.isSelected()) {
+        if (Files.exists(Path.of(NucleiConfig.getProperty("nuclei.templates.path.sync")))
+                && syncCheckBox.isSelected()) {
             walkFiles(NucleiConfig.getProperty("nuclei.templates.path.sync"));
         }
-
 
         return templates.size();
     }
@@ -571,7 +587,8 @@ public class TemplatesPanel extends JPanel {
         LinkedHashMap<String, ConsolePanel> consolePanels = new LinkedHashMap<>();
         int count = RunningPanel.tabbedPane.getTabCount();
         for (int i = 0; i < count; i++) {
-            consolePanels.put(RunningPanel.tabbedPane.getTitleAt(i), (ConsolePanel) RunningPanel.tabbedPane.getComponentAt(i));
+            consolePanels.put(RunningPanel.tabbedPane.getTitleAt(i),
+                    (ConsolePanel) RunningPanel.tabbedPane.getComponentAt(i));
         }
         return consolePanels;
     }
@@ -657,7 +674,8 @@ public class TemplatesPanel extends JPanel {
                 log.debug(savePath);
             }
             savePath = savePath.strip();
-            if (clipboard == null) clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
+            if (clipboard == null)
+                clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); // 获得系统剪贴板
             Transferable transferable = new StringSelection(savePath);
             clipboard.setContents(transferable, null);
         }
@@ -682,7 +700,8 @@ public class TemplatesPanel extends JPanel {
      * 目标是可以做到多选
      * <html><font style='color:red'></font></html>
      */
-    private AbstractAction generateWithTemplatesAction = new AbstractAction("<html>为选中的<font style='color:red'>模板</font>生成执行命令</html>") {
+    private AbstractAction generateWithTemplatesAction = new AbstractAction(
+            "<html>为选中的<font style='color:red'>模板</font>生成执行命令</html>") {
         @SneakyThrows
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -692,7 +711,8 @@ public class TemplatesPanel extends JPanel {
                 // 配置对象
                 String configPath = CommonUtil.getNucleiConfigFile(getSelectedTemplateMap());
                 String command = "nuclei -config " + configPath + " -markdown-export " + ProjectUtil.reportDir();
-                if (clipboard == null) clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
+                if (clipboard == null)
+                    clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); // 获得系统剪贴板
                 Transferable transferable = new StringSelection(command);
                 clipboard.setContents(transferable, null);
 
@@ -706,7 +726,8 @@ public class TemplatesPanel extends JPanel {
         }
     };
 
-    private AbstractAction generateWithTagsAction = new AbstractAction("<html>为选中的<font style='color:blue'>标签</font>生成执行命令</html>") {
+    private AbstractAction generateWithTagsAction = new AbstractAction(
+            "<html>为选中的<font style='color:blue'>标签</font>生成执行命令</html>") {
         @SneakyThrows
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -716,7 +737,8 @@ public class TemplatesPanel extends JPanel {
                 String configPath = CommonUtil.getNucleiConfigFile(getSelectedTagMap());
                 // 复制命令到粘贴板
                 String command = "nuclei -config " + configPath + " -markdown-export " + ProjectUtil.reportDir();
-                if (clipboard == null) clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); //获得系统剪贴板
+                if (clipboard == null)
+                    clipboard = Toolkit.getDefaultToolkit().getSystemClipboard(); // 获得系统剪贴板
                 Transferable transferable = new StringSelection(command);
                 clipboard.setContents(transferable, null);
                 // 跳转到命令行面板
