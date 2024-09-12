@@ -4,10 +4,10 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.extras.components.FlatButton;
 import com.formdev.flatlaf.extras.components.FlatToggleButton;
 import com.g3g4x5x6.NucleiApp;
+import com.g3g4x5x6.nuclei.action.CyberSearchAction;
 import com.g3g4x5x6.nuclei.action.GroupByAction;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
 import com.g3g4x5x6.nuclei.panel.dialog.EditorDialog;
-import com.g3g4x5x6.nuclei.panel.search.SearchTabbedPanel;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
 import com.g3g4x5x6.nuclei.ultils.*;
@@ -47,7 +47,6 @@ public class NucleiFrame extends JFrame {
     public final StringTargetPanel targetPanel = new StringTargetPanel();
     public final SettingsPanel settingsPanel = new SettingsPanel();
     public final RunningPanel runningPanel = new RunningPanel();
-    public final SearchTabbedPanel searchTabbedPanel = new SearchTabbedPanel();
 
     public final StatusBar statusBar = new StatusBar();
 
@@ -67,9 +66,7 @@ public class NucleiFrame extends JFrame {
         this.setSize(new Dimension(1200, 700));
         this.setPreferredSize(new Dimension(1200, 700));
         this.setLocationRelativeTo(null);
-        this.setIconImage(
-                new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("icon.png")))
-                        .getImage());
+        this.setIconImage(new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("icon.png"))).getImage());
 
         initMenuBar();
 
@@ -95,7 +92,10 @@ public class NucleiFrame extends JFrame {
 
         runMenu.add(new JMenuItem("敬请期待"));
         pluginMenu.add(new JMenuItem("敬请期待"));
+
         // winMenu.add(new GroupByAction(L.M("bar.menu.window.custom.group")));
+        winMenu.add(new CyberSearchAction("网络空间搜索"));
+        winMenu.addSeparator();
         winMenu.add(new GroupByAction("自定义分组管理"));
 
         // 置顶图标按钮
@@ -123,8 +123,7 @@ public class NucleiFrame extends JFrame {
         closeBtn.setButtonType(FlatButton.ButtonType.toolBarButton);
         closeBtn.setFocusable(false);
         closeBtn.addActionListener(e -> {
-            int i = JOptionPane.showConfirmDialog(NucleiApp.nuclei, L.M("bar.menu.icon.quit.question"),
-                    L.M("bar.menu.icon.quit.title"), JOptionPane.OK_CANCEL_OPTION);
+            int i = JOptionPane.showConfirmDialog(NucleiApp.nuclei, L.M("bar.menu.icon.quit.question"), L.M("bar.menu.icon.quit.title"), JOptionPane.OK_CANCEL_OPTION);
             if (i == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
@@ -150,8 +149,7 @@ public class NucleiFrame extends JFrame {
                 String projectName = DialogUtil.input(NucleiFrame.this, "请输出项目名称（目录）");
                 log.debug(projectName);
                 if (projectName != null) {
-                    if (projectName.isBlank())
-                        DialogUtil.warn("【项目名称（目录）】不能为空");
+                    if (projectName.isBlank()) DialogUtil.warn("【项目名称（目录）】不能为空");
                     else {
                         Files.createDirectories(Path.of(NucleiConfig.getWorkPath() + "/projects/" + projectName));
                         CommonUtil.createProjectStruct(projectName);
@@ -210,8 +208,7 @@ public class NucleiFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 new Thread(() -> {
                     try {
-                        Desktop.getDesktop()
-                                .open(new File(NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName));
+                        Desktop.getDesktop().open(new File(NucleiConfig.getWorkPath() + "/projects/" + NucleiConfig.projectName));
                     } catch (IOException ioException) {
                         ioException.fillInStackTrace();
                     }
@@ -240,8 +237,7 @@ public class NucleiFrame extends JFrame {
         quitItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (DialogUtil.yesOrNo(NucleiFrame.this, "是否退出程序？") == JOptionPane.YES_OPTION)
-                    System.exit(0);
+                if (DialogUtil.yesOrNo(NucleiFrame.this, "是否退出程序？") == JOptionPane.YES_OPTION) System.exit(0);
             }
         });
 
@@ -285,8 +281,7 @@ public class NucleiFrame extends JFrame {
         globalItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                EditorDialog editorDialog = new EditorDialog(NucleiFrame.this, "全局配置",
-                        Path.of(NucleiConfig.getConfigPath(), "nuclei.properties").toString());
+                EditorDialog editorDialog = new EditorDialog(NucleiFrame.this, "全局配置", Path.of(NucleiConfig.getConfigPath(), "nuclei.properties").toString());
                 editorDialog.setLocationRelativeTo(null);
                 editorDialog.setVisible(true);
             }
@@ -352,7 +347,6 @@ public class NucleiFrame extends JFrame {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
-        // JButton executeBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
         JButton executeBtn = new JButton(new FlatSVGIcon("icons/runAll.svg"));
         executeBtn.setToolTipText("默认新建终端执行活动配置（右键可选择已有终端执行）");
         executeBtn.addMouseListener(new MouseAdapter() {
@@ -368,15 +362,14 @@ public class NucleiFrame extends JFrame {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                 log.debug("Execute in {}", title);
-                                if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+                                if (!NucleiApp.nuclei.targetPanel.getTargetText().isBlank()) {
                                     ExecUtils.runGlobalNucleiConfig(consolePanels.get(title));
 
                                     // 跳转至运行终端
                                     NucleiFrame.frameTabbedPane.setSelectedIndex(3);
                                     RunningPanel.tabbedPane.setSelectedComponent(consolePanels.get(title));
                                 } else {
-                                    JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告",
-                                            JOptionPane.WARNING_MESSAGE);
+                                    JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
                                     CommonUtil.goToTarget();
                                 }
                             }
@@ -512,7 +505,7 @@ public class NucleiFrame extends JFrame {
         frameTabbedPane.addTab("Targets", new FlatSVGIcon("icons/pinTab.svg"), targetPanel);
         frameTabbedPane.addTab("Settings", new FlatSVGIcon("icons/pinTab.svg"), settingsPanel);
         frameTabbedPane.addTab("Running", new FlatSVGIcon("icons/pinTab.svg"), runningPanel);
-        frameTabbedPane.addTab("Searching", new FlatSVGIcon("icons/pinTab.svg"), searchTabbedPanel);
+//        frameTabbedPane.addTab("Searching", new FlatSVGIcon("icons/pinTab.svg"), searchTabbedPanel);
 
         this.add(frameTabbedPane, BorderLayout.CENTER);
     }
@@ -520,12 +513,11 @@ public class NucleiFrame extends JFrame {
     private void initClosableTabs(JTabbedPane frameTabbedPane) {
         frameTabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSABLE, true);
         frameTabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_TOOLTIPTEXT, "Close");
-        frameTabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_CALLBACK,
-                (BiConsumer<JTabbedPane, Integer>) (tabPane, tabIndex) -> {
-                    if (tabIndex >= 5) {
-                        frameTabbedPane.removeTabAt(tabIndex);
-                    }
-                });
+        frameTabbedPane.putClientProperty(TABBED_PANE_TAB_CLOSE_CALLBACK, (BiConsumer<JTabbedPane, Integer>) (tabPane, tabIndex) -> {
+            if (tabIndex >= 4) {
+                frameTabbedPane.removeTabAt(tabIndex);
+            }
+        });
     }
 
     private void customComponents() {
@@ -628,8 +620,7 @@ public class NucleiFrame extends JFrame {
                             NucleiFrame.frameTabbedPane.setSelectedIndex(3);
                             RunningPanel.tabbedPane.setSelectedComponent(consolePanel);
                         } else {
-                            JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告",
-                                    JOptionPane.WARNING_MESSAGE);
+                            JOptionPane.showMessageDialog(NucleiApp.nuclei, "请先填写扫描目标", "警告", JOptionPane.WARNING_MESSAGE);
                             CommonUtil.goToTarget();
                         }
 
