@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.L;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,16 +26,16 @@ import java.util.concurrent.ExecutionException;
 
 @Slf4j
 public class StartupFrame extends JFrame {
-    private final JRadioButton defaultBtn = new JRadioButton("默认项目（Default）");
-    private final JRadioButton newBtn = new JRadioButton("创建项目");
-    private final JRadioButton selectBtn = new JRadioButton("打开项目");
+    private final JRadioButton defaultBtn = new JRadioButton(L.M("project.default", "默认项目（Default）"));
+    private final JRadioButton newBtn = new JRadioButton(L.M("project.new", "创建项目"));
+    private final JRadioButton selectBtn = new JRadioButton(L.M("project.open", "打开项目"));
 
     private final JTextField newTextField = new JTextField();
     private final JTable projectsTable = new JTable();
     private DefaultTableModel tableModel;
 
-    private final JButton okBtn = new JButton("启动");
-    private final JButton cancelBtn = new JButton("取消");
+    private final JButton okBtn = new JButton(L.M("project.ok", "启动"));
+    private final JButton cancelBtn = new JButton(L.M("project.cancel", "取消"));
 
     public StartupFrame() {
         this.setLayout(new BorderLayout());

@@ -19,11 +19,18 @@ public class L {
         return new MessageFormat(rb.getString(key), locale).format(null);
     }
 
+    /**
+     * @param textForTip 用于开发提示，推荐使用
+     */
+    public static String M(String key, String textForTip) {
+        return new MessageFormat(rb.getString(key), locale).format(null);
+    }
+
     public static String M(String key, Object[] params) {
         return new MessageFormat(rb.getString(key), locale).format(params);
     }
 
     public static void main(String[] args) {
-        System.out.println(L.M("bar.menu.open"));
+        System.out.println(L.M("bar.menu.open", "打开"));
     }
 }

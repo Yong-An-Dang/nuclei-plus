@@ -128,7 +128,7 @@ public class CommonUtil {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     log.debug("Active config: " + configName);
-                    NucleiFrame.activeBtn.setText("当前活动配置：" + configName);
+                    NucleiFrame.activeBtn.setText(L.M("bar.tool.btn.current.config.text", "当前活动配置：") + configName);
                     NucleiApp.nuclei.settingsPanel.setActiveConfigPanel(configPanels.get(configName));
                 }
             });

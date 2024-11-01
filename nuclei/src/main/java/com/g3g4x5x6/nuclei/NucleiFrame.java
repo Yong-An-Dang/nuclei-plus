@@ -96,7 +96,7 @@ public class NucleiFrame extends JFrame {
         // winMenu.add(new GroupByAction(L.M("bar.menu.window.custom.group")));
         winMenu.add(new CyberSearchAction("网络空间搜索"));
         winMenu.addSeparator();
-        winMenu.add(new GroupByAction("自定义分组管理"));
+        winMenu.add(new GroupByAction(L.M("bar.menu.window.group", "自定义分组管理")));
 
         // 置顶图标按钮
         FlatToggleButton toggleButton = new FlatToggleButton();
@@ -146,7 +146,7 @@ public class NucleiFrame extends JFrame {
             @SneakyThrows
             @Override
             public void actionPerformed(ActionEvent e) {
-                String projectName = DialogUtil.input(NucleiFrame.this, "请输出项目名称（目录）");
+                String projectName = DialogUtil.input(NucleiFrame.this, "请输入项目名称（目录）");
                 log.debug(projectName);
                 if (projectName != null) {
                     if (projectName.isBlank()) DialogUtil.warn("【项目名称（目录）】不能为空");
@@ -348,7 +348,7 @@ public class NucleiFrame extends JFrame {
         toolBar.setFloatable(false);
 
         JButton executeBtn = new JButton(new FlatSVGIcon("icons/runAll.svg"));
-        executeBtn.setToolTipText("默认新建终端执行活动配置（右键可选择已有终端执行）");
+        executeBtn.setToolTipText(L.M("bar.tool.btn.tip.run.terminal", "默认新建终端执行活动配置（右键可选择已有终端执行）"));
         executeBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -397,7 +397,7 @@ public class NucleiFrame extends JFrame {
 
         // cwmInvite.svg
         JButton ntBtn = new JButton(new FlatSVGIcon("icons/execute.svg"));
-        ntBtn.setToolTipText("仅运行在最新的 nuclei-templates 版本中添加的新模板");
+        ntBtn.setToolTipText(L.M("bar.tool.btn.tip.run.latest", "仅运行在最新的 nuclei-templates 版本中添加的新模板"));
         ntBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -420,7 +420,7 @@ public class NucleiFrame extends JFrame {
         });
 
         JButton asBtn = new JButton(new FlatSVGIcon("icons/runWithCoverage.svg"));
-        asBtn.setToolTipText("使用 wappalyzer 技术检测到标签映射的自动 Web 扫描");
+        asBtn.setToolTipText(L.M("bar.tool.btn.tip.run.wappalyzer", "使用 wappalyzer 技术检测到标签映射的自动 Web 扫描"));
         asBtn.addActionListener(new AbstractAction() {
             @SneakyThrows
             @Override
@@ -444,7 +444,7 @@ public class NucleiFrame extends JFrame {
         });
 
         JButton runGroupBtn = new JButton(new FlatSVGIcon("icons/profile.svg"));
-        runGroupBtn.setToolTipText("使用选中分组模板扫描目标");
+        runGroupBtn.setToolTipText(L.M("bar.tool.btn.tip.run.group", "使用选中分组模板扫描目标"));
         runGroupBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -455,7 +455,7 @@ public class NucleiFrame extends JFrame {
         });
 
         JButton saveBtn = new JButton(new FlatSVGIcon("icons/menu-saveall.svg"));
-        saveBtn.setToolTipText("保存项目中所有配置");
+        saveBtn.setToolTipText(L.M("bar.tool.btn.tip.save", "保存项目中所有配置"));
         saveBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -469,7 +469,7 @@ public class NucleiFrame extends JFrame {
 
         activeBtn = new JButton(new FlatSVGIcon("icons/active.svg"));
         activeBtn.setSelected(true);
-        activeBtn.setText("当前活动配置：Default");
+        activeBtn.setText(L.M("bar.tool.btn.current.config.text", "当前活动配置：") + "Default");
         activeBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

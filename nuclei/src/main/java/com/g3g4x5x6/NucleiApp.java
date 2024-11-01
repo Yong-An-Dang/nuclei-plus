@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
 import java.util.Objects;
 
 import static java.awt.Frame.NORMAL;
@@ -50,7 +51,8 @@ public class NucleiApp {
 
     public static void main(String[] args) {
         // For Debug
-        // Locale.setDefault(Locale.US);
+        String localeStr = NucleiConfig.getProperty("nuclei.locale");
+        if (!localeStr.isBlank()) Locale.setDefault(new Locale(localeStr.split("_")[0], localeStr.split("_")[1]));
 
         // 检查运行环境
         CheckUtil.checkEnv();
@@ -96,10 +98,8 @@ public class NucleiApp {
 
     private static void initFlatLaf() {
         try {
-            if (NucleiConfig.getProperty("nuclei.theme").isEmpty())
-                UIManager.setLookAndFeel(new FlatLightLaf());
-            else
-                UIManager.setLookAndFeel(NucleiConfig.getProperty("nuclei.theme"));
+            if (NucleiConfig.getProperty("nuclei.theme").isEmpty()) UIManager.setLookAndFeel(new FlatLightLaf());
+            else UIManager.setLookAndFeel(NucleiConfig.getProperty("nuclei.theme"));
         } catch (Exception ex) {
             System.err.println("Failed to initialize LaF");
         }
