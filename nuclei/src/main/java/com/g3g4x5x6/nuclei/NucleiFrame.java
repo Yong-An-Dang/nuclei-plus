@@ -538,7 +538,7 @@ public class NucleiFrame extends JFrame {
             }
         });
 
-        JMenuItem reportItem = new JMenuItem("查看扫描报告");
+        JMenuItem reportItem = new JMenuItem(L.M("tab.popupmenu.report", "查看扫描报告"));
         reportItem.setIcon(new FlatSVGIcon("icons/MarkdownPlugin.svg"));
         reportItem.addActionListener(new AbstractAction() {
             @SneakyThrows
@@ -549,7 +549,7 @@ public class NucleiFrame extends JFrame {
         });
         trailPopupMenu.add(reportItem);
 
-        JMenuItem templateItem = new JMenuItem("打开模板目录");
+        JMenuItem templateItem = new JMenuItem(L.M("tab.popupmenu.template", "打开模板目录"));
         templateItem.setIcon(new FlatSVGIcon("icons/template.svg"));
         templateItem.addActionListener(new AbstractAction() {
             @SneakyThrows
