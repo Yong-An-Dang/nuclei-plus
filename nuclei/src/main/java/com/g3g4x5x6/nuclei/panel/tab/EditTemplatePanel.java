@@ -129,14 +129,14 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
     }
 
     private void initToolBarAction() {
-        newBtn.setToolTipText("从模板新建");
+        newBtn.setToolTipText(L.M("tab.panel.editor.tooltip.new", "从模板新建"));
         newBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 log.debug("从模板新建");
             }
         });
-        openBtn.setToolTipText("打开模板");
+        openBtn.setToolTipText(L.M("tab.panel.editor.tooltip.open", "打开模板"));
         openBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -168,7 +168,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
             textArea.setLineWrap(lineWrapBtn.isSelected());
         });
 
-        saveBtn.setToolTipText("保存模板");
+        saveBtn.setToolTipText(L.M("tab.panel.editor.tooltip.save", "保存模板"));
         saveBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -201,7 +201,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
             }
         });
 
-        executeBtn.setToolTipText("运行");
+        executeBtn.setToolTipText(L.M("tab.panel.editor.tooltip.run", "运行"));
         executeBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -210,7 +210,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
             }
         });
 
-        startDebuggerBtn.setToolTipText("调试模式运行");
+        startDebuggerBtn.setToolTipText(L.M("tab.panel.editor.tooltip.debug", "调试模式运行"));
         startDebuggerBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -219,7 +219,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
             }
         });
 
-        targetBtn.setToolTipText("设置测试目标URL(高优先级)");
+        targetBtn.setToolTipText(L.M("tab.panel.editor.tooltip.targets", "设置测试目标URL(高优先级)"));
         JPopupMenu targetPopupMenu = new JPopupMenu();
         targetPopupMenu.setBorder(null);
         targetPopupMenu.setSize(new Dimension(600, 200));
@@ -233,7 +233,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
             }
         });
 
-        terminalBtn.setToolTipText("正在测试的模板......");
+        terminalBtn.setToolTipText(L.M("tab.panel.editor.tooltip.terminal", "正在测试的模板......"));
         terminalBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -241,7 +241,7 @@ public class EditTemplatePanel extends JPanel implements SearchListener {
             }
         });
 
-        aiBtn.setToolTipText("");
+        aiBtn.setToolTipText(L.M("tab.panel.editor.generate.tooltip", "模板智能生成"));
         aiBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -6,6 +6,7 @@ import com.g3g4x5x6.nuclei.panel.setting.ConfigAllPanel;
 import com.g3g4x5x6.nuclei.ultils.CommonUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.L;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -124,7 +125,7 @@ public class SettingsPanel extends JPanel {
         });
 
         JButton groupBtn = new JButton(new FlatSVGIcon("icons/GroupByPackage.svg"));
-        groupBtn.setText("自定义分组");
+        groupBtn.setText(L.M("tab.panel.settings.group", "自定义分组"));
         groupBtn.setToolTipText("应用分组到当前活动配置");
         groupBtn.setSelected(true);
         groupBtn.addMouseListener(new MouseAdapter() {

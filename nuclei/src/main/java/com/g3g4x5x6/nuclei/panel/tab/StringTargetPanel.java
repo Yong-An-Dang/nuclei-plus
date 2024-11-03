@@ -4,6 +4,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.NucleiApp;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import com.g3g4x5x6.nuclei.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.L;
 import com.g3g4x5x6.nuclei.ultils.TextAreaUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.rsta.ui.search.FindDialog;
@@ -49,7 +50,7 @@ public class StringTargetPanel extends JPanel implements SearchListener, ChangeL
     private final JRadioButton resumeBtn = new JRadioButton("-resume  ");
 
     // 路漫漫其修远兮，吾将上下而求索
-    private final JLabel showLabel = new JLabel("无目标的努力，有如在黑暗中远征");
+    private final JLabel showLabel = new JLabel(L.M("tab.panel.targets.moto", "无目标的努力，有如在黑暗中远征"));
 
     public StringTargetPanel() {
         this.setLayout(new BorderLayout());
@@ -166,7 +167,7 @@ public class StringTargetPanel extends JPanel implements SearchListener, ChangeL
     }
 
     private void initToolBarAction() {
-        dupBtn.setToolTipText("排除已验证目标（出现重复的目标）");
+        dupBtn.setToolTipText(L.M("tab.panel.targets.dup.tip", "排除已验证目标（出现重复的目标）"));
         dupBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -40,9 +40,9 @@ public class TemplatesPanel extends JPanel {
     private final LinkedList<String> filterList = new LinkedList<>();
 
     private final JButton checkmarkListBtn = new JButton(new FlatSVGIcon("icons/checkmarkList.svg"));
-    private final JCheckBoxMenuItem officialCheckBox = new JCheckBoxMenuItem("官方模板");
-    private final JCheckBoxMenuItem customCheckBox = new JCheckBoxMenuItem("自选模板");
-    private final JCheckBoxMenuItem syncCheckBox = new JCheckBoxMenuItem("同步模板");
+    private final JCheckBoxMenuItem officialCheckBox = new JCheckBoxMenuItem(L.M("tab.panel.templates.toolbar.source.office", "官方模板"));
+    private final JCheckBoxMenuItem customCheckBox = new JCheckBoxMenuItem(L.M("tab.panel.templates.toolbar.source.custom", "自选模板"));
+    private final JCheckBoxMenuItem syncCheckBox = new JCheckBoxMenuItem(L.M("tab.panel.templates.toolbar.source.sync", "同步模板"));
 
     private final JButton openBtn = new JButton(new FlatSVGIcon("icons/menu-open.svg"));
     private final JButton uploadBtn = new JButton(new FlatSVGIcon("icons/upload.svg"));
@@ -168,7 +168,7 @@ public class TemplatesPanel extends JPanel {
     }
 
     private void initToolBarAction() {
-        openBtn.setToolTipText("加载指定目录下的模板");
+        openBtn.setToolTipText(L.M("tab.panel.templates.toolbar.custom", "加载指定目录下的模板"));
         openBtn.setSelected(true);
         openBtn.addActionListener(new AbstractAction() {
             @Override
@@ -194,7 +194,7 @@ public class TemplatesPanel extends JPanel {
             }
         });
 
-        uploadBtn.setToolTipText("同步上传模板");
+        uploadBtn.setToolTipText(L.M("tab.panel.templates.toolbar.upload", "同步上传模板"));
         uploadBtn.setSelected(true);
         uploadBtn.addActionListener(new AbstractAction() {
 
@@ -208,7 +208,7 @@ public class TemplatesPanel extends JPanel {
                 }).start();
             }
         });
-        downloadBtn.setToolTipText("同步下载模板");
+        downloadBtn.setToolTipText(L.M("tab.panel.templates.toolbar.download", "同步下载模板"));
         downloadBtn.setSelected(true);
         downloadBtn.addActionListener(new AbstractAction() {
 
@@ -237,7 +237,7 @@ public class TemplatesPanel extends JPanel {
         checkmarkListPopupMenu.add(officialCheckBox);
         checkmarkListPopupMenu.add(customCheckBox);
         checkmarkListPopupMenu.add(syncCheckBox);
-        checkmarkListBtn.setToolTipText("选择模板加载来源");
+        checkmarkListBtn.setToolTipText(L.M("tab.panel.templates.toolbar.source.tip", "选择模板加载来源"));
         checkmarkListBtn.setSelected(true);
         checkmarkListBtn.addMouseListener(new MouseAdapter() {
             @Override
@@ -246,10 +246,10 @@ public class TemplatesPanel extends JPanel {
             }
         });
 
-        filterBtn.setToolTipText("点击筛选");
+        filterBtn.setToolTipText(L.M("tab.panel.templates.toolbar.filter", "点击筛选"));
         filterBtn.addActionListener(e -> filter());
 
-        refreshBtn.setToolTipText("run: nuclei -ut");
+        refreshBtn.setToolTipText(L.M("tab.panel.templates.toolbar.refresh.tip", "run: nuclei -ut"));
         refreshBtn.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -278,9 +278,9 @@ public class TemplatesPanel extends JPanel {
     private JPopupMenu createTablePopMenu() {
         JPopupMenu popupMenu = new JPopupMenu();
 
-        popupMenu.add(new JMenuItem("已选中PoC模板数：" + templatesTable.getSelectedRowCount()));
+        popupMenu.add(new JMenuItem(L.M("tab.panel.templates.popupmenu.count", "已选中PoC模板数：") + templatesTable.getSelectedRowCount()));
         popupMenu.addSeparator();
-        popupMenu.add(new AbstractAction("<html>追加选中模板到<font style='color:green'>活动配置</font></html>") {
+        popupMenu.add(new AbstractAction(L.M("tab.panel.templates.popupmenu.config.active", "<html>追加选中模板到<font style='color:green'>活动配置</font></html>")) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 log.debug("追加选中模板到活动配置");
@@ -296,7 +296,7 @@ public class TemplatesPanel extends JPanel {
             }
         });
 
-        JMenu toGroupByMenu = new JMenu("<html>追加选中模板到<font style='color:blue'>配置</font></html>");
+        JMenu toGroupByMenu = new JMenu(L.M("tab.panel.templates.popupmenu.config.option", "<html>追加选中模板到<font style='color:blue'>配置</font></html>"));
         LinkedHashMap<String, ConfigAllPanel> configAllPanelLinkedHashMap = CommonUtil.getConfigPanels();
         for (String title : configAllPanelLinkedHashMap.keySet()) {
             JMenuItem tmpItem = new JMenuItem(title);
@@ -320,11 +320,11 @@ public class TemplatesPanel extends JPanel {
 
         JMenu groupByMenu = new JMenu(L.M("tab.panel.templates.popupmenu.group", "自定义分组管理"));
 
-        JMenuItem manageGroupItem = new JMenuItem("管理分组");
+        JMenuItem manageGroupItem = new JMenuItem(L.M("tab.panel.templates.popupmenu.group.manage", "管理分组"));
         manageGroupItem.setIcon(new FlatSVGIcon("icons/GroupByPackage.svg"));
-        manageGroupItem.addActionListener(new GroupByAction("自定义分组管理"));
+        manageGroupItem.addActionListener(new GroupByAction(L.M("tab.panel.templates.popupmenu.group", "自定义分组管理")));
 
-        JMenuItem createItem = new JMenuItem("新建分组");
+        JMenuItem createItem = new JMenuItem(L.M("tab.panel.templates.popupmenu.group.new", "新建分组"));
         createItem.setIcon(new FlatSVGIcon("icons/addFolder.svg"));
         createItem.addActionListener(new AbstractAction() {
             @Override
@@ -374,7 +374,7 @@ public class TemplatesPanel extends JPanel {
         }
         groupByMenu.add(createItem);
 
-        JMenu selectedTemplatesMenu = new JMenu("运行选中的模板");
+        JMenu selectedTemplatesMenu = new JMenu(L.M("tab.panel.templates.popupmenu.run.selected", "运行选中的模板"));
         selectedTemplatesMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -404,7 +404,7 @@ public class TemplatesPanel extends JPanel {
                 log.debug("menuCanceled");
             }
         });
-        JMenu selectedTagsMenu = new JMenu("运行包含选中标签的模板");
+        JMenu selectedTagsMenu = new JMenu(L.M("tab.panel.templates.popupmenu.run.tags", "运行包含选中标签的模板"));
         selectedTagsMenu.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -459,7 +459,7 @@ public class TemplatesPanel extends JPanel {
         sorter = new TableRowSorter<>(tableModel);
         templatesTable.setRowSorter(sorter);
         new Thread(() -> {
-            NucleiFrame.setStatusProgressBar("正在刷新模板列表，请稍后...");
+            NucleiFrame.setStatusProgressBar(L.M("bar.tool.status.progressbar.text", "正在刷新模板列表，请稍后..."));
             tableModel.setRowCount(0);
             templates.clear();
             try {
@@ -613,7 +613,7 @@ public class TemplatesPanel extends JPanel {
         }
     }
 
-    private AbstractAction editAction = new AbstractAction("编辑-概念验证模板") {
+    private AbstractAction editAction = new AbstractAction(L.M("tab.panel.templates.popupmenu.edit", "编辑-概念验证模板")) {
         @Override
         public void actionPerformed(ActionEvent e) {
             log.debug("Edit This Template");
@@ -629,7 +629,7 @@ public class TemplatesPanel extends JPanel {
         }
     };
 
-    private AbstractAction openDirAction = new AbstractAction("打开-模板所在文件夹") {
+    private AbstractAction openDirAction = new AbstractAction(L.M("tab.panel.templates.popupmenu.open", "打开-模板所在文件夹")) {
         @Override
         public void actionPerformed(ActionEvent e) {
             log.debug("Open in Folder");
@@ -648,7 +648,7 @@ public class TemplatesPanel extends JPanel {
         }
     };
 
-    private AbstractAction copyPathAction = new AbstractAction("复制-模板绝对路径") {
+    private AbstractAction copyPathAction = new AbstractAction(L.M("tab.panel.templates.popupmenu.copy", "复制-模板绝对路径")) {
         @Override
         public void actionPerformed(ActionEvent e) {
             log.debug("Copy Path");
@@ -665,7 +665,7 @@ public class TemplatesPanel extends JPanel {
         }
     };
 
-    private AbstractAction deleteTemplateAction = new AbstractAction("删除-选中的模板") {
+    private AbstractAction deleteTemplateAction = new AbstractAction(L.M("tab.panel.templates.popupmenu.selected", "删除-选中的模板")) {
         @SneakyThrows
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -684,7 +684,7 @@ public class TemplatesPanel extends JPanel {
      * 目标是可以做到多选
      * <html><font style='color:red'></font></html>
      */
-    private AbstractAction generateWithTemplatesAction = new AbstractAction("<html>为选中的<font style='color:red'>模板</font>生成执行命令</html>") {
+    private AbstractAction generateWithTemplatesAction = new AbstractAction(L.M("tab.panel.templates.popupmenu.cmd.selected", "<html>为选中的<font style='color:red'>模板</font>生成执行命令</html>")) {
         @SneakyThrows
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -708,12 +708,12 @@ public class TemplatesPanel extends JPanel {
         }
     };
 
-    private AbstractAction generateWithTagsAction = new AbstractAction("<html>为选中的<font style='color:blue'>标签</font>生成执行命令</html>") {
+    private AbstractAction generateWithTagsAction = new AbstractAction(L.M("tab.panel.templates.popupmenu.cmd.tags", "<html>为选中的<font style='color:blue'>标签</font>生成执行命令</html>")) {
         @SneakyThrows
         @Override
         public void actionPerformed(ActionEvent e) {
             log.debug("Generate command with Tags");
-            if (!NucleiApp.nuclei.targetPanel.getTargetText().strip().equals("")) {
+            if (!NucleiApp.nuclei.targetPanel.getTargetText().isBlank()) {
                 // 配置对象
                 String configPath = CommonUtil.getNucleiConfigFile(getSelectedTagMap());
                 // 复制命令到粘贴板

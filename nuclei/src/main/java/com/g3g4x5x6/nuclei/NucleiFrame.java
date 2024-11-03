@@ -38,8 +38,6 @@ public class NucleiFrame extends JFrame {
 
     public static String templatesDir = NucleiConfig.getProperty("nuclei.templates.path");
 
-    // look to the master,follow the master,walk with the master,see through the
-    // master,become the master.
     // 寻找大师，追随大师，与师偕行，领悟大师，成为大师
     private final JLabel mottoLabel = new JLabel(L.M("bar.tool.motto"));
 
@@ -93,8 +91,7 @@ public class NucleiFrame extends JFrame {
         runMenu.add(new JMenuItem("敬请期待"));
         pluginMenu.add(new JMenuItem("敬请期待"));
 
-        // winMenu.add(new GroupByAction(L.M("bar.menu.window.custom.group")));
-        winMenu.add(new CyberSearchAction("网络空间搜索"));
+        winMenu.add(new CyberSearchAction(L.M("bar.menu.window.cyber.search", "网络空间搜索")));
         winMenu.addSeparator();
         winMenu.add(new GroupByAction(L.M("bar.menu.window.group", "自定义分组管理")));
 
@@ -501,10 +498,10 @@ public class NucleiFrame extends JFrame {
         frameTabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
         initClosableTabs(frameTabbedPane);
         customComponents();
-        frameTabbedPane.addTab("Templates", new FlatSVGIcon("icons/pinTab.svg"), templatesPanel);
-        frameTabbedPane.addTab("Targets", new FlatSVGIcon("icons/pinTab.svg"), targetPanel);
-        frameTabbedPane.addTab("Settings", new FlatSVGIcon("icons/pinTab.svg"), settingsPanel);
-        frameTabbedPane.addTab("Running", new FlatSVGIcon("icons/pinTab.svg"), runningPanel);
+        frameTabbedPane.addTab(L.M("tab.panel.templates.title", "Templates"), new FlatSVGIcon("icons/pinTab.svg"), templatesPanel);
+        frameTabbedPane.addTab(L.M("tab.panel.targets.title", "Targets"), new FlatSVGIcon("icons/pinTab.svg"), targetPanel);
+        frameTabbedPane.addTab(L.M("tab.panel.settings.title", "Settings"), new FlatSVGIcon("icons/pinTab.svg"), settingsPanel);
+        frameTabbedPane.addTab(L.M("tab.panel.running.title", "Running"), new FlatSVGIcon("icons/pinTab.svg"), runningPanel);
 //        frameTabbedPane.addTab("Searching", new FlatSVGIcon("icons/pinTab.svg"), searchTabbedPanel);
 
         this.add(frameTabbedPane, BorderLayout.CENTER);

@@ -4,6 +4,7 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.http.ChatUtil;
 
 import cn.hutool.core.swing.clipboard.ClipboardUtil;
+import com.g3g4x5x6.nuclei.ultils.L;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -77,15 +78,15 @@ public class GenerateTemplatePanel extends JPanel {
     }
 
     private void initToolBar() {
-        lineWrapBtn.setToolTipText("编辑文本换行");
+        lineWrapBtn.setToolTipText(L.M("tab.panel.editor.generate.wrap", "编辑文本换行"));
         lineWrapBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 textArea.setLineWrap(lineWrapBtn.isSelected());
             }
         });
-        pasteBtn.setToolTipText("粘贴HTTP流");
-        compileBtn.setToolTipText("生成PoC模板");
+        pasteBtn.setToolTipText(L.M("tab.panel.editor.generate.paste", "粘贴HTTP流"));
+        compileBtn.setToolTipText(L.M("tab.panel.editor.generate.build", "生成PoC模板"));
         compileBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -124,7 +125,7 @@ public class GenerateTemplatePanel extends JPanel {
         });
 
         cancelBtn.setEnabled(false);
-        cancelBtn.setToolTipText("取消正在执行的生成任务");
+        cancelBtn.setToolTipText(L.M("tab.panel.editor.generate.cancel", "取消正在执行的生成任务"));
         cancelBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,7 +141,7 @@ public class GenerateTemplatePanel extends JPanel {
             }
         });
 
-        listBtn.setToolTipText("历史生成结果");
+        listBtn.setToolTipText(L.M("tab.panel.editor.generate.history", "历史生成结果"));
         listBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -220,13 +221,13 @@ public class GenerateTemplatePanel extends JPanel {
     private void resetTextAreaPopupMenu() {
         JPopupMenu popupMenu = textArea.getPopupMenu();
 
-        JMenu insertMenu = new JMenu("匹配器");
+        JMenu insertMenu = new JMenu(L.M("tab.panel.editor.generate.popupmenu.matcher", "匹配器"));
         insertMenu.setIcon(new FlatSVGIcon("icons/regexSelected.svg"));
 
-        JMenu extractorMenu = new JMenu("提取器");
+        JMenu extractorMenu = new JMenu(L.M("tab.panel.editor.generate.popupmenu.extractor", "提取器"));
         extractorMenu.setIcon(new FlatSVGIcon("icons/traceInto.svg"));
 
-        JMenu helperMenu = new JMenu("辅助函数");
+        JMenu helperMenu = new JMenu(L.M("tab.panel.editor.generate.popupmenu.helper", "辅助函数"));
         helperMenu.setIcon(new FlatSVGIcon("icons/function.svg"));
 
         popupMenu.insert(new JSeparator(), 0);
@@ -240,7 +241,7 @@ public class GenerateTemplatePanel extends JPanel {
     }
 
     private void configTextAreaPopupMenu(JMenu insertMenu) {
-        insertMenu.add(new AbstractAction("大于等于") {
+        insertMenu.add(new AbstractAction(L.M("tab.panel.editor.generate.popupmenu.matcher.ge", "大于等于")) {
             @Override
             public void actionPerformed(ActionEvent e) {
 

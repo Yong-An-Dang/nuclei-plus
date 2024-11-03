@@ -2,6 +2,7 @@ package com.g3g4x5x6.nuclei.panel.dialog;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.g3g4x5x6.nuclei.panel.console.ConsolePanel;
+import com.g3g4x5x6.nuclei.ultils.L;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ public class RunningDialog extends JDialog {
 
     public RunningDialog(JFrame parent) {
         super(parent);
-        this.setTitle("模板执行终端");
+        this.setTitle(L.M("tab.panel.editor.terminal.title", "模板执行终端"));
         this.setLayout(new BorderLayout());
         this.setSize(new Dimension(1000, 600));
         this.setPreferredSize(new Dimension(1000, 600));
