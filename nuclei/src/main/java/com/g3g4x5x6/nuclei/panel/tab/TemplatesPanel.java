@@ -457,6 +457,15 @@ public class TemplatesPanel extends JPanel {
     private void refreshDataForTable() {
         // 搜索功能
         sorter = new TableRowSorter<>(tableModel);
+        sorter.setComparator(0, (o1, o2) -> {
+            try {
+                int num1 = Integer.parseInt(o1.toString());
+                int num2 = Integer.parseInt(o2.toString());
+                return Integer.compare(num1, num2);
+            } catch (NumberFormatException ex) {
+                return o1.toString().compareTo(o2.toString());
+            }
+        });
         templatesTable.setRowSorter(sorter);
         new Thread(() -> {
             NucleiFrame.setStatusProgressBar(L.M("bar.tool.status.progressbar.text", "正在刷新模板列表，请稍后..."));
