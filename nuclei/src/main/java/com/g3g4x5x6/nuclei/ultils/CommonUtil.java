@@ -20,6 +20,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
@@ -105,7 +106,7 @@ public class CommonUtil {
         if (!Files.exists(Path.of(savePath))) Files.createDirectories(new File(savePath).getParentFile().toPath());
 
         Yaml yaml = new Yaml(new SafeConstructor(new LoaderOptions()));
-        yaml.dump(config, new FileWriter(savePath));
+        yaml.dump(config, new FileWriter(savePath, StandardCharsets.UTF_8));
         return new File(savePath).getCanonicalPath();
     }
 
@@ -175,7 +176,7 @@ public class CommonUtil {
             Files.createFile(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"));
         if (groupMap != null) {
             Yaml yaml = new Yaml();
-            yaml.dump(groupMap, new FileWriter(String.valueOf(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml"))));
+            yaml.dump(groupMap, new FileWriter(String.valueOf(Path.of(NucleiConfig.getConfigPath() + "/groupby.yaml")), StandardCharsets.UTF_8));
         }
     }
 
