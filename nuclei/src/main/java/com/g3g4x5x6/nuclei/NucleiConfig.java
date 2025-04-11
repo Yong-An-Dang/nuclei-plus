@@ -69,11 +69,10 @@ public class NucleiConfig {
                 String tmpPath = Files.readString(NucleiConfig.initWorkPathFlagFilePath);
                 if (!tmpPath.isEmpty() && Files.exists(Path.of(tmpPath))) {
                     workPath = tmpPath;
-                } else {
-                    log.info("自定义工作目录不存在，使用默认工作目录。");
                 }
             } catch (IOException e) {
                 e.fillInStackTrace();
+                log.error(e.getMessage());
             }
         }
         return workPath;

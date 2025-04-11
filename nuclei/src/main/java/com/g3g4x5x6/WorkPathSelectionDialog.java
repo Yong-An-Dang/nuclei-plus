@@ -1,6 +1,7 @@
 package com.g3g4x5x6;
 
 import com.g3g4x5x6.nuclei.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.os.OsInfoUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -103,8 +104,10 @@ public class WorkPathSelectionDialog extends JDialog {
             Files.createDirectories(NucleiConfig.initWorkPathFlagFilePath.getParent());
             Files.writeString(NucleiConfig.initWorkPathFlagFilePath, path, StandardOpenOption.CREATE);
 
-            DosFileAttributeView attributeView = Files.getFileAttributeView(Path.of(path), DosFileAttributeView.class);
-//            attributeView.setHidden(true);
+            if (!OsInfoUtil.isMacOS() && !OsInfoUtil.isMacOSX() && !OsInfoUtil.isLinux()) {
+                DosFileAttributeView attributeView = Files.getFileAttributeView(Path.of(path), DosFileAttributeView.class);
+                attributeView.setHidden(true);
+            }
         } catch (IOException e) {
             log.debug(e.getMessage());
             log.debug(path);
