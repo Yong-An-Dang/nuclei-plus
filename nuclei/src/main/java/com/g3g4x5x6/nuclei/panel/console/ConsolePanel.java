@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -70,6 +71,11 @@ public class ConsolePanel extends JPanel {
             }
             log.debug(envs.toString());
             PtyProcess process = new PtyProcessBuilder().setDirectory(NucleiConfig.getWorkPath()).setCommand(command).setEnvironment(envs).start();
+            if (OsInfoUtil.isMacOS() || OsInfoUtil.isMacOSX() || OsInfoUtil.isLinux()) {
+                OutputStreamWriter writer = new OutputStreamWriter(process.getOutputStream());
+                writer.write("eval $SHELL\nclear\n");
+                writer.flush();
+            }
 
             return new NucleiProcessTtyConnector(process, StandardCharsets.UTF_8);
         } catch (Exception e) {
