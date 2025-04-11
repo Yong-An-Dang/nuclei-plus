@@ -51,6 +51,14 @@ java -jar nuclei-x.x.x.jar
 
 See [Document](https://yong-an-dang.github.io/nuclei-plus/)
 
+**启动项目**
+
+![img.png](doc/images/项目选择.png)
+
+**主界面**
+
+![img.png](doc/images/主界面.png)
+
 #### Dependency
 
 - [projectdiscovery/nuclei](https://github.com/projectdiscovery/nuclei)
