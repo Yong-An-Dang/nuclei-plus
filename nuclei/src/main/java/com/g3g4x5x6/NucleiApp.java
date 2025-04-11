@@ -8,6 +8,9 @@ import com.g3g4x5x6.nuclei.ultils.CheckUtil;
 import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.os.OsInfoUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.RollingFileAppender;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -18,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -69,7 +73,7 @@ public class NucleiApp {
             try {
                 taskbar.setIconImage(image);
             } catch (UnsupportedOperationException e) {
-                System.out.println("Dock 图标设置失败: " + e.getMessage());
+                log.warn("Dock 图标设置失败: " + e.getMessage());
             }
         }
 
@@ -78,6 +82,9 @@ public class NucleiApp {
     }
 
     public static void createGUI() {
+        // 初始化日志配置
+        initLogger();
+
         // 启动程序
         nuclei = new NucleiFrame();
         nuclei.setTitle(NucleiConfig.getProperty("nuclei.title") + " [" + NucleiConfig.projectName + "]");
@@ -113,6 +120,26 @@ public class NucleiApp {
 
         // 初始化系统托盘
         initSystemTray();
+    }
+
+    private static void initLogger(){
+        Logger rootLogger = Logger.getRootLogger();
+
+        // 遍历所有附加器，找到 RollingFileAppender
+        Enumeration appenders = rootLogger.getAllAppenders();
+        while (appenders.hasMoreElements()) {
+            Object appenderObj = appenders.nextElement();
+            if (appenderObj instanceof RollingFileAppender) {
+                RollingFileAppender fileAppender = (RollingFileAppender) appenderObj;
+
+                // 替换成你想要的新路径
+                String newLogPath = Path.of(NucleiConfig.getWorkPath(),"logs","nuclei-plus.log").toString();
+                fileAppender.setFile(newLogPath);
+                fileAppender.activateOptions(); // 应用更改
+
+                System.out.println("日志路径已更改为: " + newLogPath);
+            }
+        }
     }
 
     private static void initFlatLaf() {
