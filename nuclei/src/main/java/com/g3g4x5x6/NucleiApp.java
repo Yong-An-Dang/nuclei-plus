@@ -8,9 +8,7 @@ import com.g3g4x5x6.nuclei.ultils.CheckUtil;
 import com.g3g4x5x6.nuclei.NucleiConfig;
 import com.g3g4x5x6.nuclei.ultils.os.OsInfoUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.RollingFileAppender;
+import org.apache.log4j.*;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -123,23 +121,26 @@ public class NucleiApp {
     }
 
     private static void initLogger(){
+        // 创建一个 RollingFileAppender
+        RollingFileAppender rollingFileAppender = new RollingFileAppender();
+        rollingFileAppender.setName("R");
+        rollingFileAppender.setFile(Path.of(NucleiConfig.getWorkPath(),"logs/nuclei-plus.log").toString());  // 这里设置你的日志文件路径
+        rollingFileAppender.setMaxFileSize("1024KB");
+        rollingFileAppender.setMaxBackupIndex(512);
+
+        // 设置日志格式
+        PatternLayout layout = new PatternLayout();
+        layout.setConversionPattern("%d{yyyy/MM/dd HH:mm:ss,SSS} %p [%t] (%F:%L:%M) - %m%n");
+        rollingFileAppender.setLayout(layout);
+
+        // 应用配置
+        rollingFileAppender.activateOptions();
+
+        // 绑定到 rootLogger
         Logger rootLogger = Logger.getRootLogger();
-
-        // 遍历所有附加器，找到 RollingFileAppender
-        Enumeration appenders = rootLogger.getAllAppenders();
-        while (appenders.hasMoreElements()) {
-            Object appenderObj = appenders.nextElement();
-            if (appenderObj instanceof RollingFileAppender) {
-                RollingFileAppender fileAppender = (RollingFileAppender) appenderObj;
-
-                // 替换成你想要的新路径
-                String newLogPath = Path.of(NucleiConfig.getWorkPath(),"logs","nuclei-plus.log").toString();
-                fileAppender.setFile(newLogPath);
-                fileAppender.activateOptions(); // 应用更改
-
-                System.out.println("日志路径已更改为: " + newLogPath);
-            }
-        }
+        // TODO 全局配置文件设置日志级别
+        rootLogger.setLevel(Level.DEBUG); // 设置日志级别
+        rootLogger.addAppender(rollingFileAppender);
     }
 
     private static void initFlatLaf() {
