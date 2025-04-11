@@ -50,7 +50,7 @@ public class StringTargetPanel extends JPanel implements SearchListener, ChangeL
     private final JRadioButton resumeBtn = new JRadioButton("-resume  ");
 
     // 路漫漫其修远兮，吾将上下而求索
-    private final JLabel showLabel = new JLabel(L.M("tab.panel.targets.moto", "无目标的努力，有如在黑暗中远征"));
+    private final JLabel showLabel = new JLabel(L.M("tab.panel.targets.moto", ""));
 
     public StringTargetPanel() {
         this.setLayout(new BorderLayout());

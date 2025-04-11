@@ -6,6 +6,7 @@ import com.g3g4x5x6.nuclei.DefaultTrayIcon;
 import com.g3g4x5x6.nuclei.NucleiFrame;
 import com.g3g4x5x6.nuclei.ultils.CheckUtil;
 import com.g3g4x5x6.nuclei.NucleiConfig;
+import com.g3g4x5x6.nuclei.ultils.os.OsInfoUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Objects;
 
+import static java.awt.Frame.ICONIFIED;
 import static java.awt.Frame.NORMAL;
 
 
@@ -60,6 +62,17 @@ public class NucleiApp {
         // 加载主题
         initFlatLaf();
 
+        // 设置 Dock 图标（部分 macOS 版本有效）
+        if (Taskbar.isTaskbarSupported()) {
+            Taskbar taskbar = Taskbar.getTaskbar();
+            Image image = Toolkit.getDefaultToolkit().getImage(Objects.requireNonNull(NucleiApp.class.getClassLoader().getResource("icon.png")));
+            try {
+                taskbar.setIconImage(image);
+            } catch (UnsupportedOperationException e) {
+                System.out.println("Dock 图标设置失败: " + e.getMessage());
+            }
+        }
+
         // Setup
         StartupFrame.setup();
     }
@@ -69,6 +82,7 @@ public class NucleiApp {
         nuclei = new NucleiFrame();
         nuclei.setTitle(NucleiConfig.getProperty("nuclei.title") + " [" + NucleiConfig.projectName + "]");
         nuclei.setVisible(true);
+        nuclei.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
         WindowListener exitListener = new WindowAdapter() {
 
@@ -78,7 +92,12 @@ public class NucleiApp {
                 if (NucleiConfig.getProperty("nuclei.quit.to.tray").equalsIgnoreCase("false")) {
                     System.exit(0);
                 } else {
-                    nuclei.setVisible(false);
+                    if (OsInfoUtil.isMacOSX() || OsInfoUtil.isMacOS()) {
+                        log.debug("isMacOS");
+                        nuclei.setExtendedState(ICONIFIED);
+                    } else {
+                        nuclei.setVisible(false);
+                    }
                 }
             }
 

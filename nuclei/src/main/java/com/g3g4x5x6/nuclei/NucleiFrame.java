@@ -116,7 +116,7 @@ public class NucleiFrame extends JFrame {
 
         // 程序退出图标按钮
         FlatButton closeBtn = new FlatButton();
-        closeBtn.setIcon(new FlatSVGIcon("icons/popFrame.svg"));
+        closeBtn.setIcon(new FlatSVGIcon("icons/exit.svg"));
         closeBtn.setButtonType(FlatButton.ButtonType.toolBarButton);
         closeBtn.setFocusable(false);
         closeBtn.addActionListener(e -> {

@@ -18,13 +18,13 @@
 
         <fastjson-version>1.2.83</fastjson-version>
 
-        <flatlaf-version>2.0.1</flatlaf-version>
-        <flatlaf-extras-version>2.0.1</flatlaf-extras-version>
-        <flatlaf-intellij-themes-version>1.5</flatlaf-intellij-themes-version>
+        <flatlaf-version>3.5.4</flatlaf-version>
+        <flatlaf-extras-version>3.5.4</flatlaf-extras-version>
+        <flatlaf-intellij-themes-version>3.5.4</flatlaf-intellij-themes-version>
 
-        <rsyntaxtextarea-version>3.5.0</rsyntaxtextarea-version>
+        <rsyntaxtextarea-version>3.6.0</rsyntaxtextarea-version>
         <rstaui-version>3.3.1</rstaui-version>
-        <autocomplete-version>3.3.1</autocomplete-version>
+        <autocomplete-version>3.3.2</autocomplete-version>
 
         <jediterm-core-version>3.44-SNAPSHOT</jediterm-core-version>
         <jediterm-ui-version>3.44-SNAPSHOT</jediterm-ui-version>
