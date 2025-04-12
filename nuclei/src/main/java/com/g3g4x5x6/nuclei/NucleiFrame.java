@@ -559,14 +559,7 @@ public class NucleiFrame extends JFrame {
         trailPopupMenu.add(templateItem);
 
         // 选项卡面板后置工具栏
-        String iconPath = "icons/windows.svg";
-        if (OsInfoUtil.isMacOSX() || OsInfoUtil.isMacOS()) {
-            iconPath = "icons/macOS.svg";
-        } else if (OsInfoUtil.isLinux()) {
-            iconPath = "icons/linux.svg";
-        }
-
-        JButton trailMenuBtn = new JButton(new FlatSVGIcon(iconPath));
+        JButton trailMenuBtn = new JButton(new FlatSVGIcon("icons/colors.svg"));
         trailMenuBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
