@@ -11,6 +11,7 @@ import com.g3g4x5x6.nuclei.panel.dialog.EditorDialog;
 import com.g3g4x5x6.nuclei.panel.tab.*;
 import com.g3g4x5x6.nuclei.ui.StatusBar;
 import com.g3g4x5x6.nuclei.ultils.*;
+import com.g3g4x5x6.nuclei.ultils.os.OsInfoUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -559,6 +560,12 @@ public class NucleiFrame extends JFrame {
 
         // 选项卡面板后置工具栏
         String iconPath = "icons/windows.svg";
+        if (OsInfoUtil.isMacOSX() || OsInfoUtil.isMacOS()) {
+            iconPath = "icons/macOS.svg";
+        } else if (OsInfoUtil.isLinux()) {
+            iconPath = "icons/linux.svg";
+        }
+
         JButton trailMenuBtn = new JButton(new FlatSVGIcon(iconPath));
         trailMenuBtn.addMouseListener(new MouseAdapter() {
             @Override
