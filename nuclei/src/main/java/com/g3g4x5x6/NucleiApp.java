@@ -19,11 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Objects;
 
-import static java.awt.Frame.ICONIFIED;
 import static java.awt.Frame.NORMAL;
 
 
@@ -71,7 +69,7 @@ public class NucleiApp {
             try {
                 taskbar.setIconImage(image);
             } catch (UnsupportedOperationException e) {
-                log.warn("Dock 图标设置失败: " + e.getMessage());
+                log.warn("Dock 图标设置失败: {}", e.getMessage());
             }
         }
 
@@ -82,6 +80,13 @@ public class NucleiApp {
     public static void createGUI() {
         // 初始化日志配置
         initLogger();
+
+        if (OsInfoUtil.isMacOSX() || OsInfoUtil.isMacOS()) {
+            // 设置使用系统菜单栏（macOS）
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            // 设置菜单栏的名字（显示在屏幕左上角 Apple 图标旁边）
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "我的应用");
+        }
 
         // 启动程序
         nuclei = new NucleiFrame();
