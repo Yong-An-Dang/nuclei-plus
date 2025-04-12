@@ -98,8 +98,8 @@ public class NucleiApp {
                     System.exit(0);
                 } else {
                     if (OsInfoUtil.isMacOSX() || OsInfoUtil.isMacOS()) {
-                        log.debug("isMacOS");
-                        nuclei.setExtendedState(ICONIFIED);
+                        log.debug("isMacOS: toBack");
+                        nuclei.toBack();
                     } else {
                         nuclei.setVisible(false);
                     }

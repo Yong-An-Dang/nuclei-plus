@@ -8,7 +8,7 @@ Nuclei is used to send requests across targets based on a template, leading to z
 scanning on a large number of hosts. Nuclei offers scanning for a variety of protocols, including TCP, DNS, HTTP, SSL,
 File, Whois, Websocket, Headless etc. With powerful and flexible templating, Nuclei can be used to model all kinds of
 security checks.
-> <small>[简体中文](README_zh.md)</small>
+> <small>[简体中文](README_CN)</small>
 
 #### Intro
 
@@ -34,7 +34,7 @@ mvn install:install-file -Dfile=libs/jediterm-core-3.44-SNAPSHOT.jar -DgroupId=c
 mvn install:install-file -Dfile=libs/jediterm-ui-3.44-SNAPSHOT.jar -DgroupId=com.jediterm  -DartifactId=jediterm-ui -Dversion=3.44-SNAPSHOT -Dpackaging=jar
 
 # set a new version
-mvn versions:set -DnewVersion=7.5.9
+mvn versions:set -DnewVersion=7.5.11
 
 # package
 mvn clean package -DskipTests -Dproject.build.sourceEncoding=UTF-8
@@ -51,11 +51,11 @@ java -jar nuclei-x.x.x.jar
 
 See [Document](https://yong-an-dang.github.io/nuclei-plus/)
 
-**启动项目**
+**Start up**
 
 ![img.png](doc/images/项目选择.png)
 
-**主界面**
+**Main frame**
 
 ![img.png](doc/images/主界面.png)
 

@@ -24,7 +24,16 @@ Nuclei 提供对各种协议的扫描，包括 TCP、DNS、HTTP、SSL、File、W
 
 ```shell
 # JDK11+
-mvn clean package -DskipTests
+
+# add terminal
+mvn install:install-file -Dfile=libs/jediterm-core-3.44-SNAPSHOT.jar -DgroupId=com.jediterm  -DartifactId=jediterm-core -Dversion=3.44-SNAPSHOT -Dpackaging=jar
+mvn install:install-file -Dfile=libs/jediterm-ui-3.44-SNAPSHOT.jar -DgroupId=com.jediterm  -DartifactId=jediterm-ui -Dversion=3.44-SNAPSHOT -Dpackaging=jar
+
+# set a new version
+mvn versions:set -DnewVersion=7.5.11
+
+# package
+mvn clean package -DskipTests -Dproject.build.sourceEncoding=UTF-8
 ```
 
 #### 运行
@@ -37,3 +46,13 @@ java -jar nuclei-x.x.x.jar
 #### 使用
 
 [操作文档](https://yong-an-dang.github.io/nuclei-plus/)
+
+
+
+**项目启动**
+
+![img.png](doc/images/项目选择.png)
+
+**操作界面**
+
+![img.png](doc/images/主界面.png)
