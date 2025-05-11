@@ -34,3 +34,5 @@ nuclei/buildNumber.properties
 /doc/json-server/node_modules/*
 /doc/json-server/package.json
 /doc/json-server/package-lock.json
+nuclei/.DS_Store
+nuclei/dependency-reduced-pom.xml
