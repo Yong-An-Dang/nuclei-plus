@@ -109,6 +109,9 @@ public class WorkPathSelectionDialog extends JDialog {
                 attributeView.setHidden(true);
             }
 
+            // 重构工作空间目录
+            NucleiConfig.reloadProperties();
+
         } catch (IOException e) {
             log.debug(e.getMessage());
             log.debug(path);

@@ -1,5 +1,6 @@
 package com.g3g4x5x6.nuclei;
 
+import com.g3g4x5x6.nuclei.ultils.CheckUtil;
 import com.g3g4x5x6.nuclei.ultils.DialogUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,17 +22,16 @@ public class NucleiConfig {
     }
 
     private static Properties loadProperties() {
+        // 检查运行环境
+        CheckUtil.checkEnv();
+
         // 初始化应用配置
         if (!Files.exists(Path.of(NucleiConfig.getPropertiesPath()))) {
             try {
                 InputStream nucleiIn = NucleiFrame.class.getClassLoader().getResourceAsStream("nuclei.properties");
                 assert nucleiIn != null;
 
-                Path targetPath = Path.of(NucleiConfig.getPropertiesPath());
-                // 确保父目录存在
-                Files.createDirectories(targetPath.getParent());
-
-                Files.copy(nucleiIn, targetPath);
+                Files.copy(nucleiIn, Path.of(NucleiConfig.getPropertiesPath()));
             } catch (IOException e) {
                 e.fillInStackTrace();
             }
