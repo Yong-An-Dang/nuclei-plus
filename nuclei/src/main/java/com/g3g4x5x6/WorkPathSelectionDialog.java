@@ -108,6 +108,7 @@ public class WorkPathSelectionDialog extends JDialog {
                 DosFileAttributeView attributeView = Files.getFileAttributeView(Path.of(path), DosFileAttributeView.class);
                 attributeView.setHidden(true);
             }
+
         } catch (IOException e) {
             log.debug(e.getMessage());
             log.debug(path);

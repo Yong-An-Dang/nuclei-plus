@@ -26,7 +26,12 @@ public class NucleiConfig {
             try {
                 InputStream nucleiIn = NucleiFrame.class.getClassLoader().getResourceAsStream("nuclei.properties");
                 assert nucleiIn != null;
-                Files.copy(nucleiIn, Path.of(NucleiConfig.getPropertiesPath()));
+
+                Path targetPath = Path.of(NucleiConfig.getPropertiesPath());
+                // 确保父目录存在
+                Files.createDirectories(targetPath.getParent());
+
+                Files.copy(nucleiIn, targetPath);
             } catch (IOException e) {
                 e.fillInStackTrace();
             }

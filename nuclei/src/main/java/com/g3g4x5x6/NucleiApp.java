@@ -69,6 +69,7 @@ public class NucleiApp {
             try {
                 taskbar.setIconImage(image);
             } catch (UnsupportedOperationException e) {
+                // Linux 也不完全支持
                 log.warn("Dock 图标设置失败: {}", e.getMessage());
             }
         }
